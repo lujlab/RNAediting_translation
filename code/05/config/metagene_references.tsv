@@ -1,5 +1,0 @@
-species	trans_file	m6a_file
-Dmel	/path/to/Proj2_allele_specific_translation/02_codon/dmel-r6.12_CDS_position	/path/to/Proj1_editing/codex/02_stalling/3flank/peak_find/m6A_list.handle
-Dsim	/path/to/Proj1_RNAediting/03_APEsite/dsim_r2.02_CDS_position	/path/to/Proj1_editing/codex/02_stalling/3flank/peak_find/m6A_list.droSim1.handle
-Dsec	/path/to/Proj1_RNAediting/03_APEsite/dsec_r1.3_CDS_position	/path/to/Proj1_editing/codex/02_stalling/3flank/peak_find/m6A_list.droSec1ToDm6.handle
-Dere	/path/to/Proj1_RNAediting/03_APEsite/dere_r1.05_CDS_position	/path/to/Proj1_editing/codex/02_stalling/3flank/peak_find/m6A_list.droEre2ToDm6.handle

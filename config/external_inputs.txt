@@ -1,0 +1,11 @@
+Supply sequencing/reference inputs as documented in numbered bash scripts.
+Common overrides: RNA_EDITING_DATA_ROOT, GMRC_ANNOTATION_ROOT, RESCUE_ROOT,
+MAMMALS_DATA_ROOT, MAMMALS_REFERENCE_ROOT, TABLE_S10_INPUTS, RSCRIPT, PYTHON_BIN.
+The historical RESCUE_ROOT variable is an input-directory label, not permission
+to introduce a site-rescue operation; code/03 uses the current species-union script.
+For portability, inspect absolute input paths in code/config before executing.
+No excluded input file is silently downloaded or substituted by this package.
+
+Half-life public expression/decay tables and the selected embryo CDS editing
+reference are bundled in code/07/half_life/inputs/published/. Preparation is
+offline; source URLs/checksums are provided there. GTF/FASTA remain external.

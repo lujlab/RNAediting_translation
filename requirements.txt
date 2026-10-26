@@ -1,0 +1,17 @@
+# Direct Python dependencies (Python >=3.10). Versions are not pinned.
+numpy
+pandas
+scipy
+matplotlib
+seaborn
+biopython
+pysam
+click
+scikit-learn
+statsmodels
+reportlab
+fonttools
+PyMuPDF
+XlsxWriter
+openpyxl
+python-docx

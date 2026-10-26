@@ -1,0 +1,8 @@
+sample_id	rna_count	rpf_count
+Dsec_F1	/path/to/RNA_editing_DATAprocessing_new/RNA_processing_JWZ/06_codon_count/sec-F1-1-LJD7630_longestCDS.old4.tsv.num	/path/to/RNA_editing_DATAprocessing_new/05.psite/psite_2times/Dsec_F1.codon_Asite.num
+Dsec_F2	/path/to/RNA_editing_DATAprocessing_new/RNA_processing_JWZ/06_codon_count/sec-F2-1-LJD7631_longestCDS.old4.tsv.num	/path/to/RNA_editing_DATAprocessing_new/05.psite/psite_2times/Dsec_F2.codon_Asite.num
+Dsec_F3	/path/to/RNA_editing_DATAprocessing_new/RNA_processing_JWZ/06_codon_count/sec-F3-1-LJD7632_longestCDS.old4.tsv.num	/path/to/RNA_editing_DATAprocessing_new/05.psite/psite_2times/Dsec_F3.codon_Asite.num
+Dsec_M1	/path/to/RNA_editing_DATAprocessing_new/RNA_processing_JWZ/06_codon_count/sec-M1-1-LJD7627_longestCDS.old4.tsv.num	/path/to/RNA_editing_DATAprocessing_new/05.psite/psite_2times/Dsec_M1.codon_Asite.num
+Dsec_M2	/path/to/RNA_editing_DATAprocessing_new/RNA_processing_JWZ/06_codon_count/sec-M2-1-LJD7628_longestCDS.old4.tsv.num	/path/to/RNA_editing_DATAprocessing_new/05.psite/psite_2times/Dsec_M2.codon_Asite.num
+Dsec_M3	/path/to/RNA_editing_DATAprocessing_new/RNA_processing_JWZ/06_codon_count/sec-M3-1-LJD7629_longestCDS.old4.tsv.num	/path/to/RNA_editing_DATAprocessing_new/05.psite/psite_2times/Dsec_M3.codon_Asite.num
+Dsec_male_head	/path/to/RNA_editing_DATAprocessing_new/RNA_processing_JWZ/06_codon_count/Dsec_male_head_mRNA_longestCDS.old4.tsv.num	/path/to/RNA_editing_DATAprocessing_new/05.psite/psite_2times/Dsec_male_head_ribo.codon_Asite.num

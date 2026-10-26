@@ -1,0 +1,23 @@
+# Dependency specification only; not installed or resolved during packaging.
+name: stalling06
+channels:
+  - conda-forge
+  - bioconda
+dependencies:
+  - python=3.11
+  - pysam
+  - pandas
+  - numpy
+  - scipy
+  - matplotlib
+  - samtools
+  - viennarna
+  - perl
+  - ucsc-bigwigaverageoverbed
+  - r-base
+  - r-data.table
+  - bioconductor-edger
+  - r-statmod
+  - r-lme4
+  - r-lmertest
+  - r-ggplot2

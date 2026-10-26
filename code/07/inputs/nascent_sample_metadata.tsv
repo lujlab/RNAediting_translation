@@ -1,0 +1,5 @@
+sample_id	fastq	assay	group	replicate
+SRR485860	/path/to/RNA_editing_DATAprocessing/2012MC_nascent/fastq/SRR485860.fastq.gz	nascent	yw	1
+SRR485861	/path/to/RNA_editing_DATAprocessing/2012MC_nascent/fastq/SRR485861.fastq.gz	nascent	yw	2
+SRR485864	/path/to/RNA_editing_DATAprocessing/2012MC_nascent/fastq/SRR485864.fastq.gz	nascent	ADAR0	3
+SRR485865	/path/to/RNA_editing_DATAprocessing/2012MC_nascent/fastq/SRR485865.fastq.gz	nascent	ADAR0	4

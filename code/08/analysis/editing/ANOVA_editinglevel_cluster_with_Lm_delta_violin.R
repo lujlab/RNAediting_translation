@@ -1,0 +1,1994 @@
+suppressPackageStartupMessages({
+    library(data.table)
+    library(MASS)
+    library(ggplot2)
+    library(gridExtra)
+    library(UpSetR)
+})
+
+# ============================================================
+# Input and output paths
+# ============================================================
+
+args <- commandArgs(trailingOnly = TRUE)
+
+input_dir <- if (length(args) >= 1) {
+    args[1]
+} else {
+    "/path/to/num/Table1_alledit_new"
+}
+
+outdir <- if (length(args) >= 2) {
+    args[2]
+} else {
+    "/path/to/num/Table1_alledit_new/anova_output"
+}
+
+dir.create(outdir, recursive = TRUE, showWarnings = FALSE)
+
+MIN_REP_PER_GENOTYPE <- 2
+GENOTYPE_LEVELS <- c("AG", "WBG", "AS")
+TOP_N_CLUSTERS <- 4L
+
+# ============================================================
+# 1. Locate AG, AS and WBG files
+# ============================================================
+
+find_group_file <- function(input_dir, group_name) {
+    matched_files <- list.files(
+        input_dir,
+        pattern = paste0(
+            "^",
+            group_name,
+            "\\.candidate\\.AtoG\\.annotations\\.long\\.tsv$"
+        ),
+        full.names = TRUE,
+        ignore.case = TRUE
+    )
+
+    if (length(matched_files) == 0) {
+        stop(
+            "Cannot find input file for ",
+            group_name,
+            " in:\n",
+            input_dir,
+            "\nExpected file: ",
+            group_name,
+            ".candidate.AtoG.annotations.long.tsv"
+        )
+    }
+
+    if (length(matched_files) > 1) {
+        stop(
+            "More than one file was found for ",
+            group_name,
+            ":\n",
+            paste(matched_files, collapse = "\n")
+        )
+    }
+
+    matched_files[1]
+}
+
+input_files <- c(
+    AG = find_group_file(input_dir, "AG"),
+    WBG = find_group_file(input_dir, "WBG"),
+    AS = find_group_file(input_dir, "AS")
+)
+
+cat("Input files:\n")
+print(input_files)
+
+# ============================================================
+# 2. Read and standardize one annotations.long file
+# ============================================================
+
+read_new_candidate_file <- function(file, genotype_name) {
+    cat(
+        "Reading ",
+        genotype_name,
+        ": ",
+        file,
+        "\n",
+        sep = ""
+    )
+
+    x <- fread(
+        file,
+        sep = "\t",
+        header = TRUE,
+        quote = "",
+        fill = TRUE,
+        data.table = TRUE,
+        check.names = FALSE,
+        na.strings = c("NA", "NaN", "")
+    )
+
+    required_new_cols <- c(
+        "handle",
+        "chr",
+        "pos",
+        "Ref",
+        "Alt",
+        "refcount",
+        "altcount",
+        "gene",
+        "lib",
+        "annotation_source",
+        "depth"
+    )
+
+    missing_new_cols <- setdiff(
+        required_new_cols,
+        colnames(x)
+    )
+
+    if (length(missing_new_cols) > 0) {
+        stop(
+            "Missing required columns in:\n",
+            file,
+            "\nMissing columns: ",
+            paste(missing_new_cols, collapse = ", "),
+            "\nAvailable columns: ",
+            paste(colnames(x), collapse = ", ")
+        )
+    }
+
+    # In the new long annotation table, `lib` contains the old sample name,
+    # e.g. WBG_M3, and `annotation_source` contains the library/genotype label.
+    # Sex and replicate are therefore recovered from the lib suffix below.
+    x[, sample_raw := trimws(as.character(lib))]
+    x[, annotation_source_raw := trimws(as.character(annotation_source))]
+
+    x[, `:=`(
+        genotype = genotype_name,
+        chr = as.character(chr),
+        pos = suppressWarnings(as.numeric(pos)),
+        refcount = suppressWarnings(as.numeric(refcount)),
+        altcount = suppressWarnings(as.numeric(altcount)),
+        depth = suppressWarnings(as.numeric(depth)),
+        sex = NA_character_
+    )]
+
+    # Use the supplied site handle.  Fall back to chr + pos only if handle is
+    # missing, so the new file's site identity is retained exactly.
+    x[, coord_handle := trimws(as.character(handle))]
+    x[
+        (is.na(coord_handle) | coord_handle == "") &
+            !is.na(chr) &
+            chr != "" &
+            is.finite(pos),
+        coord_handle := paste0(
+            chr,
+            "_",
+            as.integer(pos)
+        )
+    ]
+
+    # WBG_M3 / AG_F1 / AS_M2 -> M3 / F1 / M2
+    x[
+        ,
+        sample := sub(
+            "^.*_([FM][0-9]+)$",
+            "\\1",
+            sample_raw,
+            perl = TRUE
+        )
+    ]
+
+    x[
+        !grepl(
+            "^[FM][0-9]+$",
+            sample
+        ),
+        sample := NA_character_
+    ]
+
+    # Recover sex from lib.  annotation_source is retained as provenance and
+    # is only used as a fallback if it itself contains F/M.
+    x[
+        !is.na(sample),
+        sex := substr(sample, 1, 1)
+    ]
+    x[
+        is.na(sex) &
+            toupper(annotation_source_raw) %in% c("F", "M"),
+        sex := toupper(annotation_source_raw)
+    ]
+
+    x[
+        is.na(sex) |
+            sex == "" |
+            !sex %in% c("F", "M"),
+        sex := fifelse(
+            !is.na(sample),
+            substr(sample, 1, 1),
+            NA_character_
+        )
+    ]
+
+    # Use depth as dp.
+    x[, dp := depth]
+
+    # Only recover dp from counts when depth is missing.
+    x[
+        !is.finite(dp) &
+            is.finite(refcount) &
+            is.finite(altcount),
+        dp := refcount + altcount
+    ]
+
+    # Check whether depth agrees with refcount + altcount.
+    x[
+        ,
+        dp_count_sum := fifelse(
+            is.finite(refcount) &
+                is.finite(altcount),
+            refcount + altcount,
+            NA_real_
+        )
+    ]
+
+    x[
+        ,
+        dp_mismatch := (
+            is.finite(dp) &
+                is.finite(dp_count_sum) &
+                dp != dp_count_sum
+        )
+    ]
+
+    x[, source_file := basename(file)]
+
+    x
+}
+
+# ============================================================
+# 3. Combine AG, WBG and AS
+# ============================================================
+
+dt <- rbindlist(
+    lapply(
+        names(input_files),
+        function(g) {
+            read_new_candidate_file(
+                file = input_files[[g]],
+                genotype_name = g
+            )
+        }
+    ),
+    use.names = TRUE,
+    fill = TRUE
+)
+
+cat("Combined input rows:\n")
+print(nrow(dt))
+
+cat("Combined input columns:\n")
+print(colnames(dt))
+
+cat("Depth mismatch summary:\n")
+print(
+    dt[
+        ,
+        .(
+            n_rows = .N,
+            n_dp_mismatch = sum(
+                dp_mismatch,
+                na.rm = TRUE
+            )
+        ),
+        by = genotype
+    ]
+)
+
+# Save the standardized input for checking.
+standardized_input_file <- file.path(
+    outdir,
+    "AG_AS_WBG_sample_sites.long.standardized.tsv"
+)
+
+fwrite(
+    dt,
+    standardized_input_file,
+    sep = "\t",
+    quote = FALSE,
+    na = "NA"
+)
+
+cat(
+    "Written standardized input table:\n",
+    standardized_input_file,
+    "\n"
+)
+
+# ============================================================
+# 3.1 Arrange standardized columns
+# ============================================================
+
+required_cols <- c(
+    "genotype",
+    "coord_handle",
+    "refcount",
+    "altcount",
+    "dp",
+    "sample",
+    "sex"
+)
+
+missing_cols <- setdiff(
+    required_cols,
+    colnames(dt)
+)
+
+if (length(missing_cols) > 0) {
+    stop(
+        "Missing required standardized columns: ",
+        paste(missing_cols, collapse = ", ")
+    )
+}
+
+dt[, genotype := factor(
+    as.character(genotype),
+    levels = GENOTYPE_LEVELS
+)]
+
+dt[, sex := as.character(sex)]
+dt[, sample := as.character(sample)]
+dt[, coord_handle := as.character(coord_handle)]
+
+dt[, refcount := as.numeric(refcount)]
+dt[, altcount := as.numeric(altcount)]
+dt[, dp := as.numeric(dp)]
+
+dt[
+    is.na(dp) &
+        !is.na(refcount) &
+        !is.na(altcount),
+    dp := refcount + altcount
+]
+
+# F1 -> 1; M3 -> 3
+dt[
+    ,
+    rep := sub(
+        "^[FM]",
+        "",
+        sample
+    )
+]
+
+dt[
+    is.na(sex) |
+        sex == "",
+    sex := substr(
+        sample,
+        1,
+        1
+    )
+]
+
+cat("Genotype table:\n")
+print(table(dt$genotype, useNA = "ifany"))
+
+cat("Sex table:\n")
+print(table(dt$sex, useNA = "ifany"))
+
+cat("Sample table:\n")
+print(table(dt$sample, useNA = "ifany"))
+
+cat("Rep table:\n")
+print(table(dt$rep, useNA = "ifany"))
+
+# ============================================================
+# 4. Filter
+# ============================================================
+
+dt <- dt[!is.na(coord_handle)]
+dt <- dt[!is.na(genotype)]
+dt <- dt[!is.na(sex)]
+dt <- dt[!is.na(sample)]
+dt <- dt[!is.na(rep)]
+
+dt <- dt[!is.na(altcount) & !is.na(dp)]
+dt <- dt[dp >= 10]
+dt <- dt[altcount >= 0]
+dt <- dt[altcount <= dp]
+
+dt[, altcount := as.integer(round(altcount))]
+dt[, dp := as.integer(round(dp))]
+
+dt[, editing_level := altcount / dp]
+
+cat("Rows after basic filtering:\n")
+print(nrow(dt))
+
+cat("Sample summary after filtering:\n")
+print(dt[, .N, by = .(genotype, sex, sample, rep)][order(sex, genotype, rep)])
+
+# The new annotations.long files contain one row per annotation, so a single
+# site/sample can occur multiple times.  Counts are repeated across those
+# annotation rows; collapse to one quantitative record per site and library
+# before replicate counting, NB modeling, level summaries, and plots.
+site_rep_measurements <- dt[
+    ,
+    .(
+        n_annotation_rows = .N,
+        n_unique_measurements = uniqueN(
+            paste(refcount, altcount, dp, sep = "|")
+        ),
+        refcount = first(refcount),
+        altcount = first(altcount),
+        dp = first(dp),
+        editing_level = first(editing_level)
+    ),
+    by = .(coord_handle, sex, genotype, sample, rep)
+]
+
+if (any(site_rep_measurements$n_unique_measurements > 1L)) {
+    stop(
+        "Conflicting refcount/altcount/depth values occur within at least one ",
+        "coord_handle + sex + genotype + sample record."
+    )
+}
+
+fwrite(
+    site_rep_measurements,
+    file.path(outdir, "site_replicate_measurement_summary.tsv"),
+    sep = "\t"
+)
+
+dt_site_rep <- site_rep_measurements
+
+cat("Quantitative site-replicate rows after annotation collapse:\n")
+print(nrow(dt_site_rep))
+cat("Maximum annotation rows per site-replicate:\n")
+print(max(dt_site_rep$n_annotation_rows))
+
+group_rep_n <- dt_site_rep[, .(
+    n_records = .N,
+    n_reps = uniqueN(rep),
+    mean_level = mean(editing_level, na.rm = TRUE)
+), by = .(coord_handle, sex, genotype)]
+
+rep_wide <- dcast(
+    group_rep_n,
+    coord_handle + sex ~ genotype,
+    value.var = "n_reps",
+    fill = 0
+)
+
+for (g in GENOTYPE_LEVELS) {
+    if (!g %in% colnames(rep_wide)) {
+        rep_wide[, (g) := 0]
+    }
+}
+
+rep_wide[, complete_3genotypes := AG >= MIN_REP_PER_GENOTYPE &
+    WBG >= MIN_REP_PER_GENOTYPE &
+    AS >= MIN_REP_PER_GENOTYPE]
+
+eligible_keys <- rep_wide[complete_3genotypes == TRUE, .(coord_handle, sex)]
+ineligible_keys <- rep_wide[complete_3genotypes == FALSE]
+
+cat("Eligibility summary:\n")
+cat("Total coord_handle + sex combinations: ", nrow(rep_wide), "\n")
+cat("Eligible complete combinations: ", nrow(eligible_keys), "\n")
+cat("Ineligible combinations: ", nrow(ineligible_keys), "\n")
+
+cat("Ineligible reason summary by available reps:\n")
+print(rep_wide[, .N, by = .(AG, WBG, AS, complete_3genotypes)][order(complete_3genotypes, AG, WBG, AS)])
+
+fwrite(
+    rep_wide,
+    file.path(outdir, "eligibility_replicate_count_by_site_sex.tsv"),
+    sep = "\t"
+)
+
+dt_eligible <- merge(
+    dt_site_rep,
+    eligible_keys,
+    by = c("coord_handle", "sex"),
+    all = FALSE
+)
+
+cat("Rows used in NB model after complete-3-genotype filtering:\n")
+print(nrow(dt_eligible))
+
+
+# -------------------------------
+# 5. Negative-binomial model: omnibus test for unordered genotype effects
+# -------------------------------
+run_nb_genotype_test_complete <- function(dt_input) {
+    required_cols <- c(
+        "coord_handle",
+        "sex",
+        "genotype",
+        "rep",
+        "altcount",
+        "dp"
+    )
+
+    missing_cols <- setdiff(
+        required_cols,
+        colnames(dt_input)
+    )
+
+    if (length(missing_cols) > 0) {
+        stop(
+            "Missing required columns: ",
+            paste(missing_cols, collapse = ", ")
+        )
+    }
+
+    if (nrow(dt_input) == 0) {
+        return(
+            data.table(
+                coord_handle = character(),
+                sex = character(),
+                pvalue = numeric(),
+                status = character(),
+                warning_message = character()
+            )
+        )
+    }
+
+    keys <- unique(
+        dt_input[
+            ,
+            .(
+                coord_handle,
+                sex
+            )
+        ]
+    )
+
+    res_list <- vector(
+        mode = "list",
+        length = nrow(keys)
+    )
+
+    for (i in seq_len(nrow(keys))) {
+        h <- keys$coord_handle[i]
+        sx <- keys$sex[i]
+
+        x <- copy(
+            dt_input[
+                coord_handle == h &
+                    sex == sx
+            ]
+        )
+
+        x[
+            ,
+            genotype := factor(
+                as.character(genotype),
+                levels = GENOTYPE_LEVELS
+            )
+        ]
+
+        # ========================================================
+        # Check replicate number in each genotype
+        # ========================================================
+
+        check_n <- x[
+            ,
+            .(
+                n_reps = uniqueN(
+                    rep[
+                        !is.na(rep)
+                    ]
+                )
+            ),
+            by = .(
+                genotype = as.character(genotype)
+            )
+        ]
+
+        check_n <- merge(
+            data.table(
+                genotype = GENOTYPE_LEVELS
+            ),
+            check_n,
+            by = "genotype",
+            all.x = TRUE,
+            sort = FALSE
+        )
+
+        check_n[
+            is.na(n_reps),
+            n_reps := 0L
+        ]
+
+        if (
+            any(
+                check_n$n_reps <
+                    MIN_REP_PER_GENOTYPE
+            )
+        ) {
+            res_list[[i]] <- data.table(
+                coord_handle = h,
+                sex = sx,
+                pvalue = NA_real_,
+                status = "failed_complete_filter_inside_model",
+                warning_message = NA_character_
+            )
+
+            next
+        }
+
+        # ========================================================
+        # Check altcount
+        # ========================================================
+
+        if (
+            any(!is.finite(x$altcount)) ||
+                any(x$altcount < 0)
+        ) {
+            res_list[[i]] <- data.table(
+                coord_handle = h,
+                sex = sx,
+                pvalue = NA_real_,
+                status = "invalid_altcount",
+                warning_message = NA_character_
+            )
+
+            next
+        }
+
+        if (
+            sum(
+                x$altcount,
+                na.rm = TRUE
+            ) == 0
+        ) {
+            res_list[[i]] <- data.table(
+                coord_handle = h,
+                sex = sx,
+                pvalue = NA_real_,
+                status = "all_altcount_zero",
+                warning_message = NA_character_
+            )
+
+            next
+        }
+
+        # ========================================================
+        # Check sequencing depth
+        # ========================================================
+
+        if (
+            any(!is.finite(x$dp)) ||
+                any(x$dp <= 0)
+        ) {
+            res_list[[i]] <- data.table(
+                coord_handle = h,
+                sex = sx,
+                pvalue = NA_real_,
+                status = "invalid_dp",
+                warning_message = NA_character_
+            )
+
+            next
+        }
+
+        if (
+            any(
+                x$altcount >
+                    x$dp
+            )
+        ) {
+            res_list[[i]] <- data.table(
+                coord_handle = h,
+                sex = sx,
+                pvalue = NA_real_,
+                status = "altcount_greater_than_dp",
+                warning_message = NA_character_
+            )
+
+            next
+        }
+
+        # ========================================================
+        # Fit negative-binomial models
+        # ========================================================
+
+        warning_messages <- character()
+
+        fit_result <- tryCatch(
+            withCallingHandlers(
+                {
+                    null_model <- glm.nb(
+                        altcount ~
+                            1 +
+                            offset(log(dp)),
+                        data = x,
+                        control = glm.control(
+                            maxit = 500
+                        )
+                    )
+
+                    # Fit the full model with MASS's default dispersion initialization
+                    # first.  For sparse or near-Poisson sites, theta.ml() can fail
+                    # numerically even though the counts are valid.  In that case retry
+                    # the same NB model with a small set of finite starting values; do
+                    # not silently switch to a different test family.
+                    fit_full_model <- function(init_theta = NULL) {
+                        if (is.null(init_theta)) {
+                            glm.nb(
+                                altcount ~
+                                    genotype +
+                                    offset(log(dp)),
+                                data = x,
+                                control = glm.control(
+                                    maxit = 500
+                                )
+                            )
+                        } else {
+                            glm.nb(
+                                altcount ~
+                                    genotype +
+                                    offset(log(dp)),
+                                data = x,
+                                init.theta = init_theta,
+                                control = glm.control(
+                                    maxit = 500
+                                )
+                            )
+                        }
+                    }
+
+                    full_model <- tryCatch(
+                        fit_full_model(),
+                        error = function(e) {
+                            NULL
+                        }
+                    )
+
+                    if (is.null(full_model)) {
+                        theta_candidates <- suppressWarnings(
+                            as.numeric(
+                                c(
+                                    null_model$theta,
+                                    0.1,
+                                    1,
+                                    10,
+                                    100,
+                                    1000,
+                                    10000,
+                                    1e6
+                                )
+                            )
+                        )
+                        theta_candidates <- unique(
+                            theta_candidates[
+                                is.finite(theta_candidates) &
+                                    theta_candidates > 0
+                            ]
+                        )
+
+                        for (theta_init in theta_candidates) {
+                            candidate_model <- tryCatch(
+                                fit_full_model(theta_init),
+                                error = function(e) {
+                                    NULL
+                                }
+                            )
+
+                            if (!is.null(candidate_model)) {
+                                full_model <- candidate_model
+                                warning_messages <<- c(
+                                    warning_messages,
+                                    "full_model_init_theta_fallback"
+                                )
+                                break
+                            }
+                        }
+                    }
+
+                    if (is.null(full_model)) {
+                        stop(
+                            "NB full model failed for all dispersion starting values"
+                        )
+                    }
+
+                    lrt <- anova(
+                        null_model,
+                        full_model,
+                        test = "Chisq"
+                    )
+
+                    # Find the P-value column robustly.
+                    p_column <- grep(
+                        "^Pr\\(",
+                        colnames(lrt),
+                        value = TRUE
+                    )
+
+                    if (length(p_column) == 0) {
+                        p_value <- NA_real_
+                    } else {
+                        p_value <- suppressWarnings(
+                            as.numeric(
+                                lrt[
+                                    2,
+                                    p_column[1]
+                                ]
+                            )
+                        )
+                    }
+
+                    data.table(
+                        coord_handle = h,
+                        sex = sx,
+                        pvalue = p_value,
+                        status = ifelse(
+                            is.finite(p_value),
+                            "ok",
+                            "invalid_lrt_pvalue"
+                        ),
+                        warning_message = if (
+                            length(warning_messages) == 0
+                        ) {
+                            NA_character_
+                        } else {
+                            paste(
+                                unique(warning_messages),
+                                collapse = " | "
+                            )
+                        }
+                    )
+                },
+                warning = function(w) {
+                    warning_messages <<- c(
+                        warning_messages,
+                        conditionMessage(w)
+                    )
+
+                    invokeRestart(
+                        "muffleWarning"
+                    )
+                }
+            ),
+            error = function(e) {
+                data.table(
+                    coord_handle = h,
+                    sex = sx,
+                    pvalue = NA_real_,
+                    status = paste0(
+                        "error: ",
+                        conditionMessage(e)
+                    ),
+                    warning_message = if (
+                        length(warning_messages) == 0
+                    ) {
+                        NA_character_
+                    } else {
+                        paste(
+                            unique(warning_messages),
+                            collapse = " | "
+                        )
+                    }
+                )
+            }
+        )
+
+        # Directly assign one complete result per site.
+        res_list[[i]] <- fit_result
+    }
+
+    # ==========================================================
+    # Combine results
+    # ==========================================================
+
+    res <- rbindlist(
+        res_list,
+        use.names = TRUE,
+        fill = TRUE
+    )
+
+    # This should never be needed, but ensures a stable schema.
+    if (!"pvalue" %in% colnames(res)) {
+        res[
+            ,
+            pvalue := NA_real_
+        ]
+    }
+
+    res
+}
+
+nb_result <- run_nb_genotype_test_complete(dt_eligible)
+
+table(
+    nb_result$status,
+    useNA = "ifany"
+)
+
+head(nb_result)
+
+nrow(nb_result)
+
+sum(is.finite(nb_result$pvalue))
+
+# fdr
+nb_result_main <- nb_result[
+    status == "ok" &
+        is.finite(pvalue)
+]
+
+nb_result_main[
+    ,
+    FDR := p.adjust(
+        pvalue,
+        method = "BH"
+    )
+]
+
+nb_result[
+    ,
+    FDR := NA_real_
+]
+
+nb_result[
+    nb_result_main,
+    on = .(
+        coord_handle,
+        sex
+    ),
+    FDR := i.FDR
+]
+
+cat("NB model status summary:\n")
+
+fwrite(
+    nb_result,
+    file.path(outdir, "NB_genotype_difference_complete3groups.all_sites.tsv"),
+    sep = "\t"
+)
+
+sig_result <- nb_result[
+    status == "ok" &
+        is.finite(FDR) &
+        FDR < 0.05
+]
+
+fwrite(
+    sig_result,
+    file.path(outdir, "NB_genotype_difference_complete3groups.FDR005.tsv"),
+    sep = "\t"
+)
+
+cat("Significant result summary:\n")
+print(sig_result[, .N, by = sex])
+
+
+# -------------------------------
+# 6. Calculating AG/WBG/AS mean editing level
+# -------------------------------
+
+level_summary <- dt_eligible[, .(
+    mean_level = mean(editing_level, na.rm = TRUE),
+    median_level = median(editing_level, na.rm = TRUE),
+    mean_altcount = mean(altcount, na.rm = TRUE),
+    mean_dp = mean(dp, na.rm = TRUE),
+    n_records = .N,
+    n_reps = uniqueN(rep)
+), by = .(coord_handle, sex, genotype)]
+
+level_wide <- dcast(
+    level_summary,
+    coord_handle + sex ~ genotype,
+    value.var = "mean_level"
+)
+
+for (g in GENOTYPE_LEVELS) {
+    if (!g %in% colnames(level_wide)) {
+        level_wide[, (g) := NA_real_]
+    }
+}
+
+level_wide <- merge(
+    level_wide,
+    nb_result_main,
+    by = c("coord_handle", "sex"),
+    all.x = TRUE
+)
+
+rep_info <- copy(rep_wide)
+setnames(rep_info, c("AG", "WBG", "AS"), c("nrep_AG", "nrep_WBG", "nrep_AS"))
+
+level_wide <- merge(
+    level_wide,
+    rep_info[, .(coord_handle, sex, nrep_AG, nrep_WBG, nrep_AS, complete_3genotypes)],
+    by = c("coord_handle", "sex"),
+    all.x = TRUE
+)
+
+LEVEL_CUTOFF = 0.1
+
+level_wide[, pass_level_cutoff := rowSums(.SD > LEVEL_CUTOFF, na.rm = TRUE) > 0,
+    .SDcols = c("AG", "WBG", "AS")
+]
+
+fwrite(
+    level_wide,
+    file.path(outdir, "NB_genotype_difference_complete3groups.with_mean_level.all_sites.tsv"),
+    sep = "\t"
+)
+
+FDR_CUTOFF = 0.05
+
+sig_level_wide <- level_wide[
+    !is.na(FDR) &
+        FDR < FDR_CUTOFF &
+        pass_level_cutoff == TRUE
+]
+
+sig_level_wide <- sig_level_wide[
+    !is.na(AG) & !is.na(WBG) & !is.na(AS)
+]
+
+cat("Significant level-wide summary after level cutoff:\n")
+print(sig_level_wide[, .N, by = sex])
+
+fwrite(
+    sig_level_wide,
+    file.path(outdir, "NB_genotype_difference_complete3groups.FDR005.level_filtered.with_mean_level.tsv"),
+    sep = "\t"
+)
+
+
+# -------------------------------
+# 7.PLOT VIOLINE
+# -------------------------------
+
+plot_top_clusters_violin_by_sex <- function(
+  sig_level_wide,
+  sex_use = "M",
+  top_n_cluster = 4,
+  outdir = ".",
+  width = 165,
+  height = 42
+) {
+    dt_plot <- as.data.table(copy(sig_level_wide))
+
+    dt_plot <- dt_plot[sex == sex_use]
+
+    dt_plot <- dt_plot[!is.na(AG) & !is.na(WBG) & !is.na(AS)]
+
+    if (!"shape_trend" %in% colnames(dt_plot)) {
+        dt_plot[, shape_trend := fifelse(
+            AG < WBG & WBG < AS,
+            "AG < WBG < AS",
+            fifelse(
+                AG > WBG & WBG > AS,
+                "AG > WBG > AS",
+                fifelse(
+                    AG > WBG & WBG < AS,
+                    "AG > WBG < AS",
+                    fifelse(
+                        AG < WBG & WBG >= AS,
+                        "AG < WBG >= AS",
+                        fifelse(
+                            AG == WBG & WBG < AS,
+                            "AG = WBG < AS",
+                            fifelse(
+                                AG == WBG & WBG > AS,
+                                "AG = WBG > AS",
+                                fifelse(
+                                    AG < WBG & WBG == AS,
+                                    "AG < WBG = AS",
+                                    fifelse(
+                                        AG > WBG & WBG == AS,
+                                        "AG > WBG = AS",
+                                        "other"
+                                    )
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+        )]
+    }
+
+    dt_plot <- dt_plot[!is.na(shape_trend)]
+
+    cluster_count <- dt_plot[, .(
+        n_sites = uniqueN(coord_handle)
+    ), by = .(sex, shape_trend)]
+
+    setorder(cluster_count, -n_sites)
+    cluster_count[, cluster_rank := seq_len(.N)]
+    top_clusters <- cluster_count[cluster_rank <= top_n_cluster]
+    top_clusters[, cluster_id := paste0("C", cluster_rank)]
+
+    make_facet_label <- function(cluster_id, sex, n_sites) {
+        n_text <- format(
+            n_sites,
+            big.mark = ",",
+            scientific = FALSE,
+            trim = TRUE
+        )
+        sprintf(
+            "'%s_%s'~'('~italic(n)~' = '~'%s'~')'",
+            cluster_id,
+            sex,
+            n_text
+        )
+    }
+
+    print(top_clusters)
+
+    dt_top <- merge(
+        dt_plot,
+        top_clusters[, .(sex, shape_trend, n_sites, cluster_rank, cluster_id)],
+        by = c("sex", "shape_trend"),
+        all = FALSE
+    )
+
+    dt_top[, facet_label := make_facet_label(cluster_id, sex, n_sites)]
+    dt_top[, facet_label := factor(
+        facet_label,
+        levels = top_clusters[
+            order(cluster_rank),
+            make_facet_label(cluster_id, sex, n_sites)
+        ]
+    )]
+
+    long_plot <- melt(
+        dt_top,
+        id.vars = c(
+            "coord_handle",
+            "sex",
+            "shape_trend",
+            "cluster_id",
+            "cluster_rank",
+            "n_sites",
+            "facet_label",
+            "pvalue",
+            "FDR"
+        ),
+        measure.vars = c("AG", "WBG", "AS"),
+        variable.name = "genotype",
+        value.name = "Lm"
+    )
+
+    long_plot[, genotype := factor(genotype, levels = c("AG", "WBG", "AS"))]
+    long_plot <- long_plot[is.finite(Lm) & Lm >= 0]
+
+    cols_fill <- c(
+        "AG"  = "#00BFC4",
+        "WBG" = "#F5A966",
+        "AS"  = "#E777A7"
+    )
+
+    p <- ggplot(long_plot, aes(x = genotype, y = Lm)) +
+        geom_line(
+            aes(group = coord_handle),
+            color = "grey78",
+            alpha = 0.35,
+            linewidth = 0.18
+        ) +
+        geom_violin(
+            aes(fill = genotype),
+            width = 0.75,
+            trim = TRUE,
+            scale = "width",
+            alpha = 1,
+            color = NA
+        ) +
+        geom_boxplot(
+            width = 0.11,
+            outlier.shape = NA,
+            fill = "white",
+            color = "black",
+            linewidth = 0.35,
+            alpha = 1
+        ) +
+        facet_wrap(
+            ~facet_label,
+            nrow = 1,
+            scales = "free_y",
+            labeller = label_parsed
+        ) +
+        scale_fill_manual(values = cols_fill) +
+        scale_x_discrete(
+            labels = c(
+                "AS" = expression(Adar^S),
+                "WBG" = "WT",
+                "AG" = expression(Adar^G)
+            ),
+            expand = expansion(add = 0.45)
+        ) +
+        scale_y_continuous(
+            limits = c(0, NA),
+            breaks = scales::breaks_pretty(n = 4),
+            expand = expansion(mult = c(0, 0.06))
+        ) +
+        labs(
+            x = NULL,
+            y = expression(L[m])
+        ) +
+        theme_classic(base_size = 9) +
+        theme(
+            strip.background = element_blank(),
+            strip.text = element_text(
+                size = 9,
+                face = "plain",
+                margin = margin(b = 2)
+            ),
+            axis.title.y = element_text(
+                size = 10,
+                angle = 0,
+                vjust = 0.5,
+                margin = margin(r = 5)
+            ),
+            axis.text.x = element_text(size = 9, margin = margin(t = 2)),
+            axis.text.y = element_text(size = 7.5),
+            axis.line = element_line(color = "black", linewidth = 0.35),
+            axis.ticks = element_line(color = "black", linewidth = 0.3),
+            axis.ticks.length = grid::unit(1.2, "mm"),
+            panel.spacing.x = grid::unit(5, "mm"),
+            legend.position = "none",
+            plot.margin = margin(2, 2, 2, 2, unit = "mm")
+        )
+
+    print(p)
+
+    ggsave(
+        filename = file.path(outdir, paste0("NB_complete3groups_top", top_n_cluster, "_clusters_violin_lineplot_", sex_use, ".pdf")),
+        plot = p,
+        width = width,
+        height = height,
+        units = "mm",
+        limitsize = FALSE
+    )
+
+    fwrite(
+        top_clusters,
+        file.path(outdir, paste0("NB_complete3groups_top", top_n_cluster, "_clusters_", sex_use, ".tsv")),
+        sep = "\t"
+    )
+
+    fwrite(
+        long_plot,
+        file.path(outdir, paste0("NB_complete3groups_top", top_n_cluster, "_clusters_plot_data_", sex_use, ".tsv")),
+        sep = "\t"
+    )
+
+    fwrite(
+        dt_plot,
+        file.path(outdir, paste0("dt_plot_NB_complete3groups_top", top_n_cluster, "_clusters_plot_data_", sex_use, ".tsv")),
+        sep = "\t"
+    )
+
+    return(list(
+        plot = p,
+        top_clusters = top_clusters,
+        plot_data = long_plot,
+        dt_plot = dt_plot
+    ))
+}
+
+res_M <- plot_top_clusters_violin_by_sex(
+    sig_level_wide = sig_level_wide,
+    sex_use = "M",
+    top_n_cluster = TOP_N_CLUSTERS,
+    outdir = outdir,
+    width = 165,
+    height = 42
+)
+
+res_F <- plot_top_clusters_violin_by_sex(
+    sig_level_wide = sig_level_wide,
+    sex_use = "F",
+    top_n_cluster = TOP_N_CLUSTERS,
+    outdir = outdir,
+    width = 165,
+    height = 42
+)
+
+
+# -------------------------------
+# 8. UPSET PLOT
+# -------------------------------
+dt_plot_f <- fread(
+    file.path(
+        outdir,
+        paste0(
+            "dt_plot_NB_complete3groups_top",
+            TOP_N_CLUSTERS,
+            "_clusters_plot_data_F.tsv"
+        )
+    )
+)
+dt_plot_m <- fread(
+    file.path(
+        outdir,
+        paste0(
+            "dt_plot_NB_complete3groups_top",
+            TOP_N_CLUSTERS,
+            "_clusters_plot_data_M.tsv"
+        )
+    )
+)
+dt_plot <- rbind(dt_plot_f, dt_plot_m)
+sig_for_downstream <- dt_plot[, .(
+    coord_handle,
+    sex,
+    AG,
+    WBG,
+    AS,
+    pvalue,
+    FDR,
+    shape_trend,
+    nrep_AG,
+    nrep_WBG,
+    nrep_AS
+)]
+
+fwrite(
+    sig_for_downstream,
+    file.path(outdir, "NB_genotype_difference_complete3groups.FDR005.downstream_table.tsv"),
+    sep = "\t"
+)
+
+combined <- sig_for_downstream[, .(coord_handle, sex, shape_trend)]
+combined[, trend_label := paste(sex, shape_trend, sep = "_")]
+
+upset_matrix <- dcast(
+    combined,
+    coord_handle ~ trend_label,
+    fun.aggregate = length,
+    fill = 0
+)
+
+upset_matrix[, (2:ncol(upset_matrix)) := lapply(.SD, function(x) ifelse(x > 0, 1, 0)),
+    .SDcols = 2:ncol(upset_matrix)
+]
+
+pdf(
+    file = file.path(outdir, "Upset_NB_complete3groups_clusters.pdf"),
+    width = 15,
+    height = 9
+)
+
+upset_plot <- upset(
+    upset_matrix,
+    sets = names(upset_matrix)[-1],
+    nsets = ncol(upset_matrix) - 1,
+    nintersects = 20,
+    order.by = "freq",
+    keep.order = FALSE,
+    mb.ratio = c(0.6, 0.4),
+    text.scale = 3.5,
+    number.angles = 0,
+    point.size = 5,
+    line.size = 2,
+    mainbar.y.label = "Genes Intersections",
+    sets.x.label = "Genes Per Library"
+)
+print(upset_plot, newpage = FALSE)
+
+dev.off()
+
+
+# -------------------------------
+# 10. AdarG versus AdarS:
+#     absolute Lm change relative to WBG
+# -------------------------------
+
+plot_lm_delta_violin <- function() {
+    # Use all sites in sig_level_wide.  This is the complete set of sites with
+    # significant Lm differences across all trend clusters; do not use res_M$dt_plot
+    # or res_F$dt_plot here because those objects contain only the top clusters.
+    if (!exists("sig_level_wide")) {
+        stop("sig_level_wide is required for the AdarG/AdarS delta violin plot.")
+    }
+
+    if (!exists("anno_gene")) {
+        stop("anno_gene is required to restrict the analysis to annotated genes.")
+    }
+
+    lm_sig_all_sites <- as.data.table(copy(sig_level_wide))
+    lm_sig_all_sites <- lm_sig_all_sites[
+        is.finite(AG) &
+            is.finite(WBG) &
+            is.finite(AS) &
+            is.finite(FDR) &
+            FDR < FDR_CUTOFF
+    ]
+
+    site_gene_map <- unique(
+        anno_gene[
+            !is.na(coord_handle) &
+                !is.na(gene) &
+                gene != "",
+            .(coord_handle, gene)
+        ]
+    )
+
+    annotated_sig_coord <- unique(
+        site_gene_map[
+            coord_handle %chin% lm_sig_all_sites$coord_handle,
+            coord_handle
+        ]
+    )
+
+    lm_sig_all_sites <- lm_sig_all_sites[
+        coord_handle %chin% annotated_sig_coord
+    ]
+
+    if (nrow(lm_sig_all_sites) == 0) {
+        stop(
+            "No annotated significant Lm sites are available for the delta violin plot."
+        )
+    }
+
+    lm_sig_site_gene_map <- site_gene_map[
+        coord_handle %chin% unique(lm_sig_all_sites$coord_handle)
+    ]
+
+    cat(
+        "Annotated significant Lm sites used for AdarG/AdarS delta violin:\n"
+    )
+    print(lm_sig_all_sites[, .(n_sites = uniqueN(coord_handle)), by = sex])
+    cat(
+        "Annotated genes represented in these sites: ",
+        uniqueN(lm_sig_site_gene_map$gene),
+        "\n",
+        sep = ""
+    )
+
+    fwrite(
+        lm_sig_all_sites,
+        file.path(
+            outdir,
+            "NB_all_clusters_significant_Lm_sites_for_AdarG_AdarS_delta.tsv"
+        ),
+        sep = "\t"
+    )
+
+    fwrite(
+        lm_sig_site_gene_map,
+        file.path(
+            outdir,
+            "NB_all_clusters_significant_Lm_site_gene_map.tsv"
+        ),
+        sep = "\t"
+    )
+
+    lm_delta_wide <- lm_sig_all_sites[
+        ,
+        .(
+            coord_handle,
+            sex,
+            AdarG_abs_delta = abs(AG - WBG),
+            AdarS_abs_delta = abs(AS - WBG)
+        )
+    ]
+
+    lm_delta_wide <- lm_delta_wide[
+        is.finite(AdarG_abs_delta) &
+            is.finite(AdarS_abs_delta)
+    ]
+
+    # Paired Wilcoxon tests use the untruncated values.  Each pair is the same
+    # coord_handle within one sex, so the comparison is site-paired.
+    safe_wilcox_paired_lm_delta <- function(x, y) {
+        ok <- is.finite(x) & is.finite(y)
+        x <- x[ok]
+        y <- y[ok]
+
+        if (length(x) < 2) {
+            return(NA_real_)
+        }
+
+        tryCatch(
+            suppressWarnings(
+                wilcox.test(
+                    x,
+                    y,
+                    paired = TRUE,
+                    exact = FALSE
+                )$p.value
+            ),
+            error = function(e) NA_real_
+        )
+    }
+
+    lm_delta_test <- lm_delta_wide[
+        ,
+        .(
+            n_pairs = .N,
+            p_value = safe_wilcox_paired_lm_delta(
+                AdarG_abs_delta,
+                AdarS_abs_delta
+            )
+        ),
+        by = sex
+    ]
+
+    lm_delta_test[, p_adjust_BH := p.adjust(p_value, method = "BH")]
+
+    fwrite(
+        lm_delta_test,
+        file.path(
+            outdir,
+            "NB_AdarG_AdarS_absolute_Lm_change_vs_WBG_paired_wilcoxon.tsv"
+        ),
+        sep = "\t"
+    )
+
+    lm_delta_plot <- melt(
+        lm_delta_wide,
+        id.vars = c("coord_handle", "sex"),
+        measure.vars = c("AdarS_abs_delta", "AdarG_abs_delta"),
+        variable.name = "genotype",
+        value.name = "delta_raw"
+    )
+
+    lm_delta_plot[
+        ,
+        genotype := factor(
+            genotype,
+            levels = c("AdarS_abs_delta", "AdarG_abs_delta"),
+            labels = c("AdarS", "AdarG")
+        )
+    ]
+
+    lm_delta_plot[
+        ,
+        sex := factor(
+            sex,
+            levels = c("F", "M"),
+            labels = c("Female", "Male")
+        )
+    ]
+
+    LM_DELTA_PLOT_CAP <- 0.4
+
+    # Only the displayed values are capped.  Raw values remain in delta_raw for
+    # the Wilcoxon test and in the summary table below.
+    lm_delta_plot[
+        ,
+        value_plot := pmin(delta_raw, LM_DELTA_PLOT_CAP)
+    ]
+
+    lm_delta_summary <- lm_delta_plot[
+        is.finite(delta_raw),
+        .(
+            n = .N,
+            mean_abs_delta = mean(delta_raw),
+            sd_abs_delta = sd(delta_raw)
+        ),
+        by = .(sex, genotype)
+    ]
+
+    lm_delta_summary[
+        ,
+        `:=`(
+            label = sprintf(
+                "italic(n) == %d ~ ',' ~ %.3f %%+-%% %.3f",
+                n,
+                mean_abs_delta,
+                sd_abs_delta
+            ),
+            label_x = fifelse(
+                as.character(genotype) == "AdarS",
+                0.75,
+                2.25
+            ),
+            label_hjust = fifelse(
+                as.character(genotype) == "AdarS",
+                0,
+                1
+            )
+        )
+    ]
+
+    format_p_lm_delta <- function(p) {
+        if (!is.finite(p)) {
+            return("NA")
+        }
+
+        if (p < 0.001) {
+            return(formatC(p, format = "e", digits = 2))
+        }
+
+        formatC(p, format = "f", digits = 3)
+    }
+
+    lm_delta_annotation <- data.table(
+        sex = factor(
+            c("Female", "Male"),
+            levels = c("Female", "Male")
+        ),
+        x = 1.5,
+        y = 0.30,
+        label = c(
+            paste0(
+                "italic(P) == ",
+                format_p_lm_delta(
+                    lm_delta_test[sex == "F", p_value][1]
+                )
+            ),
+            paste0(
+                "italic(P) == ",
+                format_p_lm_delta(
+                    lm_delta_test[sex == "M", p_value][1]
+                )
+            )
+        )
+    )
+
+    cols_lm_delta <- c(
+        "AdarS" = "#F8766D",
+        "AdarG" = "#00BFC4"
+    )
+
+    p_lm_delta <- ggplot(
+        lm_delta_plot,
+        aes(
+            x = genotype,
+            y = value_plot,
+            fill = genotype
+        )
+    ) +
+        geom_violin(
+            trim = TRUE,
+            color = NA,
+            alpha = 0.75
+        ) +
+        geom_boxplot(
+            width = 0.18,
+            outlier.shape = NA,
+            alpha = 0.8
+        ) +
+        facet_wrap(
+            ~sex,
+            nrow = 1
+        ) +
+        geom_text(
+            data = lm_delta_summary,
+            aes(
+                x = label_x,
+                y = 0.385,
+                label = label,
+                hjust = label_hjust
+            ),
+            inherit.aes = FALSE,
+            parse = TRUE,
+            vjust = 1,
+            size = 3.3
+        ) +
+        geom_text(
+            data = lm_delta_annotation,
+            aes(
+                x = x,
+                y = y,
+                label = label
+            ),
+            inherit.aes = FALSE,
+            parse = TRUE,
+            vjust = 0,
+            size = 4
+        ) +
+        scale_fill_manual(values = cols_lm_delta) +
+        scale_y_continuous(
+            limits = c(0, LM_DELTA_PLOT_CAP),
+            breaks = seq(0, LM_DELTA_PLOT_CAP, by = 0.1),
+            expand = expansion(mult = c(0, 0.02))
+        ) +
+        theme_classic(
+            base_size = 14
+        ) +
+        labs(
+            x = NULL,
+            y = expression("|" * Delta * L[m] * " vs WBG" * "|")
+        ) +
+        theme(
+            legend.position = "none",
+            strip.background = element_blank(),
+            strip.text = element_text(size = 14)
+        )
+
+    lm_delta_pdf <- file.path(
+        outdir,
+        "NB_AdarG_AdarS_absolute_Lm_change_vs_WBG_violin.pdf"
+    )
+
+    grDevices::pdf(
+        file = lm_delta_pdf,
+        width = 9,
+        height = 5.5,
+        onefile = TRUE,
+        useDingbats = FALSE,
+        compress = TRUE
+    )
+    print(p_lm_delta)
+    grDevices::dev.off()
+
+    fwrite(
+        lm_delta_plot,
+        file.path(
+            outdir,
+            "NB_AdarG_AdarS_absolute_Lm_change_vs_WBG_violin_data.tsv"
+        ),
+        sep = "\t"
+    )
+
+    cat(
+        "Saved AdarG/AdarS absolute Lm-change violin plot:\n",
+        lm_delta_pdf,
+        "\n"
+    )
+}
+
+
+fwrite(
+    upset_matrix,
+    file.path(outdir, "NB_genotype_difference_complete3groups.FDR005.upset_matrix.tsv"),
+    sep = "\t"
+)
+
+
+cat("All done.\n")
+cat("Output directory:\n")
+cat(outdir, "\n")
+
+
+# -------------------------------
+# 9. GO PLOT
+# -------------------------------
+library(clusterProfiler)
+library(org.Dm.eg.db)
+library(GOSemSim)
+library(data.table)
+library(ggplot2)
+
+anno <- dt
+
+head(anno)
+colnames(anno)
+table(grepl("^FBgn", anno$gene), useNA = "ifany")
+head(unique(anno$gene), 20)
+
+anno_gene <- anno[
+    !is.na(coord_handle) &
+        !is.na(gene) &
+        grepl("^FBgn", gene),
+    .(coord_handle, gene)
+]
+
+anno_gene <- unique(anno_gene)
+
+head(anno_gene)
+
+sig_sites <- as.data.table(sig_level_wide)
+
+sig_sites <- sig_sites[
+    !is.na(coord_handle) &
+        !is.na(sex) &
+        !is.na(FDR) &
+        FDR < 0.05
+]
+
+sig_site_gene <- merge(
+    sig_sites,
+    anno_gene,
+    by = "coord_handle",
+    all.x = TRUE
+)
+
+sig_site_gene[, .(
+    n_sites = uniqueN(coord_handle),
+    n_gene_annotated_sites = uniqueN(coord_handle[!is.na(gene)]),
+    n_genes = uniqueN(gene[!is.na(gene)])
+), by = sex]
+
+
+rna_dt <- fread("/path/to/num/Xtail/RNA_count_matrix_WBg_Adar_merged.txt")
+count_cols <- setdiff(colnames(rna_dt), "gene_id")
+MIN_COUNT <- 10
+MIN_SAMPLE <- 3
+
+rna_dt[, all_pass_n := rowSums(.SD >= MIN_COUNT, na.rm = TRUE), .SDcols = count_cols]
+
+background_genes_expr <- unique(rna_dt[all_pass_n >= MIN_SAMPLE, gene_id])
+
+length(background_genes_expr)
+
+sig_site_gene_id_female <- sig_site_gene[sig_site_gene$sex == "F"]$gene
+sig_site_gene_id_male <- sig_site_gene[sig_site_gene$sex == "M"]$gene
+
+female_ego_BP <- enrichGO(
+    gene = sig_site_gene_id_female,
+    universe = background_genes_expr,
+    OrgDb = org.Dm.eg.db,
+    keyType = "FLYBASE",
+    ont = "BP",
+    pAdjustMethod = "BH",
+    pvalueCutoff = 0.05,
+    qvalueCutoff = 0.2,
+    readable = TRUE
+)
+
+male_ego_BP <- enrichGO(
+    gene = sig_site_gene_id_male,
+    universe = background_genes_expr,
+    OrgDb = org.Dm.eg.db,
+    keyType = "FLYBASE",
+    ont = "BP",
+    pAdjustMethod = "BH",
+    pvalueCutoff = 0.05,
+    qvalueCutoff = 0.2,
+    readable = TRUE
+)
+male_ego_BP_table <- as.data.frame(male_ego_BP)
+head(male_ego_BP_table)
+female_ego_BP_table <- as.data.frame(female_ego_BP)
+head(female_ego_BP_table)
+
+male_ego_BP_table2 <- male_ego_BP_table
+male_ego_BP_table2$sex <- "male"
+
+female_ego_BP_table2 <- female_ego_BP_table
+female_ego_BP_table2$sex <- "female"
+
+ego_BP_table <- rbind(male_ego_BP_table, female_ego_BP_table)
+ego_BP_table2 <- rbind(male_ego_BP_table2, female_ego_BP_table2)
+
+fwrite(
+    ego_BP_table2,
+    file.path(outdir, "GO_BP_enrichment_table.tsv"),
+    sep = "\t"
+)
+
+bp_sem <- godata('org.Dm.eg.db', ont = "BP")
+
+ego_female_BP_s <- simplify(
+    female_ego_BP,
+    cutoff = 0.7,
+    by = "p.adjust",
+    select_fun = min,
+    measure = "Wang",
+    semData = bp_sem
+)
+
+ego_male_BP_s <- simplify(
+    male_ego_BP,
+    cutoff = 0.7,
+    by = "p.adjust",
+    select_fun = min,
+    measure = "Wang",
+    semData = bp_sem
+)
+
+female_tab <- as.data.table(as.data.frame(ego_female_BP_s))
+male_tab <- as.data.table(as.data.frame(ego_male_BP_s))
+
+female_top30 <- female_tab[order(p.adjust)][1:min(30, .N)]
+male_top30 <- male_tab[order(p.adjust)][1:min(30, .N)]
+
+overlap_ids <- intersect(female_top30$ID, male_top30$ID)
+
+length(overlap_ids)
+overlap_ids
+
+female_overlap <- female_top30[ID %in% overlap_ids]
+male_overlap <- male_top30[ID %in% overlap_ids]
+
+female_overlap2 <- female_overlap[, .(
+    ID,
+    Description,
+    Count_female = Count,
+    padj_female = p.adjust
+)]
+
+male_overlap2 <- male_overlap[, .(
+    ID,
+    Description,
+    Count_male = Count,
+    padj_male = p.adjust
+)]
+
+overlap_summary <- merge(
+    female_overlap2,
+    male_overlap2,
+    by = c("ID", "Description"),
+    all = FALSE
+)
+
+overlap_summary[, neglogFDR_female := -log10(padj_female)]
+overlap_summary[, neglogFDR_male := -log10(padj_male)]
+
+overlap_summary[, total_Count := Count_female + Count_male]
+overlap_summary[, best_sig := pmax(neglogFDR_female, neglogFDR_male)]
+
+top10_overlap <- overlap_summary[
+    order(-total_Count, -best_sig)
+][1:min(10, .N)]
+
+top10_overlap
+plot_dt <- rbindlist(list(
+    top10_overlap[, .(
+        ID,
+        Description,
+        sex = "Female",
+        Count = Count_female,
+        p.adjust = padj_female,
+        neglogFDR = neglogFDR_female
+    )],
+    top10_overlap[, .(
+        ID,
+        Description,
+        sex = "Male",
+        Count = Count_male,
+        p.adjust = padj_male,
+        neglogFDR = neglogFDR_male
+    )]
+), fill = TRUE)
+
+term_order <- rev(top10_overlap$Description)
+
+plot_dt[, Description := factor(Description, levels = term_order)]
+plot_dt[, sex := factor(sex, levels = c("Female", "Male"))]
+
+shorten_term <- function(x, width = 42) {
+    ifelse(nchar(x) > width, paste0(substr(x, 1, width - 3), "..."), x)
+}
+
+top10_overlap[, Description_short := shorten_term(Description, 42)]
+
+plot_dt <- merge(
+    plot_dt,
+    top10_overlap[, .(ID, Description, Description_short)],
+    by = c("ID", "Description"),
+    all.x = TRUE
+)
+
+term_order_short <- rev(top10_overlap$Description_short)
+plot_dt[, Description_short := factor(Description_short, levels = term_order_short)]
+
+p_overlap <- ggplot(plot_dt, aes(x = sex, y = Description_short)) +
+    geom_point(aes(size = Count, color = neglogFDR)) +
+    scale_size_continuous(
+        name = "Count",
+        range = c(3, 10)
+    ) +
+    scale_color_gradient(
+        name = "-log10(FDR)",
+        low = "#E7A07A",
+        high = "#2B8CBE"
+    ) +
+    labs(
+        title = expression("BP GO: Genes with altered " * L[m]),
+        x = NULL,
+        y = NULL
+    ) +
+    theme_bw() +
+    theme(
+        plot.title = element_text(face = "bold", hjust = 0.5, size = 12),
+        axis.text.x = element_text(size = 10, face = "bold"),
+        axis.text.y = element_text(size = 9),
+        panel.grid.major.y = element_blank(),
+        panel.grid.minor = element_blank(),
+        legend.title = element_text(size = 10),
+        legend.text = element_text(size = 9)
+    )
+
+
+pdf(
+    file = file.path(outdir, "GO_FM_clusters.pdf"),
+    width = 6,
+    height = 5
+)
+print(p_overlap)
+dev.off()
+
+
+# Run this plot after GO annotation has created anno_gene.
+plot_lm_delta_violin()

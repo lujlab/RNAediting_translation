@@ -1,0 +1,4141 @@
+---
+title: "Figrue5 Adar mutants gene expression"
+output: html_notebook
+---
+
+
+```{r}
+# merge counts files
+suppressPackageStartupMessages({
+    library(data.table)
+})
+
+# ============================================================
+# 1. Input files
+# ============================================================
+
+# Keep the analysis date fixed so today's result remains reproducible later.
+analysis_date <- as.Date("2026-08-19")
+analysis_seed <- as.integer(format(analysis_date, "%Y%m%d"))
+set.seed(analysis_seed)
+message(
+    "[INFO] Analysis date: ", analysis_date,
+    "; random seed: ", analysis_seed
+)
+
+base_dir <- "/path/to/F5_AdarSG"
+
+file_WBg <- file.path(base_dir, "WBG_STAR_featureCounts_new")
+file_AdarG <- file.path(base_dir, "AG_STAR_featureCounts_new")
+file_AdarS <- file.path(base_dir, "AS_STAR_featureCounts_new")
+
+# Output
+out_file <- file.path(
+    base_dir,
+    "WBg_AdarG_AdarS_featureCounts_raw_merged.tsv"
+)
+
+# ============================================================
+# 2. Desired sample order
+# ============================================================
+
+sampleNames <- c(
+    "WBg_F1", "WBg_F2", "WBg_F3",
+    "WBg_M1", "WBg_M2", "WBg_M3",
+    "AdarG_F1", "AdarG_F2", "AdarG_F3",
+    "AdarG_M1", "AdarG_M2", "AdarG_M3",
+    "AdarS_F1", "AdarS_F2", "AdarS_F3",
+    "AdarS_M1", "AdarS_M2", "AdarS_M3"
+)
+
+sample_WBg <- sampleNames[1:6]
+sample_AdarG <- sampleNames[7:12]
+sample_AdarS <- sampleNames[13:18]
+
+# featureCounts annotation columns
+info_cols <- c(
+    "Geneid",
+    "Chr",
+    "Start",
+    "End",
+    "Strand",
+    "Length"
+)
+
+# ============================================================
+# 3. Function: read one featureCounts file
+# ============================================================
+
+read_featurecounts <- function(file, sample_names) {
+    cat("[INFO] Reading:", file, "\n")
+
+    if (!file.exists(file)) {
+        stop("Input file does not exist: ", file)
+    }
+
+    # skip featureCounts comment/header command line
+    dt <- fread(
+        file,
+        skip = "Geneid",
+        header = TRUE,
+        sep = "\t",
+        check.names = FALSE
+    )
+
+    cat(
+        "[INFO] Rows:", nrow(dt),
+        " Columns:", ncol(dt), "\n"
+    )
+
+    # Check basic structure
+    missing_info <- setdiff(info_cols, names(dt))
+
+    if (length(missing_info) > 0) {
+        stop(
+            "Missing annotation columns in ", file, ": ",
+            paste(missing_info, collapse = ", ")
+        )
+    }
+
+    count_cols <- setdiff(names(dt), info_cols)
+
+    if (length(count_cols) != length(sample_names)) {
+        stop(
+            "Expected ", length(sample_names),
+            " sample columns in ", file,
+            ", but found ", length(count_cols),
+            "\nDetected count columns:\n",
+            paste(count_cols, collapse = "\n")
+        )
+    }
+
+    # Rename BAM-path columns directly by their positions
+    setnames(
+        dt,
+        old = count_cols,
+        new = sample_names
+    )
+
+    # Check duplicate genes
+    if (anyDuplicated(dt$Geneid)) {
+        dup <- unique(dt$Geneid[duplicated(dt$Geneid)])
+        stop(
+            "Duplicated Geneid detected in ", file,
+            ". Example: ", paste(head(dup, 10), collapse = ", ")
+        )
+    }
+
+    return(dt)
+}
+
+# ============================================================
+# 4. Read three genotypes
+# ============================================================
+
+WBg <- read_featurecounts(
+    file_WBg,
+    sample_WBg
+)
+
+AdarG <- read_featurecounts(
+    file_AdarG,
+    sample_AdarG
+)
+
+AdarS <- read_featurecounts(
+    file_AdarS,
+    sample_AdarS
+)
+
+# ============================================================
+# 5. Check gene sets
+# ============================================================
+
+cat("\n[INFO] Gene number:\n")
+cat("  WBg   :", nrow(WBg), "\n")
+cat("  AdarG :", nrow(AdarG), "\n")
+cat("  AdarS :", nrow(AdarS), "\n")
+
+genes_all <- Reduce(
+    union,
+    list(WBg$Geneid, AdarG$Geneid, AdarS$Geneid)
+)
+
+genes_common <- Reduce(
+    intersect,
+    list(WBg$Geneid, AdarG$Geneid, AdarS$Geneid)
+)
+
+cat("  Union :", length(genes_all), "\n")
+cat("  Common:", length(genes_common), "\n")
+
+if (
+    length(genes_all) != nrow(WBg) ||
+        length(genes_all) != nrow(AdarG) ||
+        length(genes_all) != nrow(AdarS)
+) {
+    stop(
+        "Gene sets are not identical among WBg / AdarG / AdarS.\n",
+        "Please check whether all three files were generated using the same GTF."
+    )
+}
+
+# ============================================================
+# 6. Use WBg gene annotation as reference
+# ============================================================
+
+gene_info <- WBg[, ..info_cols]
+
+# Match other genotype tables to WBg Geneid order
+idx_AdarG <- match(gene_info$Geneid, AdarG$Geneid)
+idx_AdarS <- match(gene_info$Geneid, AdarS$Geneid)
+
+if (anyNA(idx_AdarG) || anyNA(idx_AdarS)) {
+    stop("Failed to match Geneid among the three featureCounts files.")
+}
+
+AdarG <- AdarG[idx_AdarG]
+AdarS <- AdarS[idx_AdarS]
+
+# ============================================================
+# 7. Check annotation consistency
+# ============================================================
+
+check_annotation <- function(ref, query, name) {
+    for (cc in info_cols) {
+        x <- as.character(ref[[cc]])
+        y <- as.character(query[[cc]])
+
+        bad <- which(
+            !(is.na(x) & is.na(y)) &
+                (is.na(x) | is.na(y) | x != y)
+        )
+
+        if (length(bad) > 0) {
+            warning(
+                "Annotation column '", cc,
+                "' differs between WBg and ", name,
+                " for ", length(bad), " genes."
+            )
+        }
+    }
+}
+
+check_annotation(WBg, AdarG, "AdarG")
+check_annotation(WBg, AdarS, "AdarS")
+
+# ============================================================
+# 8. Combine counts
+# ============================================================
+
+count_WBg <- WBg[, ..sample_WBg]
+count_AdarG <- AdarG[, ..sample_AdarG]
+count_AdarS <- AdarS[, ..sample_AdarS]
+
+merged <- cbind(
+    gene_info,
+    count_WBg,
+    count_AdarG,
+    count_AdarS
+)
+
+# Force exact final column order
+final_cols <- c(info_cols, sampleNames)
+
+setcolorder(
+    merged,
+    final_cols
+)
+
+# ============================================================
+# 9. Sanity checks
+# ============================================================
+
+stopifnot(
+    identical(names(merged)[1:6], info_cols)
+)
+
+stopifnot(
+    identical(names(merged)[7:24], sampleNames)
+)
+
+cat("\n[INFO] Final table:\n")
+cat("  genes   :", nrow(merged), "\n")
+cat("  columns :", ncol(merged), "\n")
+
+cat("\n[INFO] Sample order:\n")
+cat(
+    paste(
+        sprintf("%2d. %s", seq_along(sampleNames), sampleNames),
+        collapse = "\n"
+    ),
+    "\n"
+)
+
+# ============================================================
+# 10. Write output
+# ============================================================
+
+fwrite(
+    merged,
+    file = out_file,
+    sep = "\t",
+    quote = FALSE,
+    na = "NA"
+)
+
+cat("\n[DONE] Output written to:\n")
+cat(out_file, "\n")
+```
+
+```{r}
+# ============================================================
+# Figure 5 core functions
+# DESeq2 LRT + VST + DEGreport::degPatterns
+# ============================================================
+suppressPackageStartupMessages({
+    library(DESeq2)
+    library(DEGreport)
+    library(data.table)
+    library(dplyr)
+    library(tidyr)
+    library(ggplot2)
+    library(tibble)
+    library(clusterProfiler)
+    library(org.Dm.eg.db)
+    library(AnnotationDbi)
+})
+
+# ------------------------------------------------------------
+# Helper: extract one hard cluster assignment per gene from
+# DEGreport::degPatterns() output.
+# This is deliberately robust to DEGreport versions that name
+# the gene column "genes", "gene", "name", or "gene_id".
+# ------------------------------------------------------------
+extract_degpatterns_assignment <- function(deg_res) {
+    if (is.null(deg_res$df)) {
+        stop("degPatterns result does not contain $df.")
+    }
+
+    d <- as.data.frame(deg_res$df)
+
+    gene_candidates <- c("gene_id", "genes", "gene", "name")
+    gene_col <- gene_candidates[gene_candidates %in% colnames(d)][1]
+
+    if (length(gene_col) == 0 || is.na(gene_col)) {
+        stop(
+            "Cannot identify the gene column in degPatterns$df. Columns are: ",
+            paste(colnames(d), collapse = ", ")
+        )
+    }
+
+    if (!"cluster" %in% colnames(d)) {
+        stop(
+            "degPatterns$df does not contain a 'cluster' column. Columns are: ",
+            paste(colnames(d), collapse = ", ")
+        )
+    }
+
+    ans <- unique(
+        d[, c(gene_col, "cluster"), drop = FALSE]
+    )
+
+    colnames(ans)[1] <- "gene_id"
+    ans$gene_id <- as.character(ans$gene_id)
+
+    # Convert cluster labels to integers when possible.
+    cluster_chr <- as.character(ans$cluster)
+    cluster_num <- suppressWarnings(as.integer(cluster_chr))
+
+    if (anyNA(cluster_num)) {
+        cluster_num2 <- suppressWarnings(
+            as.integer(gsub("[^0-9]+", "", cluster_chr))
+        )
+        cluster_num[is.na(cluster_num)] <- cluster_num2[is.na(cluster_num)]
+    }
+
+    if (anyNA(cluster_num)) {
+        stop(
+            "Failed to convert some degPatterns cluster labels to integers: ",
+            paste(unique(cluster_chr[is.na(cluster_num)]), collapse = ", ")
+        )
+    }
+
+    ans$cluster <- cluster_num
+
+    # Each gene must belong to one and only one hard cluster.
+    dup_check <- ans %>%
+        dplyr::count(gene_id, name = "n_cluster") %>%
+        dplyr::filter(n_cluster > 1)
+
+    if (nrow(dup_check) > 0) {
+        stop(
+            "Some genes were assigned to more than one degPatterns cluster. Example: ",
+            paste(head(dup_check$gene_id, 10), collapse = ", ")
+        )
+    }
+
+    ans <- ans[order(ans$cluster, ans$gene_id), , drop = FALSE]
+    rownames(ans) <- NULL
+    ans
+}
+
+
+# ------------------------------------------------------------
+# Core analysis for one sex
+#
+# Important:
+#   * LRT has NO time ordering.
+#   * full model    = ~ genotype
+#   * reduced model = ~ 1
+#   * genotype is treated as a categorical factor.
+#   * degPatterns is used only after LRT to group genes with
+#     similar expression patterns across the three genotypes.
+# ------------------------------------------------------------
+run_count_LRT_degPatterns_by_sex <- function(
+  count_mat,
+  sample_info,
+  sex_use = "F",
+  layer_name = "RNA",
+  padj_cutoff = 0.01,
+  n_clusters = 6,
+  genotype_ref = "WBg",
+  genotype_order = c("AdarG", "WBg", "AdarS"),
+  out_dir = ".",
+  fitType = "local",
+  scale_patterns = TRUE,
+  plot_width = 11,
+  plot_height = 7.5
+) {
+    dir.create(out_dir, showWarnings = FALSE, recursive = TRUE)
+
+    # =========================
+    # 1. Subset one sex
+    # =========================
+    sample_info_sex <- sample_info[
+        sample_info$sex == sex_use, ,
+        drop = FALSE
+    ]
+
+    sample_info_sex <- sample_info_sex[
+        colnames(count_mat)[
+            colnames(count_mat) %in% sample_info_sex$sample
+        ], ,
+        drop = FALSE
+    ]
+
+    mat_sex <- count_mat[, sample_info_sex$sample, drop = FALSE]
+    mat_sex <- round(as.matrix(mat_sex))
+    mode(mat_sex) <- "integer"
+
+    stopifnot(all(colnames(mat_sex) == rownames(sample_info_sex)))
+
+    # Keep the same sex-specific low-count filter used in the
+    # revised Figure 5 analysis.
+    keep <- rowSums(mat_sex) >= 100
+    mat_sex <- mat_sex[keep, , drop = FALSE]
+
+    message(
+        layer_name, " ", sex_use,
+        ": genes after count filter = ", nrow(mat_sex)
+    )
+
+    # =========================
+    # 2. DESeq2 LRT
+    # =========================
+    coldata <- sample_info_sex
+
+    # DESeq2 model reference is WBg, but the LRT P value itself is
+    # invariant to which genotype is chosen as the reference level.
+    coldata$genotype <- factor(coldata$genotype)
+    coldata$genotype <- relevel(coldata$genotype, ref = genotype_ref)
+
+    dds <- DESeqDataSetFromMatrix(
+        countData = mat_sex,
+        colData = coldata,
+        design = ~genotype
+    )
+
+    dds <- DESeq(
+        dds,
+        test = "LRT",
+        reduced = ~1,
+        fitType = fitType
+    )
+
+    res_LRT <- results(dds, alpha = padj_cutoff)
+
+    res_tbl <- as.data.frame(res_LRT) %>%
+        rownames_to_column(var = "gene_id") %>%
+        as_tibble() %>%
+        arrange(padj)
+
+    sig_tbl <- res_tbl %>%
+        filter(!is.na(padj), padj < padj_cutoff)
+
+    sig_genes <- sig_tbl$gene_id
+
+    message(
+        layer_name, " ", sex_use,
+        ": significant LRT genes padj < ", padj_cutoff,
+        " = ", length(sig_genes)
+    )
+
+    lrt_file <- file.path(
+        out_dir,
+        paste0(layer_name, "_", sex_use, "_DESeq2_LRT_all_results.tsv")
+    )
+
+    sig_file <- file.path(
+        out_dir,
+        paste0(
+            layer_name, "_", sex_use,
+            "_DESeq2_LRT_sig_padj", padj_cutoff, ".tsv"
+        )
+    )
+
+    fwrite(res_tbl, file = lrt_file, sep = "\t")
+    fwrite(sig_tbl, file = sig_file, sep = "\t")
+
+    # =========================
+    # 3. VST for PCA and clustering
+    # =========================
+    vsd <- vst(dds, blind = FALSE, fitType = fitType)
+    vst_mat <- assay(vsd)
+
+    # =========================
+    # 4. PCA
+    # =========================
+    pca_data <- plotPCA(
+        vsd,
+        intgroup = "genotype",
+        returnData = TRUE
+    )
+
+    percentVar <- round(100 * attr(pca_data, "percentVar"))
+
+    p_pca <- ggplot(
+        pca_data,
+        aes(PC1, PC2, color = genotype, label = name)
+    ) +
+        geom_point(size = 4) +
+        geom_text(vjust = -0.8, size = 3) +
+        theme_classic(base_size = 14) +
+        labs(
+            title = paste0(layer_name, " ", sex_use, " PCA"),
+            x = paste0("PC1: ", percentVar[1], "% variance"),
+            y = paste0("PC2: ", percentVar[2], "% variance")
+        )
+
+    pca_pdf <- file.path(
+        out_dir,
+        paste0(layer_name, "_", sex_use, "_PCA.pdf")
+    )
+
+    ggsave(pca_pdf, p_pca, width = 7, height = 6)
+
+    # =========================
+    # 5. Check number of LRT genes
+    # =========================
+    if (length(sig_genes) < 2) {
+        warning(
+            layer_name, " ", sex_use,
+            ": too few significant genes for degPatterns."
+        )
+
+        return(list(
+            layer = layer_name,
+            sex = sex_use,
+            dds = dds,
+            res_LRT = res_LRT,
+            res_tbl = res_tbl,
+            sig_tbl = sig_tbl,
+            sig_genes = sig_genes,
+            vsd = vsd,
+            vst_mat = vst_mat,
+            pca_plot = p_pca,
+            pca_pdf = pca_pdf,
+            degpatterns_input = NULL,
+            degpatterns = NULL,
+            cluster_assignment = NULL,
+            cluster_result_table = NULL,
+            cluster_result_file = NULL,
+            cluster_pdf = NULL
+        ))
+    }
+
+    # =========================
+    # 6. LRT-significant genes for degPatterns
+    # =========================
+    sig_genes <- intersect(sig_genes, rownames(vst_mat))
+    cluster_vst <- vst_mat[sig_genes, , drop = FALSE]
+
+    # Remove rows with non-finite or zero-variance VST values.
+    finite_keep <- apply(
+        cluster_vst,
+        1,
+        function(z) all(is.finite(z))
+    )
+
+    cluster_vst <- cluster_vst[finite_keep, , drop = FALSE]
+
+    var_keep <- apply(cluster_vst, 1, sd, na.rm = TRUE) > 0
+    cluster_vst <- cluster_vst[var_keep, , drop = FALSE]
+
+    if (nrow(cluster_vst) < 2) {
+        stop(
+            layer_name, " ", sex_use,
+            ": fewer than two clusterable LRT-significant genes remain."
+        )
+    }
+
+    # Metadata used for degPatterns. genotype_order affects display only;
+    # it does NOT introduce a time model into the LRT.
+    pattern_coldata <- as.data.frame(coldata)
+    pattern_coldata <- pattern_coldata[colnames(cluster_vst), , drop = FALSE]
+    pattern_coldata$genotype <- factor(
+        as.character(pattern_coldata$genotype),
+        levels = genotype_order
+    )
+
+    if (anyNA(pattern_coldata$genotype)) {
+        stop(
+            "Some genotype labels are absent from genotype_order: ",
+            paste(
+                unique(as.character(coldata$genotype)[
+                    !as.character(coldata$genotype) %in% genotype_order
+                ]),
+                collapse = ", "
+            )
+        )
+    }
+
+    # If the requested number of clusters exceeds the number of genes,
+    # reduce it automatically rather than failing cryptically.
+    n_clusters_use <- min(as.integer(n_clusters), nrow(cluster_vst))
+
+    if (n_clusters_use < 2) {
+        stop("n_clusters must be at least 2.")
+    }
+
+    # =========================
+    # 7. degPatterns clustering
+    # =========================
+    # This restores the old Figure 5 clustering/plotting framework,
+    # while retaining the revised LRT threshold, VST, QC, GO, and
+    # edited-gene enrichment analyses.
+    deg_res <- DEGreport::degPatterns(
+        cluster_vst,
+        pattern_coldata,
+        time = "genotype",
+        col = NULL,
+        nClusters = n_clusters_use,
+        scale = scale_patterns
+    )
+
+    cluster_assignment <- extract_degpatterns_assignment(deg_res)
+
+    # Only retain genes that were actually assigned by degPatterns.
+    clustered_genes <- cluster_assignment$gene_id
+
+    # =========================
+    # 8. Genotype-average VST values
+    # =========================
+    mat_clustered <- cluster_vst[
+        clustered_genes, ,
+        drop = FALSE
+    ]
+
+    mat_avg <- sapply(
+        genotype_order,
+        function(g) {
+            cols <- rownames(pattern_coldata)[
+                pattern_coldata$genotype == g
+            ]
+            rowMeans(mat_clustered[, cols, drop = FALSE], na.rm = TRUE)
+        }
+    )
+
+    mat_avg <- as.data.frame(mat_avg)
+    mat_avg$gene_id <- rownames(mat_avg)
+
+    # =========================
+    # 9. Build complete cluster result table
+    # =========================
+    cluster_result <- merge(
+        cluster_assignment,
+        mat_avg,
+        by = "gene_id",
+        all.x = TRUE,
+        sort = FALSE
+    )
+
+    cluster_result <- merge(
+        cluster_result,
+        as.data.frame(res_tbl),
+        by = "gene_id",
+        all.x = TRUE,
+        sort = FALSE
+    )
+
+    cluster_result <- cluster_result[
+        order(cluster_result$cluster, cluster_result$padj, cluster_result$gene_id), ,
+        drop = FALSE
+    ]
+
+    cluster_file <- file.path(
+        out_dir,
+        paste0(layer_name, "_", sex_use, "_degPatterns_cluster_results.tsv")
+    )
+
+    fwrite(cluster_result, cluster_file, sep = "\t")
+
+    # Raw long-format data returned by degPatterns, useful for QC/replotting.
+    cluster_plot_data_file <- file.path(
+        out_dir,
+        paste0(layer_name, "_", sex_use, "_degPatterns_plot_data.tsv")
+    )
+
+    fwrite(
+        as.data.frame(deg_res$df),
+        cluster_plot_data_file,
+        sep = "\t"
+    )
+
+    # Cluster sizes.
+    cluster_sizes <- cluster_assignment %>%
+        dplyr::count(cluster, name = "n_genes") %>%
+        dplyr::arrange(cluster)
+
+    cluster_sizes_file <- file.path(
+        out_dir,
+        paste0(layer_name, "_", sex_use, "_degPatterns_cluster_sizes.tsv")
+    )
+
+    fwrite(cluster_sizes, cluster_sizes_file, sep = "\t")
+
+    # One file per cluster for downstream inspection.
+    for (k in sort(unique(cluster_result$cluster))) {
+        cluster_k <- cluster_result[
+            cluster_result$cluster == k, ,
+            drop = FALSE
+        ]
+
+        fwrite(
+            cluster_k,
+            file.path(
+                out_dir,
+                paste0(
+                    layer_name, "_", sex_use,
+                    "_degPatterns_cluster", k, ".tsv"
+                )
+            ),
+            sep = "\t"
+        )
+    }
+
+    # =========================
+    # 10. Save old-style degPatterns figure
+    # =========================
+    cluster_pdf <- file.path(
+        out_dir,
+        paste0(
+            layer_name, "_", sex_use,
+            "_degPatterns_c", n_clusters_use, ".pdf"
+        )
+    )
+
+    if (!is.null(deg_res$plot)) {
+        ggsave(
+            cluster_pdf,
+            plot = deg_res$plot,
+            width = plot_width,
+            height = plot_height
+        )
+    } else {
+        warning(
+            "degPatterns result does not contain $plot; no cluster PDF was saved."
+        )
+        cluster_pdf <- NA_character_
+    }
+
+    # =========================
+    # 11. QC: cluster-centre similarity
+    # =========================
+    # This is NOT used to redefine clusters. It only flags whether the
+    # requested nClusters may have split very similar expression patterns.
+    centre_df <- cluster_result %>%
+        dplyr::select(gene_id, cluster, dplyr::all_of(genotype_order)) %>%
+        tidyr::pivot_longer(
+            cols = dplyr::all_of(genotype_order),
+            names_to = "genotype",
+            values_to = "value"
+        ) %>%
+        dplyr::group_by(cluster, genotype) %>%
+        dplyr::summarise(
+            centre = mean(value, na.rm = TRUE),
+            .groups = "drop"
+        ) %>%
+        tidyr::pivot_wider(
+            names_from = genotype,
+            values_from = centre
+        ) %>%
+        dplyr::arrange(cluster)
+
+    centre_mat <- as.matrix(
+        centre_df[, genotype_order, drop = FALSE]
+    )
+    rownames(centre_mat) <- paste0("Cluster", centre_df$cluster)
+
+    cluster_center_cor <- cor(
+        t(centre_mat),
+        use = "pairwise.complete.obs"
+    )
+
+    cluster_center_distance <- as.matrix(dist(centre_mat))
+
+    cluster_center_cor_file <- file.path(
+        out_dir,
+        paste0(
+            layer_name, "_", sex_use,
+            "_degPatterns_cluster_center_correlation.tsv"
+        )
+    )
+
+    cluster_center_distance_file <- file.path(
+        out_dir,
+        paste0(
+            layer_name, "_", sex_use,
+            "_degPatterns_cluster_center_distance.tsv"
+        )
+    )
+
+    fwrite(
+        data.frame(
+            cluster = rownames(cluster_center_cor),
+            cluster_center_cor,
+            check.names = FALSE
+        ),
+        cluster_center_cor_file,
+        sep = "\t"
+    )
+
+    fwrite(
+        data.frame(
+            cluster = rownames(cluster_center_distance),
+            cluster_center_distance,
+            check.names = FALSE
+        ),
+        cluster_center_distance_file,
+        sep = "\t"
+    )
+
+    similar_pairs <- which(
+        upper.tri(cluster_center_cor) &
+            cluster_center_cor >= 0.90,
+        arr.ind = TRUE
+    )
+
+    if (nrow(similar_pairs) > 0) {
+        similar_pair_labels <- apply(
+            similar_pairs,
+            1,
+            function(z) {
+                paste0(
+                    rownames(cluster_center_cor)[z[1]],
+                    "-",
+                    colnames(cluster_center_cor)[z[2]]
+                )
+            }
+        )
+
+        warning(
+            layer_name, " ", sex_use,
+            ": highly similar degPatterns cluster centres (cor >= 0.90): ",
+            paste(similar_pair_labels, collapse = ", "),
+            ". Consider testing a smaller n_clusters as a sensitivity analysis."
+        )
+    }
+
+    message("Saved: ", lrt_file)
+    message("Saved: ", pca_pdf)
+    message("Saved: ", cluster_file)
+    message("Saved: ", cluster_pdf)
+
+    return(list(
+        layer = layer_name,
+        sex = sex_use,
+        dds = dds,
+        res_LRT = res_LRT,
+        res_tbl = res_tbl,
+        sig_tbl = sig_tbl,
+        sig_genes = sig_genes,
+        vsd = vsd,
+        vst_mat = vst_mat,
+        pca_plot = p_pca,
+        pca_pdf = pca_pdf,
+        degpatterns_input = cluster_vst,
+        degpatterns_coldata = pattern_coldata,
+        degpatterns = deg_res,
+        cluster_assignment = cluster_assignment,
+        cluster_result_table = cluster_result,
+        cluster_result_file = cluster_file,
+        cluster_plot_data_file = cluster_plot_data_file,
+        cluster_sizes = cluster_sizes,
+        cluster_sizes_file = cluster_sizes_file,
+        cluster_pdf = cluster_pdf,
+        cluster_center_cor = cluster_center_cor,
+        cluster_center_distance = cluster_center_distance,
+        cluster_center_cor_file = cluster_center_cor_file,
+        cluster_center_distance_file = cluster_center_distance_file
+    ))
+}
+
+
+# ------------------------------------------------------------
+# Convert gene IDs to FlyBase IDs for clusterProfiler.
+# ------------------------------------------------------------
+convert_to_flybase <- function(gene_ids) {
+    gene_ids <- unique(gene_ids)
+    gene_ids <- gene_ids[!is.na(gene_ids)]
+    gene_ids <- gene_ids[gene_ids != ""]
+
+    flybase_direct <- gene_ids[grepl("^FBgn", gene_ids)]
+    symbol_ids <- gene_ids[!grepl("^FBgn", gene_ids)]
+
+    if (length(symbol_ids) > 0) {
+        symbol_to_fb <- AnnotationDbi::mapIds(
+            org.Dm.eg.db,
+            keys = unique(symbol_ids),
+            keytype = "SYMBOL",
+            column = "FLYBASE",
+            multiVals = "first"
+        )
+
+        flybase_from_symbol <- unname(symbol_to_fb)
+        flybase_from_symbol <- flybase_from_symbol[
+            !is.na(flybase_from_symbol)
+        ]
+    } else {
+        flybase_from_symbol <- character(0)
+    }
+
+    flybase_all <- unique(c(flybase_direct, flybase_from_symbol))
+    flybase_all <- flybase_all[!is.na(flybase_all)]
+
+    flybase_all
+}
+
+
+# ------------------------------------------------------------
+# GO enrichment for degPatterns clusters.
+# The statistical settings are kept from the revised Figure 5:
+#   ont = BP, BH, pvalueCutoff = 0.05, qvalueCutoff = 0.2.
+# ------------------------------------------------------------
+run_count_degPatterns_cluster_GO <- function(
+  cluster_files,
+  sex_names = c("F", "M"),
+  background_genes,
+  layer_name = "RNA",
+  ont = "BP",
+  pvalueCutoff = 0.05,
+  qvalueCutoff = 0.2,
+  top_n = 10,
+  out_prefix = "RNA_degPatterns_GO"
+) {
+    if (length(cluster_files) != length(sex_names)) {
+        stop("cluster_files and sex_names must have the same length.")
+    }
+
+    if (
+        !is.list(background_genes) ||
+            is.null(names(background_genes)) ||
+            !all(sex_names %in% names(background_genes))
+    ) {
+        stop(
+            "background_genes must be a named list containing one gene set per sex: ",
+            paste(sex_names, collapse = ", ")
+        )
+    }
+
+    bg_flybase_by_sex <- lapply(
+        background_genes[sex_names],
+        convert_to_flybase
+    )
+    names(bg_flybase_by_sex) <- sex_names
+
+    all_go_df <- list()
+
+    for (i in seq_along(cluster_files)) {
+        cluster_file <- cluster_files[i]
+        sex_use <- sex_names[i]
+
+        background_genes_use <- background_genes[[sex_use]]
+        bg_flybase <- bg_flybase_by_sex[[sex_use]]
+
+        message(
+            layer_name, " ", sex_use,
+            " background genes: ", length(background_genes_use)
+        )
+
+        message(
+            layer_name, " ", sex_use,
+            " background FlyBase genes: ", length(bg_flybase)
+        )
+
+        if (!file.exists(cluster_file)) {
+            warning("File does not exist: ", cluster_file)
+            next
+        }
+
+        cluster_df <- fread(cluster_file)
+        cluster_df <- as.data.frame(cluster_df)
+
+        required_cols <- c("gene_id", "cluster")
+        missing_cols <- setdiff(required_cols, colnames(cluster_df))
+
+        if (length(missing_cols) > 0) {
+            stop(
+                "degPatterns cluster result file is missing columns: ",
+                paste(missing_cols, collapse = ", ")
+            )
+        }
+
+        clusters <- sort(unique(cluster_df$cluster))
+
+        for (cl in clusters) {
+            sub_df <- cluster_df %>%
+                dplyr::filter(cluster == cl)
+
+            gene_cl <- convert_to_flybase(sub_df$gene_id)
+            gene_cl <- unique(gene_cl)
+
+            message(
+                layer_name, " ", sex_use, " cluster ", cl,
+                ": input genes = ", nrow(sub_df),
+                ", FlyBase genes = ", length(gene_cl)
+            )
+
+            if (length(gene_cl) < 5) {
+                message(
+                    "Skip ", layer_name, " ", sex_use,
+                    " cluster ", cl, ": too few genes."
+                )
+                next
+            }
+
+            ego <- enrichGO(
+                gene = gene_cl,
+                universe = bg_flybase,
+                OrgDb = org.Dm.eg.db,
+                keyType = "FLYBASE",
+                ont = ont,
+                pAdjustMethod = "BH",
+                pvalueCutoff = pvalueCutoff,
+                qvalueCutoff = qvalueCutoff,
+                readable = TRUE
+            )
+
+            ego_df <- as.data.frame(ego)
+
+            if (nrow(ego_df) == 0) {
+                message(
+                    "No enriched GO terms for ",
+                    layer_name, " ", sex_use, " cluster ", cl
+                )
+                next
+            }
+
+            ego_df$layer <- layer_name
+            ego_df$sex <- sex_use
+            ego_df$cluster <- cl
+            ego_df$group <- paste0(layer_name, "_", sex_use, "_C", cl)
+            ego_df$input_gene_n <- length(gene_cl)
+            ego_df$input_raw_n <- nrow(sub_df)
+
+            all_go_df[[
+                paste0(layer_name, "_", sex_use, "_C", cl)
+            ]] <- ego_df
+        }
+    }
+
+    if (length(all_go_df) == 0) {
+        warning("No GO enrichment results found for ", layer_name)
+        return(NULL)
+    }
+
+    go_all <- dplyr::bind_rows(all_go_df)
+
+    go_outfile <- paste0(out_prefix, "_all_GO_", ont, ".tsv")
+
+    write.table(
+        go_all,
+        file = go_outfile,
+        sep = "\t",
+        quote = FALSE,
+        row.names = FALSE
+    )
+
+    message("GO result table saved to: ", go_outfile)
+
+    go_plot_df <- go_all %>%
+        dplyr::group_by(group) %>%
+        dplyr::arrange(p.adjust, .by_group = TRUE) %>%
+        dplyr::slice_head(n = top_n) %>%
+        dplyr::ungroup()
+
+    go_plot_df$GeneRatio_num <- sapply(
+        go_plot_df$GeneRatio,
+        function(x) {
+            tmp <- strsplit(x, "/")[[1]]
+            as.numeric(tmp[1]) / as.numeric(tmp[2])
+        }
+    )
+
+    go_plot_df$Description <- factor(
+        go_plot_df$Description,
+        levels = rev(unique(go_plot_df$Description))
+    )
+
+    go_plot_df$group <- factor(
+        go_plot_df$group,
+        levels = sort(unique(go_plot_df$group))
+    )
+
+    p <- ggplot(
+        go_plot_df,
+        aes(
+            x = GeneRatio_num,
+            y = Description,
+            size = Count,
+            color = -log10(p.adjust)
+        )
+    ) +
+        geom_point() +
+        facet_wrap(~group, scales = "free_y", ncol = 3) +
+        theme_bw(base_size = 12) +
+        labs(
+            x = "GeneRatio",
+            y = NULL,
+            size = "Gene count",
+            color = "-log10(FDR)",
+            title = paste0(
+                layer_name,
+                " GO enrichment of degPatterns clusters: ",
+                ont
+            )
+        ) +
+        theme(
+            strip.text = element_text(size = 11, face = "bold"),
+            axis.text.y = element_text(size = 8)
+        )
+
+    pdf_file <- paste0(out_prefix, "_GO_", ont, ".pdf")
+
+    ggsave(pdf_file, p, width = 20, height = 10)
+    message("GO plot saved to: ", pdf_file)
+
+    return(list(
+        go_all = go_all,
+        go_plot_df = go_plot_df,
+        plot = p,
+        background_flybase = bg_flybase_by_sex,
+        go_table_file = go_outfile,
+        go_pdf = pdf_file
+    ))
+}
+```
+
+```{r}
+# ============================================================
+# Run RNA Figure 5 analysis
+# ============================================================
+setwd("/path/to/F5_AdarSG/")
+base_dir <- "/path/to/F5_AdarSG"
+
+# New output directory: no Mfuzz is used anywhere in this workflow.
+count_out_dir <- file.path(base_dir, "RNA_LRT_degPatterns")
+dir.create(count_out_dir, showWarnings = FALSE, recursive = TRUE)
+
+rna_raw <- merged
+rna_raw <- as.data.frame(rna_raw)
+rownames(rna_raw) <- rna_raw$Geneid
+
+rna <- rna_raw[, 7:24]
+
+sample_info <- data.frame(
+    sample = colnames(rna),
+    genotype = sub("^([^_]+)_.*$", "\\1", colnames(rna)),
+    sex = sub("^[^_]+_([FM]).*$", "\\1", colnames(rna)),
+    rep = sub("^[^_]+_[FM]([0-9]+)$", "\\1", colnames(rna)),
+    stringsAsFactors = FALSE
+)
+
+sample_info$group <- paste(
+    sample_info$genotype,
+    sample_info$sex,
+    sep = "_"
+)
+
+sample_info$sex <- factor(sample_info$sex)
+sample_info$genotype <- factor(sample_info$genotype)
+
+print(sample_info)
+print(table(sample_info$group))
+
+rna <- as.matrix(rna)
+mode(rna) <- "numeric"
+rna <- round(rna)
+
+# Preserve the global count filter used by the revised Figure 5 code.
+keep <- rowSums(rna) >= 100
+rna_f <- rna[keep, , drop = FALSE]
+
+rownames(sample_info) <- sample_info$sample
+
+sample_info$sex <- factor(
+    sample_info$sex,
+    levels = c("M", "F")
+)
+
+sample_info$genotype <- factor(
+    sample_info$genotype,
+    levels = c("WBg", "AdarG", "AdarS")
+)
+
+sample_info$group <- paste(
+    sample_info$genotype,
+    sample_info$sex,
+    sep = "_"
+)
+
+# ------------------------------------------------------------
+# Main settings
+# ------------------------------------------------------------
+padj_cutoff_main <- 0.01
+
+# Restore the old Figure 5 cluster count.
+# You can later change this to 4 or 5 for sensitivity analysis
+# without changing the LRT or downstream statistical framework.
+n_clusters_main <- 6
+
+# Display order only. The LRT treats genotype as categorical.
+genotype_order_plot <- c("AdarG", "WBg", "AdarS")
+
+# ------------------------------------------------------------
+# RNA FEMALE
+# ------------------------------------------------------------
+rna_F_res <- run_count_LRT_degPatterns_by_sex(
+    count_mat = rna_f,
+    sample_info = sample_info,
+    sex_use = "F",
+    layer_name = "RNA",
+    padj_cutoff = padj_cutoff_main,
+    n_clusters = n_clusters_main,
+    genotype_ref = "WBg",
+    genotype_order = genotype_order_plot,
+    out_dir = count_out_dir,
+    fitType = "local",
+    scale_patterns = TRUE,
+    plot_width = 11,
+    plot_height = 7.5
+)
+
+# ------------------------------------------------------------
+# RNA MALE
+# ------------------------------------------------------------
+rna_M_res <- run_count_LRT_degPatterns_by_sex(
+    count_mat = rna_f,
+    sample_info = sample_info,
+    sex_use = "M",
+    layer_name = "RNA",
+    padj_cutoff = padj_cutoff_main,
+    n_clusters = n_clusters_main,
+    genotype_ref = "WBg",
+    genotype_order = genotype_order_plot,
+    out_dir = count_out_dir,
+    fitType = "local",
+    scale_patterns = TRUE,
+    plot_width = 11,
+    plot_height = 7.5
+)
+
+# ------------------------------------------------------------
+# RNA GO enrichment
+# Keep the revised analysis background definition:
+# genes with a valid DESeq2 LRT adjusted P value for each sex.
+# ------------------------------------------------------------
+rna_background_genes <- list(
+    F = unique(
+        rna_F_res$res_tbl$gene_id[
+            !is.na(rna_F_res$res_tbl$padj)
+        ]
+    ),
+    M = unique(
+        rna_M_res$res_tbl$gene_id[
+            !is.na(rna_M_res$res_tbl$padj)
+        ]
+    )
+)
+
+cluster_files_main <- c(
+    F = file.path(
+        count_out_dir,
+        "RNA_F_degPatterns_cluster_results.tsv"
+    ),
+    M = file.path(
+        count_out_dir,
+        "RNA_M_degPatterns_cluster_results.tsv"
+    )
+)
+
+go_RNA <- run_count_degPatterns_cluster_GO(
+    cluster_files = cluster_files_main,
+    sex_names = c("F", "M"),
+    background_genes = rna_background_genes,
+    layer_name = "RNA",
+    ont = "BP",
+    pvalueCutoff = 0.05,
+    qvalueCutoff = 0.2,
+    top_n = 10,
+    out_prefix = file.path(count_out_dir, "RNA_degPatterns")
+)
+```
+
+```{r}
+# cluster enrichment
+suppressPackageStartupMessages({
+    library(data.table)
+    library(ggplot2)
+})
+
+# ============================================================
+# 1. User settings
+# ============================================================
+
+# ------------------------------------------------------------
+# Editing-site files
+# ------------------------------------------------------------
+
+# All A-to-G editing sites
+all_site_file <- "/path/to/Figure_new/sites/ISO1.candidate.AtoG.annotations.long.tsv"
+
+# One annotation row per site, mapping alledit site_key to gene
+site_annotation_file <- "/path/to/Figure_new/sites/ISO1.candidate.detected.annotated.tsv"
+
+# alledit CDS-position table
+alledit_file <- paste0(
+    "/path/to/Figure_new/sites/ISO1.candidate.rescue_3R_18907675.",
+    "sourceCDS.keepTargetUTR3.cdspos_for_alledit.tsv"
+)
+
+# ------------------------------------------------------------
+# DESeq2 / degPatterns previous output directory
+# ------------------------------------------------------------
+
+count_out_dir <- "/path/to/F5_AdarSG/RNA_LRT_degPatterns/"
+
+# ------------------------------------------------------------
+# Previous DESeq2 LRT results
+# ------------------------------------------------------------
+
+lrt_files <- c(
+    F = file.path(
+        count_out_dir,
+        "RNA_F_DESeq2_LRT_all_results.tsv"
+    ),
+    M = file.path(
+        count_out_dir,
+        "RNA_M_DESeq2_LRT_all_results.tsv"
+    )
+)
+
+# ------------------------------------------------------------
+# Previous degPatterns cluster results
+# ------------------------------------------------------------
+
+cluster_files <- c(
+    F = file.path(
+        count_out_dir,
+        "RNA_F_degPatterns_cluster_results.tsv"
+    ),
+    M = file.path(
+        count_out_dir,
+        "RNA_M_degPatterns_cluster_results.tsv"
+    )
+)
+
+
+# ------------------------------------------------------------
+# Output
+# ------------------------------------------------------------
+
+out_dir <- file.path(
+    count_out_dir,
+    "RNA_editing_gene_DE_cluster_enrichment"
+)
+
+dir.create(
+    out_dir,
+    recursive = TRUE,
+    showWarnings = FALSE
+)
+
+
+# ------------------------------------------------------------
+# Parameters
+# ------------------------------------------------------------
+
+padj_cutoff <- 0.01
+
+# degPatterns is a hard-clustering method, so there is no degPatterns membership filter.
+
+
+# ============================================================
+# 2. Helper
+# ============================================================
+
+clean_gene_id <- function(x) {
+    x <- as.character(x)
+
+    x <- trimws(x)
+
+    x[
+        is.na(x) |
+            x == "" |
+            x == "NA" |
+            x == "."
+    ] <- NA_character_
+
+    x
+}
+
+
+safe_fraction <- function(x, n) {
+    if (n == 0) {
+        return(NA_real_)
+    }
+
+    x / n
+}
+
+
+# ============================================================
+# 3. Extract edited genes:
+#    Definition 1 = all editing sites
+# ============================================================
+
+cat("\n")
+cat("============================================================\n")
+cat("[1] Extract edited genes from ALL editing sites\n")
+cat("============================================================\n")
+
+if (!file.exists(all_site_file)) {
+    stop("File does not exist: ", all_site_file)
+}
+
+all_sites <- fread(
+    all_site_file,
+    select = c(
+        "handle",
+        "gene",
+        "change2"
+    )
+)
+
+all_sites[, gene := clean_gene_id(gene)]
+
+# Explicitly restrict the input to A-to-G sites
+all_sites <- all_sites[
+    change2 == "A>G"
+]
+
+n_all_rows <- nrow(all_sites)
+
+n_all_sites <- uniqueN(
+    all_sites$handle
+)
+
+n_all_sites_with_gene <- uniqueN(
+    all_sites[
+        !is.na(gene),
+        handle
+    ]
+)
+
+n_all_sites_without_gene <-
+    n_all_sites -
+    n_all_sites_with_gene
+
+
+# Check whether a handle maps to multiple genes
+handle_gene_check <- unique(
+    all_sites[
+        !is.na(gene),
+        .(
+            handle,
+            gene
+        )
+    ]
+)
+
+handle_gene_conflict <- handle_gene_check[
+    ,
+    .(
+        n_gene = uniqueN(gene)
+    ),
+    by = handle
+][
+    n_gene > 1
+]
+
+if (nrow(handle_gene_conflict) > 0) {
+    stop(
+        "Some editing sites map to multiple genes. ",
+        "Please inspect before continuing."
+    )
+}
+
+
+edited_genes_all_sites <- sort(
+    unique(
+        all_sites[
+            !is.na(gene),
+            gene
+        ]
+    )
+)
+
+
+cat(
+    "Rows in all-site file          : ",
+    n_all_rows,
+    "\n"
+)
+
+cat(
+    "Unique editing sites           : ",
+    n_all_sites,
+    "\n"
+)
+
+cat(
+    "Sites with gene annotation     : ",
+    n_all_sites_with_gene,
+    "\n"
+)
+
+cat(
+    "Sites without gene annotation  : ",
+    n_all_sites_without_gene,
+    "\n"
+)
+
+cat(
+    "Unique edited genes [all_sites]: ",
+    length(edited_genes_all_sites),
+    "\n"
+)
+
+
+fwrite(
+    data.table(
+        gene_id = edited_genes_all_sites
+    ),
+    file.path(
+        out_dir,
+        "edited_genes.all_sites.tsv"
+    ),
+    sep = "\t"
+)
+
+
+# ============================================================
+# 4. Build handle -> gene mapping
+#    for alledit
+# ============================================================
+
+cat("\n")
+cat("============================================================\n")
+cat("[2] Build editing-site -> gene map\n")
+cat("============================================================\n")
+
+
+if (!file.exists(site_annotation_file)) {
+    stop(
+        "File does not exist: ",
+        site_annotation_file
+    )
+}
+
+
+site_annotation <- fread(
+    site_annotation_file,
+    select = c(
+        "handle",
+        "gene"
+    )
+)
+
+site_annotation[
+    ,
+    gene := clean_gene_id(gene)
+]
+
+
+site_gene_map <- unique(
+    site_annotation[
+        !is.na(handle) &
+            handle != "",
+        .(
+            handle,
+            gene
+        )
+    ]
+)
+
+
+# ------------------------------------------------------------
+# Ensure each handle maps to only one non-NA gene
+# ------------------------------------------------------------
+
+map_conflict <- site_gene_map[
+    !is.na(gene),
+    .(
+        n_gene = uniqueN(gene)
+    ),
+    by = handle
+][
+    n_gene > 1
+]
+
+
+if (nrow(map_conflict) > 0) {
+    fwrite(
+        map_conflict,
+        file.path(
+            out_dir,
+            "ERROR.handle_multiple_gene.tsv"
+        ),
+        sep = "\t"
+    )
+
+    stop(
+        "At least one handle maps to multiple genes."
+    )
+}
+
+
+# Keep one row per handle
+site_gene_map <- site_gene_map[
+    order(
+        handle,
+        is.na(gene)
+    )
+]
+
+site_gene_map <- site_gene_map[
+    !duplicated(handle)
+]
+
+
+cat(
+    "Unique site annotation handles: ",
+    nrow(site_gene_map),
+    "\n"
+)
+
+
+# ============================================================
+# 5. Extract edited genes:
+#    Definition 2 = CDS sites from alledit
+# ============================================================
+
+cat("\n")
+cat("============================================================\n")
+cat("[3] Extract CDS-edited genes from alledit\n")
+cat("============================================================\n")
+
+
+if (!file.exists(alledit_file)) {
+    stop(
+        "File does not exist: ",
+        alledit_file
+    )
+}
+
+
+alledit <- fread(
+    alledit_file
+)
+
+
+required_alledit_cols <- c(
+    "site_key",
+    "target_region"
+)
+
+missing_cols <- setdiff(
+    required_alledit_cols,
+    names(alledit)
+)
+
+if (length(missing_cols) > 0) {
+    stop(
+        "alledit file missing columns: ",
+        paste(
+            missing_cols,
+            collapse = ", "
+        )
+    )
+}
+
+
+# ------------------------------------------------------------
+# IMPORTANT:
+# only CDS
+#
+# The input also contains some UTR3 sites;
+# filter the input before analysis.
+# ------------------------------------------------------------
+
+alledit_CDS <- unique(
+    alledit[
+        target_region == "CDS",
+        .(
+            site_key
+        )
+    ]
+)
+
+
+cat(
+    "Total alledit rows             : ",
+    nrow(alledit),
+    "\n"
+)
+
+cat(
+    "Unique CDS alledit sites       : ",
+    nrow(alledit_CDS),
+    "\n"
+)
+
+
+# ------------------------------------------------------------
+# Map CDS site_key -> gene
+# ------------------------------------------------------------
+
+alledit_CDS_gene <- merge(
+    alledit_CDS,
+    site_gene_map,
+    by.x = "site_key",
+    by.y = "handle",
+    all.x = TRUE,
+    sort = FALSE
+)
+
+
+# ------------------------------------------------------------
+# QC: unmatched sites
+# ------------------------------------------------------------
+
+unmatched_CDS <- alledit_CDS_gene[
+    is.na(gene)
+]
+
+
+if (nrow(unmatched_CDS) > 0) {
+    fwrite(
+        unmatched_CDS,
+        file.path(
+            out_dir,
+            "alledit_CDS.unmatched_sites.tsv"
+        ),
+        sep = "\t"
+    )
+
+    stop(
+        "Some CDS alledit sites cannot be mapped to a gene: ",
+        nrow(unmatched_CDS)
+    )
+}
+
+
+edited_genes_CDS_alledit <- sort(
+    unique(
+        alledit_CDS_gene$gene
+    )
+)
+
+
+cat(
+    "Mapped CDS sites               : ",
+    nrow(alledit_CDS_gene),
+    "\n"
+)
+
+cat(
+    "Unique CDS-edited genes        : ",
+    length(edited_genes_CDS_alledit),
+    "\n"
+)
+
+
+# ------------------------------------------------------------
+# Output site -> gene table
+# ------------------------------------------------------------
+
+fwrite(
+    alledit_CDS_gene,
+    file.path(
+        out_dir,
+        "alledit_CDS.site_to_gene.tsv"
+    ),
+    sep = "\t"
+)
+
+
+# ------------------------------------------------------------
+# Output CDS edited gene list
+# ------------------------------------------------------------
+
+fwrite(
+    data.table(
+        gene_id = edited_genes_CDS_alledit
+    ),
+    file.path(
+        out_dir,
+        "edited_genes.CDS_alledit.tsv"
+    ),
+    sep = "\t"
+)
+
+
+# ============================================================
+# 6. Edited-gene-set QC
+# ============================================================
+
+editing_set_qc <- data.table(
+    editing_definition = c(
+        "all_sites",
+        "CDS_alledit"
+    ),
+    unique_sites = c(
+        n_all_sites,
+        nrow(alledit_CDS)
+    ),
+    unique_genes = c(
+        length(edited_genes_all_sites),
+        length(edited_genes_CDS_alledit)
+    )
+)
+
+
+fwrite(
+    editing_set_qc,
+    file.path(
+        out_dir,
+        "edited_gene_set.QC.tsv"
+    ),
+    sep = "\t"
+)
+
+
+cat("\nEdited gene-set QC:\n")
+print(editing_set_qc)
+
+
+# ============================================================
+# 7. Core function
+# ============================================================
+
+run_one_enrichment <- function(
+  lrt_file,
+  cluster_file,
+  edited_genes,
+  sex_use,
+  editing_definition,
+  padj_cutoff = 0.01,
+  out_dir = "."
+) {
+    cat("\n")
+    cat("============================================================\n")
+    cat(
+        "[RUN] sex = ",
+        sex_use,
+        " | definition = ",
+        editing_definition,
+        "\n",
+        sep = ""
+    )
+    cat("============================================================\n")
+
+
+    # ==========================================================
+    # 7.1 Read DESeq2 LRT
+    # ==========================================================
+
+    if (!file.exists(lrt_file)) {
+        stop(
+            "LRT file does not exist: ",
+            lrt_file
+        )
+    }
+
+
+    lrt <- fread(lrt_file)
+
+
+    required_lrt_cols <- c(
+        "gene_id",
+        "padj"
+    )
+
+    missing_lrt <- setdiff(
+        required_lrt_cols,
+        names(lrt)
+    )
+
+    if (length(missing_lrt) > 0) {
+        stop(
+            "LRT file missing columns: ",
+            paste(
+                missing_lrt,
+                collapse = ", "
+            )
+        )
+    }
+
+
+    # one row per gene
+    if (anyDuplicated(lrt$gene_id)) {
+        stop(
+            "Duplicated gene_id found in LRT file."
+        )
+    }
+
+
+    # ==========================================================
+    # IMPORTANT:
+    # padj = NA is excluded
+    #
+    # No_DE is explicitly:
+    # padj >= 0.01
+    # ==========================================================
+
+    gene_status <- lrt[
+        !is.na(padj),
+        .(
+            gene_id,
+            padj
+        )
+    ]
+
+
+    gene_status[
+        ,
+        DE_status := fifelse(
+            padj < padj_cutoff,
+            "DE",
+            "No_DE"
+        )
+    ]
+
+
+    gene_status[
+        ,
+        edited := gene_id %in% edited_genes
+    ]
+
+
+    cat(
+        "Genes with valid padj : ",
+        nrow(gene_status),
+        "\n"
+    )
+
+    cat(
+        "DE genes              : ",
+        gene_status[
+            DE_status == "DE",
+            .N
+        ],
+        "\n"
+    )
+
+    cat(
+        "No-DE genes           : ",
+        gene_status[
+            DE_status == "No_DE",
+            .N
+        ],
+        "\n"
+    )
+
+
+    # ==========================================================
+    # 7.2 PART 1:
+    #     DE vs No-DE
+    # ==========================================================
+
+    de_edit <- gene_status[
+        DE_status == "DE",
+        sum(edited)
+    ]
+
+    de_nonedit <- gene_status[
+        DE_status == "DE",
+        sum(!edited)
+    ]
+
+    node_edit <- gene_status[
+        DE_status == "No_DE",
+        sum(edited)
+    ]
+
+    node_nonedit <- gene_status[
+        DE_status == "No_DE",
+        sum(!edited)
+    ]
+
+
+    fisher_DE_matrix <- matrix(
+        c(
+            de_edit,
+            de_nonedit,
+            node_edit,
+            node_nonedit
+        ),
+        nrow = 2,
+        byrow = TRUE,
+        dimnames = list(
+            c(
+                "DE",
+                "No_DE"
+            ),
+            c(
+                "Edited",
+                "NonEdited"
+            )
+        )
+    )
+
+
+    cat("\nDE vs No-DE contingency table:\n")
+    print(fisher_DE_matrix)
+
+
+    # ----------------------------------------------------------
+    # Primary test:
+    # H1 = edited genes enriched in DE
+    # ----------------------------------------------------------
+
+    fisher_DE_enrichment <- fisher.test(
+        fisher_DE_matrix,
+        alternative = "greater"
+    )
+
+
+    # ----------------------------------------------------------
+    # Also output conventional two-sided test + 95% CI
+    # ----------------------------------------------------------
+
+    fisher_DE_two <- fisher.test(
+        fisher_DE_matrix,
+        alternative = "two.sided"
+    )
+
+
+    de_total <- de_edit + de_nonedit
+    node_total <- node_edit + node_nonedit
+
+
+    DE_result <- data.table(
+        sex = sex_use,
+        editing_definition =
+            editing_definition,
+        comparison =
+            "DE_vs_No_DE",
+        DE_total =
+            de_total,
+        DE_edited =
+            de_edit,
+        DE_edited_fraction =
+            safe_fraction(
+                de_edit,
+                de_total
+            ),
+        NoDE_total =
+            node_total,
+        NoDE_edited =
+            node_edit,
+        NoDE_edited_fraction =
+            safe_fraction(
+                node_edit,
+                node_total
+            ),
+        odds_ratio =
+            unname(
+                fisher_DE_two$estimate
+            ),
+        OR_conf_low =
+            fisher_DE_two$conf.int[1],
+        OR_conf_high =
+            fisher_DE_two$conf.int[2],
+        fisher_p_enrichment =
+            fisher_DE_enrichment$p.value,
+        fisher_p_two_sided =
+            fisher_DE_two$p.value
+    )
+
+
+    # ==========================================================
+    # 7.3 Read degPatterns cluster assignments
+    # ==========================================================
+
+    if (!file.exists(cluster_file)) {
+        stop(
+            "degPatterns cluster file does not exist: ",
+            cluster_file
+        )
+    }
+
+
+    cluster_input <- fread(
+        cluster_file
+    )
+
+
+    required_cluster_cols <- c(
+        "gene_id",
+        "cluster"
+    )
+
+
+    missing_cluster <- setdiff(
+        required_cluster_cols,
+        names(cluster_input)
+    )
+
+
+    if (length(missing_cluster) > 0) {
+        stop(
+            "degPatterns cluster file missing columns: ",
+            paste(
+                missing_cluster,
+                collapse = ", "
+            )
+        )
+    }
+
+
+    cluster_use <- unique(
+        cluster_input[
+            ,
+            .(
+                gene_id,
+                cluster
+            )
+        ],
+        by = "gene_id"
+    )
+
+
+    # ==========================================================
+    # 7.4 Attach edited status
+    # ==========================================================
+
+    cluster_df <- merge(
+        cluster_use,
+        gene_status[
+            ,
+            .(
+                gene_id,
+                DE_status,
+                edited
+            )
+        ],
+        by = "gene_id",
+        all = FALSE
+    )
+
+
+    # degPatterns cluster file should contain only LRT-significant DE genes
+    cluster_df <- cluster_df[
+        DE_status == "DE"
+    ]
+
+
+    cluster_df[
+        ,
+        group := paste0(
+            "Cluster",
+            cluster
+        )
+    ]
+
+
+    # ==========================================================
+    # 7.5 DE genes that were not clusterable
+    # ==========================================================
+
+    all_DE_genes <- gene_status[
+        DE_status == "DE",
+        gene_id
+    ]
+
+
+    clustered_DE_genes <- unique(
+        cluster_df$gene_id
+    )
+
+
+    DE_unclustered <- setdiff(
+        all_DE_genes,
+        clustered_DE_genes
+    )
+
+
+    cat(
+        "DE genes assigned to cluster   : ",
+        length(clustered_DE_genes),
+        "\n"
+    )
+
+    cat(
+        "DE genes not in degPatterns clusters: ",
+        length(DE_unclustered),
+        "\n"
+    )
+
+
+    if (length(DE_unclustered) > 0) {
+        fwrite(
+            data.table(
+                gene_id = DE_unclustered
+            ),
+            file.path(
+                out_dir,
+                paste0(
+                    "RNA_",
+                    sex_use,
+                    ".",
+                    editing_definition,
+                    ".DE_unclustered_genes.tsv"
+                )
+            ),
+            sep = "\t"
+        )
+    }
+
+
+    # ==========================================================
+    # 7.6 Build No_DE + cluster table
+    # ==========================================================
+
+    noDE_df <- gene_status[
+        DE_status == "No_DE",
+        .(
+            gene_id,
+            edited
+        )
+    ]
+
+
+    noDE_df[
+        ,
+        group := "No_DE"
+    ]
+
+
+    cluster_for_test <- cluster_df[
+        ,
+        .(
+            gene_id,
+            edited,
+            group
+        )
+    ]
+
+
+    group_df <- rbindlist(
+        list(
+            noDE_df,
+            cluster_for_test
+        ),
+        use.names = TRUE
+    )
+
+
+    # ==========================================================
+    # 7.7 Summary:
+    #     edited fraction in each group
+    # ==========================================================
+
+    group_summary <- group_df[
+        ,
+        .(
+            total_genes =
+                .N,
+            edited_genes =
+                sum(edited),
+            nonedited_genes =
+                sum(!edited),
+            edited_fraction =
+                mean(edited)
+        ),
+        by = group
+    ]
+
+
+    group_summary[, order_tmp := 0L]
+
+    group_summary[
+        group != "No_DE",
+        order_tmp := as.integer(
+            sub(
+                "^Cluster",
+                "",
+                group
+            )
+        )
+    ]
+
+
+    setorder(
+        group_summary,
+        order_tmp
+    )
+
+
+    group_summary[
+        ,
+        order_tmp := NULL
+    ]
+
+
+    group_summary[
+        ,
+        `:=`(
+            sex =
+                sex_use,
+            editing_definition =
+                editing_definition
+        )
+    ]
+
+
+    # ==========================================================
+    # 7.8 Global Fisher:
+    #
+    #            Edited  NonEdited
+    # No_DE
+    # Cluster1
+    # Cluster2
+    # ...
+    # ==========================================================
+
+    global_matrix <- as.matrix(
+        group_summary[
+            ,
+            .(
+                edited_genes,
+                nonedited_genes
+            )
+        ]
+    )
+
+
+    rownames(global_matrix) <-
+        group_summary$group
+
+    colnames(global_matrix) <-
+        c(
+            "Edited",
+            "NonEdited"
+        )
+
+
+    cat("\nGlobal contingency table:\n")
+    print(global_matrix)
+
+
+    set.seed(analysis_seed)
+
+
+    global_fisher <- tryCatch(
+        fisher.test(
+            global_matrix,
+            workspace = 2e8
+        ),
+        error = function(e) {
+            message(
+                "Exact global Fisher failed; ",
+                "switch to Fisher Monte Carlo."
+            )
+
+            fisher.test(
+                global_matrix,
+                simulate.p.value = TRUE,
+                B = 1000000
+            )
+        }
+    )
+
+
+    global_result <- data.table(
+        sex =
+            sex_use,
+        editing_definition =
+            editing_definition,
+        test =
+            "No_DE_vs_all_clusters_global",
+        fisher_p =
+            global_fisher$p.value,
+        method =
+            global_fisher$method
+    )
+
+
+    # ==========================================================
+    # 7.9 Pairwise:
+    #     each cluster vs No_DE
+    # ==========================================================
+
+    noDE_row <- group_summary[
+        group == "No_DE"
+    ]
+
+
+    cluster_names <- group_summary[
+        group != "No_DE",
+        group
+    ]
+
+
+    pairwise_list <- vector(
+        "list",
+        length(cluster_names)
+    )
+
+
+    for (
+        i in seq_along(
+            cluster_names
+        )
+    ) {
+        g <- cluster_names[i]
+
+
+        g_row <- group_summary[
+            group == g
+        ]
+
+
+        pair_mat <- matrix(
+            c(
+                g_row$edited_genes,
+                g_row$nonedited_genes,
+                noDE_row$edited_genes,
+                noDE_row$nonedited_genes
+            ),
+            nrow = 2,
+            byrow = TRUE,
+            dimnames = list(
+                c(
+                    g,
+                    "No_DE"
+                ),
+                c(
+                    "Edited",
+                    "NonEdited"
+                )
+            )
+        )
+
+
+        # H1:
+        # edited genes enriched in this cluster
+        ft_enrich <- fisher.test(
+            pair_mat,
+            alternative = "greater"
+        )
+
+
+        ft_two <- fisher.test(
+            pair_mat,
+            alternative = "two.sided"
+        )
+
+
+        pairwise_list[[i]] <- data.table(
+            sex =
+                sex_use,
+            editing_definition =
+                editing_definition,
+            group =
+                g,
+            group_total =
+                g_row$total_genes,
+            group_edited =
+                g_row$edited_genes,
+            group_edited_fraction =
+                g_row$edited_fraction,
+            NoDE_total =
+                noDE_row$total_genes,
+            NoDE_edited =
+                noDE_row$edited_genes,
+            NoDE_edited_fraction =
+                noDE_row$edited_fraction,
+            odds_ratio =
+                unname(
+                    ft_two$estimate
+                ),
+            OR_conf_low =
+                ft_two$conf.int[1],
+            OR_conf_high =
+                ft_two$conf.int[2],
+            fisher_p_enrichment =
+                ft_enrich$p.value,
+            fisher_p_two_sided =
+                ft_two$p.value
+        )
+    }
+
+
+    pairwise_result <- rbindlist(
+        pairwise_list
+    )
+
+
+    # ----------------------------------------------------------
+    # BH correction:
+    # separately within this sex <U+00D7> editing definition
+    # ----------------------------------------------------------
+
+    pairwise_result[
+        ,
+        fisher_p_enrichment_BH :=
+            p.adjust(
+                fisher_p_enrichment,
+                method = "BH"
+            )
+    ]
+
+
+    pairwise_result[
+        ,
+        fisher_p_two_sided_BH :=
+            p.adjust(
+                fisher_p_two_sided,
+                method = "BH"
+            )
+    ]
+
+
+    pairwise_result[
+        ,
+        enriched :=
+            odds_ratio > 1 &
+                fisher_p_enrichment_BH < 0.05
+    ]
+
+
+    # ==========================================================
+    # 7.10 Output current analysis
+    # ==========================================================
+
+    prefix <- paste0(
+        "RNA_",
+        sex_use,
+        ".",
+        editing_definition
+    )
+
+
+    fwrite(
+        gene_status,
+        file.path(
+            out_dir,
+            paste0(
+                prefix,
+                ".gene_DE_editing_status.tsv"
+            )
+        ),
+        sep = "\t"
+    )
+
+
+    fwrite(
+        DE_result,
+        file.path(
+            out_dir,
+            paste0(
+                prefix,
+                ".DE_vs_NoDE.fisher.tsv"
+            )
+        ),
+        sep = "\t"
+    )
+
+
+    fwrite(
+        group_summary,
+        file.path(
+            out_dir,
+            paste0(
+                prefix,
+                ".NoDE_cluster.edited_fraction.tsv"
+            )
+        ),
+        sep = "\t"
+    )
+
+
+    fwrite(
+        global_result,
+        file.path(
+            out_dir,
+            paste0(
+                prefix,
+                ".NoDE_cluster.global_fisher.tsv"
+            )
+        ),
+        sep = "\t"
+    )
+
+
+    fwrite(
+        pairwise_result,
+        file.path(
+            out_dir,
+            paste0(
+                prefix,
+                ".cluster_vs_NoDE.fisher.tsv"
+            )
+        ),
+        sep = "\t"
+    )
+
+
+    cat("\nDE vs No-DE result:\n")
+    print(DE_result)
+
+    cat("\nGroup summary:\n")
+    print(group_summary)
+
+    cat("\nCluster vs No-DE:\n")
+    print(pairwise_result)
+
+
+    return(
+        list(
+            DE =
+                DE_result,
+            group_summary =
+                group_summary,
+            global =
+                global_result,
+            pairwise =
+                pairwise_result
+        )
+    )
+}
+
+
+# ============================================================
+# 8. Two editing definitions
+# ============================================================
+
+editing_definitions <- list(
+    all_sites =
+        edited_genes_all_sites,
+    CDS_alledit =
+        edited_genes_CDS_alledit
+)
+
+
+# ============================================================
+# 9. Run F + M <U+00D7> two definitions
+# ============================================================
+
+all_results <- list()
+
+for (
+    sex_use in c(
+        "F",
+        "M"
+    )
+) {
+    for (
+        definition in names(
+            editing_definitions
+        )
+    ) {
+        key <- paste(
+            sex_use,
+            definition,
+            sep = "_"
+        )
+
+
+        all_results[[key]] <-
+            run_one_enrichment(
+                lrt_file =
+                    lrt_files[[sex_use]],
+                cluster_file =
+                    cluster_files[[sex_use]],
+                edited_genes =
+                    editing_definitions[[definition]],
+                sex_use =
+                    sex_use,
+                editing_definition =
+                    definition,
+                padj_cutoff =
+                    padj_cutoff,
+                out_dir =
+                    out_dir
+            )
+    }
+}
+
+
+# ============================================================
+# 10. Merge all DE vs No-DE results
+# ============================================================
+
+DE_all <- rbindlist(
+    lapply(
+        all_results,
+        `[[`,
+        "DE"
+    ),
+    fill = TRUE
+)
+
+
+# 4 primary tests:
+# F/M <U+00D7> all_sites/CDS_alledit
+DE_all[
+    ,
+    fisher_p_enrichment_BH :=
+        p.adjust(
+            fisher_p_enrichment,
+            method = "BH"
+        )
+]
+
+
+DE_all[
+    ,
+    fisher_p_two_sided_BH :=
+        p.adjust(
+            fisher_p_two_sided,
+            method = "BH"
+        )
+]
+
+
+DE_all[
+    ,
+    enriched_in_DE :=
+        odds_ratio > 1 &
+            fisher_p_enrichment_BH < 0.05
+]
+
+
+fwrite(
+    DE_all,
+    file.path(
+        out_dir,
+        "ALL.DE_vs_NoDE.fisher.tsv"
+    ),
+    sep = "\t"
+)
+
+
+# ============================================================
+# 11. Merge all group summaries
+# ============================================================
+
+group_summary_all <- rbindlist(
+    lapply(
+        all_results,
+        `[[`,
+        "group_summary"
+    ),
+    fill = TRUE
+)
+
+
+fwrite(
+    group_summary_all,
+    file.path(
+        out_dir,
+        "ALL.NoDE_cluster.edited_fraction.tsv"
+    ),
+    sep = "\t"
+)
+
+
+# ============================================================
+# 12. Merge global Fisher results
+# ============================================================
+
+global_all <- rbindlist(
+    lapply(
+        all_results,
+        `[[`,
+        "global"
+    ),
+    fill = TRUE
+)
+
+
+global_all[
+    ,
+    fisher_p_BH :=
+        p.adjust(
+            fisher_p,
+            method = "BH"
+        )
+]
+
+
+fwrite(
+    global_all,
+    file.path(
+        out_dir,
+        "ALL.NoDE_cluster.global_fisher.tsv"
+    ),
+    sep = "\t"
+)
+
+
+# ============================================================
+# 13. Merge cluster vs No-DE
+# ============================================================
+
+pairwise_all <- rbindlist(
+    lapply(
+        all_results,
+        `[[`,
+        "pairwise"
+    ),
+    fill = TRUE
+)
+
+
+fwrite(
+    pairwise_all,
+    file.path(
+        out_dir,
+        "ALL.cluster_vs_NoDE.fisher.tsv"
+    ),
+    sep = "\t"
+)
+
+
+# ============================================================
+# 14. Grouped bar plots
+#     Make the enrichment results directly interpretable
+# ============================================================
+
+# ------------------------------------------------------------
+# Which P value should be printed on the bars?
+#
+# "two_sided":
+#   Fisher two-sided test; asks whether the edited-gene
+#   proportion differs from No-DE in either direction.
+#
+# "enrichment":
+#   one-sided Fisher test; asks specifically whether edited
+#   genes are enriched relative to No-DE.
+#
+# Because the figure is intended to show "difference P",
+# two-sided Fisher is used by default.
+# ------------------------------------------------------------
+
+plot_p_mode <- "two_sided"
+
+if (!plot_p_mode %in% c("two_sided", "enrichment")) {
+    stop("plot_p_mode must be 'two_sided' or 'enrichment'.")
+}
+
+
+# ------------------------------------------------------------
+# Pretty P-value labels
+# ------------------------------------------------------------
+
+format_plot_p <- function(p) {
+    if (is.na(p)) {
+        return("")
+    }
+
+    if (p < 2.2e-16) {
+        return("BH P < 2.2e-16")
+    }
+
+    if (p < 0.001) {
+        return(
+            paste0(
+                "BH P = ",
+                formatC(
+                    p,
+                    format = "e",
+                    digits = 1
+                )
+            )
+        )
+    }
+
+    paste0(
+        "BH P = ",
+        formatC(
+            p,
+            format = "f",
+            digits = 3
+        )
+    )
+}
+
+
+# ------------------------------------------------------------
+# Common display labels
+# ------------------------------------------------------------
+
+editing_definition_levels <- c(
+    "all_sites",
+    "CDS_alledit"
+)
+
+editing_definition_labels <- c(
+    "All editing genes",
+    "CDS-edited genes"
+)
+
+sex_levels <- c(
+    "F",
+    "M"
+)
+
+sex_labels <- c(
+    "Female",
+    "Male"
+)
+
+
+# ============================================================
+# 14.1 Figure A:
+#      DE vs No-DE
+# ============================================================
+
+DE_plot_df <- rbindlist(
+    list(
+        DE_all[
+            ,
+            .(
+                sex,
+                editing_definition,
+                group = "No_DE",
+                total_genes = NoDE_total,
+                edited_genes = NoDE_edited,
+                edited_fraction = NoDE_edited_fraction
+            )
+        ],
+        DE_all[
+            ,
+            .(
+                sex,
+                editing_definition,
+                group = "DE",
+                total_genes = DE_total,
+                edited_genes = DE_edited,
+                edited_fraction = DE_edited_fraction
+            )
+        ]
+    ),
+    use.names = TRUE
+)
+
+
+# P value is attached only to the DE bar.
+if (plot_p_mode == "two_sided") {
+    DE_p_df <- DE_all[
+        ,
+        .(
+            sex,
+            editing_definition,
+            group = "DE",
+            plot_p = fisher_p_two_sided_BH
+        )
+    ]
+} else {
+    DE_p_df <- DE_all[
+        ,
+        .(
+            sex,
+            editing_definition,
+            group = "DE",
+            plot_p = fisher_p_enrichment_BH
+        )
+    ]
+}
+
+
+DE_plot_df <- merge(
+    DE_plot_df,
+    DE_p_df,
+    by = c(
+        "sex",
+        "editing_definition",
+        "group"
+    ),
+    all.x = TRUE,
+    sort = FALSE
+)
+
+
+DE_plot_df[
+    ,
+    edited_percent :=
+        100 * edited_fraction
+]
+
+
+DE_plot_df[
+    ,
+    n_label :=
+        paste0(
+            edited_genes,
+            "/",
+            total_genes
+        )
+]
+
+
+DE_plot_df[
+    ,
+    p_label :=
+        vapply(
+            plot_p,
+            format_plot_p,
+            character(1)
+        )
+]
+
+
+DE_plot_df[
+    ,
+    bar_label :=
+        ifelse(
+            p_label == "",
+            n_label,
+            paste0(
+                n_label,
+                "\n",
+                p_label
+            )
+        )
+]
+
+
+DE_plot_df[
+    ,
+    group_plot := factor(
+        group,
+        levels = c(
+            "No_DE",
+            "DE"
+        ),
+        labels = c(
+            "No-DE",
+            "DE"
+        )
+    )
+]
+
+
+DE_plot_df[
+    ,
+    editing_definition_plot := factor(
+        editing_definition,
+        levels = editing_definition_levels,
+        labels = editing_definition_labels
+    )
+]
+
+
+DE_plot_df[
+    ,
+    sex_plot := factor(
+        sex,
+        levels = sex_levels,
+        labels = sex_labels
+    )
+]
+
+
+fwrite(
+    DE_plot_df,
+    file.path(
+        out_dir,
+        "PLOT_DATA.DE_vs_NoDE.grouped_bar.tsv"
+    ),
+    sep = "\t"
+)
+
+
+p_DE <- ggplot(
+    DE_plot_df,
+    aes(
+        x = group_plot,
+        y = edited_percent,
+        fill = editing_definition_plot
+    )
+) +
+    geom_col(
+        position = position_dodge(
+            width = 0.80
+        ),
+        width = 0.70
+    ) +
+    geom_text(
+        aes(
+            label = bar_label
+        ),
+        position = position_dodge(
+            width = 0.80
+        ),
+        vjust = -0.25,
+        size = 3.2,
+        lineheight = 0.90
+    ) +
+    facet_wrap(
+        ~sex_plot,
+        nrow = 1
+    ) +
+    scale_y_continuous(
+        expand = expansion(
+            mult = c(
+                0,
+                0.28
+            )
+        )
+    ) +
+    labs(
+        x = NULL,
+        y = "Edited genes (%)",
+        fill = NULL,
+        title = "Edited-gene enrichment in differentially expressed genes",
+        subtitle = "Numbers above bars: edited genes / total genes; P: Fisher exact test vs No-DE"
+    ) +
+    theme_classic(
+        base_size = 12
+    ) +
+    theme(
+        legend.position = "top",
+        legend.justification = "left",
+        strip.background = element_blank(),
+        strip.text = element_text(
+            face = "bold",
+            size = 12
+        ),
+        axis.text.x = element_text(
+            size = 11
+        ),
+        axis.text.y = element_text(
+            size = 10
+        ),
+        axis.title.y = element_text(
+            size = 11
+        ),
+        plot.title = element_text(
+            face = "bold",
+            size = 13
+        ),
+        plot.subtitle = element_text(
+            size = 9
+        )
+    )
+
+
+ggsave(
+    filename = file.path(
+        out_dir,
+        "RNA_editing_enrichment.DE_vs_NoDE.grouped_bar.pdf"
+    ),
+    plot = p_DE,
+    width = 9.0,
+    height = 5.5
+)
+
+
+# ============================================================
+# 14.2 Figure B:
+#      No-DE + degPatterns clusters
+# ============================================================
+
+cluster_plot_df <- copy(
+    group_summary_all
+)
+
+
+# ------------------------------------------------------------
+# Select the P values used for plotting
+# ------------------------------------------------------------
+
+if (plot_p_mode == "two_sided") {
+    cluster_p_df <- pairwise_all[
+        ,
+        .(
+            sex,
+            editing_definition,
+            group,
+            plot_p = fisher_p_two_sided_BH
+        )
+    ]
+} else {
+    cluster_p_df <- pairwise_all[
+        ,
+        .(
+            sex,
+            editing_definition,
+            group,
+            plot_p = fisher_p_enrichment_BH
+        )
+    ]
+}
+
+
+# ------------------------------------------------------------
+# Merge P onto the corresponding cluster bar.
+# No-DE has no P because it is the reference group.
+# ------------------------------------------------------------
+
+cluster_plot_df <- merge(
+    cluster_plot_df,
+    cluster_p_df,
+    by = c(
+        "sex",
+        "editing_definition",
+        "group"
+    ),
+    all.x = TRUE,
+    sort = FALSE
+)
+
+
+cluster_plot_df[
+    ,
+    edited_percent :=
+        100 * edited_fraction
+]
+
+
+cluster_plot_df[
+    ,
+    n_label :=
+        paste0(
+            edited_genes,
+            "/",
+            total_genes
+        )
+]
+
+
+cluster_plot_df[
+    ,
+    p_label :=
+        vapply(
+            plot_p,
+            format_plot_p,
+            character(1)
+        )
+]
+
+
+cluster_plot_df[
+    ,
+    bar_label :=
+        ifelse(
+            group == "No_DE",
+            n_label,
+            paste0(
+                n_label,
+                "\n",
+                p_label
+            )
+        )
+]
+
+
+# ------------------------------------------------------------
+# Determine cluster order numerically
+# ------------------------------------------------------------
+
+cluster_names_plot <- unique(
+    cluster_plot_df[
+        group != "No_DE",
+        group
+    ]
+)
+
+cluster_numbers_plot <- as.integer(
+    sub(
+        "^Cluster",
+        "",
+        cluster_names_plot
+    )
+)
+
+cluster_names_plot <- cluster_names_plot[
+    order(
+        cluster_numbers_plot
+    )
+]
+
+group_levels_plot <- c(
+    "No_DE",
+    cluster_names_plot
+)
+
+group_labels_plot <- c(
+    "No-DE",
+    paste0(
+        "Cluster ",
+        as.integer(
+            sub(
+                "^Cluster",
+                "",
+                cluster_names_plot
+            )
+        )
+    )
+)
+
+
+cluster_plot_df[
+    ,
+    group_plot := factor(
+        group,
+        levels = group_levels_plot,
+        labels = group_labels_plot
+    )
+]
+
+
+cluster_plot_df[
+    ,
+    editing_definition_plot := factor(
+        editing_definition,
+        levels = editing_definition_levels,
+        labels = editing_definition_labels
+    )
+]
+
+
+cluster_plot_df[
+    ,
+    sex_plot := factor(
+        sex,
+        levels = sex_levels,
+        labels = sex_labels
+    )
+]
+
+
+fwrite(
+    cluster_plot_df,
+    file.path(
+        out_dir,
+        "PLOT_DATA.NoDE_cluster.grouped_bar.tsv"
+    ),
+    sep = "\t"
+)
+
+
+p_cluster <- ggplot(
+    cluster_plot_df,
+    aes(
+        x = group_plot,
+        y = edited_percent,
+        fill = editing_definition_plot
+    )
+) +
+    geom_col(
+        position = position_dodge(
+            width = 0.82
+        ),
+        width = 0.72
+    ) +
+    geom_text(
+        aes(
+            label = bar_label
+        ),
+        position = position_dodge(
+            width = 0.82
+        ),
+        vjust = -0.25,
+        size = 2.9,
+        lineheight = 0.90
+    ) +
+    facet_wrap(
+        ~sex_plot,
+        nrow = 1
+    ) +
+    scale_y_continuous(
+        expand = expansion(
+            mult = c(
+                0,
+                0.33
+            )
+        )
+    ) +
+    labs(
+        x = NULL,
+        y = "Edited genes (%)",
+        fill = NULL,
+        title = "Edited-gene enrichment across expression-response clusters",
+        subtitle = "Each Cluster is compared with No-DE by Fisher exact test; labels show edited genes / total genes and BH-adjusted P"
+    ) +
+    theme_classic(
+        base_size = 12
+    ) +
+    theme(
+        legend.position = "top",
+        legend.justification = "left",
+        strip.background = element_blank(),
+        strip.text = element_text(
+            face = "bold",
+            size = 12
+        ),
+        axis.text.x = element_text(
+            size = 10,
+            angle = 25,
+            hjust = 1
+        ),
+        axis.text.y = element_text(
+            size = 10
+        ),
+        axis.title.y = element_text(
+            size = 11
+        ),
+        plot.title = element_text(
+            face = "bold",
+            size = 13
+        ),
+        plot.subtitle = element_text(
+            size = 9
+        )
+    )
+
+
+ggsave(
+    filename = file.path(
+        out_dir,
+        "RNA_editing_enrichment.NoDE_clusters.grouped_bar.pdf"
+    ),
+    plot = p_cluster,
+    width = 11.0,
+    height = 5.8
+)
+
+
+# ============================================================
+# 14.3 Two-page summary PDF
+# ============================================================
+
+summary_pdf <- file.path(
+    out_dir,
+    "RNA_editing_enrichment.grouped_bar_summary.pdf"
+)
+
+pdf(
+    summary_pdf,
+    width = 11.0,
+    height = 5.8
+)
+
+print(p_DE)
+print(p_cluster)
+
+dev.off()
+
+
+cat("\nGrouped bar plots saved:\n")
+cat(
+    "  ",
+    file.path(
+        out_dir,
+        "RNA_editing_enrichment.DE_vs_NoDE.grouped_bar.pdf"
+    ),
+    "\n",
+    sep = ""
+)
+
+cat(
+    "  ",
+    file.path(
+        out_dir,
+        "RNA_editing_enrichment.NoDE_clusters.grouped_bar.pdf"
+    ),
+    "\n",
+    sep = ""
+)
+
+cat(
+    "  ",
+    summary_pdf,
+    "\n",
+    sep = ""
+)
+
+
+# ============================================================
+# 15. Final console summary
+# ============================================================
+
+cat("\n")
+cat("============================================================\n")
+cat("DONE\n")
+cat("============================================================\n")
+
+cat("\nEdited gene sets:\n")
+print(editing_set_qc)
+
+cat("\nDE vs No-DE:\n")
+print(DE_all)
+
+cat("\nGlobal No-DE / cluster Fisher:\n")
+print(global_all)
+
+cat("\nCluster vs No-DE:\n")
+print(pairwise_all)
+
+cat("\nOutput directory:\n")
+cat(
+    normalizePath(
+        out_dir,
+        winslash = "/",
+        mustWork = FALSE
+    ),
+    "\n"
+)
+```
+
+```{r}
+# ============================================================
+# Heatmap of ALL genes entered into DESeq2 LRT
+#
+# IMPORTANT:
+#   genes = ALL genes actually present in dds and tested by LRT
+#   NOT only LRT-significant genes
+#   NOT only degPatterns genes
+#
+# Female and Male are plotted separately.
+# Rows    = biological samples
+# Columns = genes
+# Values  = VST-normalized expression
+# ============================================================
+
+suppressPackageStartupMessages({
+    library(pheatmap)
+    library(RColorBrewer)
+    library(gridExtra)
+    library(grid)
+    library(data.table)
+})
+
+
+# ============================================================
+# 1. Output directory
+# ============================================================
+
+heatmap_out_dir <- file.path(
+    count_out_dir,
+    "LRT_all_gene_heatmap"
+)
+
+dir.create(
+    heatmap_out_dir,
+    recursive = TRUE,
+    showWarnings = FALSE
+)
+
+
+# ============================================================
+# 2. Get EXACT genes entered into LRT
+#
+# rownames(dds) = genes actually used in DESeq2 LRT
+# ============================================================
+
+lrt_genes_F <- rownames(
+    rna_F_res$dds
+)
+
+lrt_genes_M <- rownames(
+    rna_M_res$dds
+)
+
+
+cat(
+    "\nFemale genes entered into LRT:",
+    length(lrt_genes_F),
+    "\n"
+)
+
+cat(
+    "Male genes entered into LRT:",
+    length(lrt_genes_M),
+    "\n"
+)
+
+
+# ============================================================
+# 3. QC
+#
+# vst_mat should contain exactly the genes in dds
+# ============================================================
+
+stopifnot(
+    setequal(
+        lrt_genes_F,
+        rownames(rna_F_res$vst_mat)
+    )
+)
+
+stopifnot(
+    setequal(
+        lrt_genes_M,
+        rownames(rna_M_res$vst_mat)
+    )
+)
+
+# LRT result table should also have one row per tested gene
+stopifnot(
+    length(lrt_genes_F) ==
+        nrow(rna_F_res$res_tbl)
+)
+
+stopifnot(
+    length(lrt_genes_M) ==
+        nrow(rna_M_res$res_tbl)
+)
+
+
+# ============================================================
+# 4. Extract VST expression matrices
+#
+# Original:
+#   gene <U+00D7> sample
+#
+# Heatmap:
+#   sample <U+00D7> gene
+# ============================================================
+
+mat_F_gene_sample <- rna_F_res$vst_mat[
+    lrt_genes_F, ,
+    drop = FALSE
+]
+
+mat_M_gene_sample <- rna_M_res$vst_mat[
+    lrt_genes_M, ,
+    drop = FALSE
+]
+
+
+# transpose
+mat_F <- t(mat_F_gene_sample)
+mat_M <- t(mat_M_gene_sample)
+
+
+# Do NOT remove genes here.
+# Every LRT-tested gene must remain in the heatmap.
+if (any(!is.finite(mat_F))) {
+    stop(
+        "Non-finite VST values detected in Female LRT matrix."
+    )
+}
+
+if (any(!is.finite(mat_M))) {
+    stop(
+        "Non-finite VST values detected in Male LRT matrix."
+    )
+}
+
+
+cat(
+    "Female heatmap dimensions:",
+    nrow(mat_F),
+    "samples <U+00D7>",
+    ncol(mat_F),
+    "genes\n"
+)
+
+cat(
+    "Male heatmap dimensions:",
+    nrow(mat_M),
+    "samples <U+00D7>",
+    ncol(mat_M),
+    "genes\n"
+)
+
+
+# ============================================================
+# 5. Save exact LRT gene lists
+# ============================================================
+
+fwrite(
+    data.table(
+        gene_id = lrt_genes_F
+    ),
+    file.path(
+        heatmap_out_dir,
+        "RNA_F_genes_entered_into_LRT.tsv"
+    ),
+    sep = "\t"
+)
+
+fwrite(
+    data.table(
+        gene_id = lrt_genes_M
+    ),
+    file.path(
+        heatmap_out_dir,
+        "RNA_M_genes_entered_into_LRT.tsv"
+    ),
+    sep = "\t"
+)
+
+
+# ============================================================
+# 6. Pretty sample names
+#
+# WBg_F1   -> WT_rep1
+# AdarG_F1 -> AdarG_rep1
+# AdarS_F1 -> AdarS_rep1
+# ============================================================
+
+pretty_sample_name <- function(x) {
+    genotype <- sub(
+        "_.*$",
+        "",
+        x
+    )
+
+    rep_num <- sub(
+        "^.*_[FM]([0-9]+)$",
+        "\\1",
+        x
+    )
+
+    genotype[
+        genotype == "WBg"
+    ] <- "WT"
+
+    paste0(
+        genotype,
+        "_rep",
+        rep_num
+    )
+}
+
+
+labels_F <- pretty_sample_name(
+    rownames(mat_F)
+)
+
+labels_M <- pretty_sample_name(
+    rownames(mat_M)
+)
+
+
+# ============================================================
+# 7. Sample annotation
+# ============================================================
+
+make_sample_annotation <- function(mat) {
+    sample_names <- rownames(mat)
+
+    genotype <- sub(
+        "_.*$",
+        "",
+        sample_names
+    )
+
+    annotation <- data.frame(
+        Genotype = factor(
+            genotype,
+            levels = c(
+                "AdarG",
+                "WBg",
+                "AdarS"
+            )
+        )
+    )
+
+    rownames(annotation) <- sample_names
+
+    annotation
+}
+
+
+annotation_F <- make_sample_annotation(
+    mat_F
+)
+
+annotation_M <- make_sample_annotation(
+    mat_M
+)
+
+
+# Similar to the reference figure:
+# AdarG = blue
+# WT    = yellow
+# AdarS = pink
+
+annotation_colors <- list(
+    Genotype = c(
+        "AdarG" = "#86D4EE",
+        "WBg"   = "#F2EA00",
+        "AdarS" = "#F3B5C8"
+    )
+)
+
+
+# ============================================================
+# 8. Shared Female/Male expression color scale
+#
+# Keep VST values.
+# DO NOT perform row-wise or gene-wise Z-score.
+# ============================================================
+
+all_values <- c(
+    as.numeric(mat_F),
+    as.numeric(mat_M)
+)
+
+all_values <- all_values[
+    is.finite(all_values)
+]
+
+
+# Use the same scale in Female and Male.
+# 1%-99% clipping is ONLY for display to prevent a few
+# extreme genes from compressing the color scale.
+heat_low <- as.numeric(
+    quantile(
+        all_values,
+        0.01,
+        na.rm = TRUE
+    )
+)
+
+heat_high <- as.numeric(
+    quantile(
+        all_values,
+        0.99,
+        na.rm = TRUE
+    )
+)
+
+
+cat(
+    "Shared VST display range:",
+    round(heat_low, 3),
+    "-",
+    round(heat_high, 3),
+    "\n"
+)
+
+
+# Clip only values used for visualization.
+# Raw VST values are retained separately below.
+
+mat_F_plot <- pmax(
+    pmin(
+        mat_F,
+        heat_high
+    ),
+    heat_low
+)
+
+mat_M_plot <- pmax(
+    pmin(
+        mat_M,
+        heat_high
+    ),
+    heat_low
+)
+
+
+heat_colors <- colorRampPalette(
+    c(
+        "#2166AC",
+        "#67A9CF",
+        "#D1E5F0",
+        "#FFFFBF",
+        "#FDAE61",
+        "#D73027"
+    )
+)(100)
+
+
+heat_breaks <- seq(
+    heat_low,
+    heat_high,
+    length.out =
+        length(heat_colors) + 1
+)
+
+
+# ============================================================
+# 9. Female heatmap
+#
+# NOTE:
+# Euclidean distance is used for genes so genes with
+# nearly constant expression are NOT removed.
+#
+# Therefore ALL LRT-tested genes remain displayed.
+# ============================================================
+
+p_F <- pheatmap(
+    mat_F_plot,
+    color = heat_colors,
+    breaks = heat_breaks,
+    scale = "none",
+
+    # samples
+    cluster_rows = TRUE,
+
+    # all genes
+    cluster_cols = TRUE,
+    clustering_distance_rows =
+        "euclidean",
+    clustering_distance_cols =
+        "euclidean",
+    clustering_method =
+        "complete",
+    annotation_row =
+        annotation_F,
+    annotation_colors =
+        annotation_colors,
+    labels_row =
+        labels_F,
+    show_rownames = TRUE,
+    show_colnames = FALSE,
+    border_color = NA,
+    treeheight_row = 40,
+    treeheight_col = 45,
+    fontsize = 10,
+    fontsize_row = 10,
+    annotation_names_row = FALSE,
+    main = paste0(
+        "Female gene expression (",
+        ncol(mat_F_plot),
+        " LRT-tested genes)"
+    ),
+    silent = TRUE
+)
+
+
+# ============================================================
+# 10. Male heatmap
+# ============================================================
+
+p_M <- pheatmap(
+    mat_M_plot,
+    color = heat_colors,
+    breaks = heat_breaks,
+    scale = "none",
+    cluster_rows = TRUE,
+    cluster_cols = TRUE,
+    clustering_distance_rows =
+        "euclidean",
+    clustering_distance_cols =
+        "euclidean",
+    clustering_method =
+        "complete",
+    annotation_row =
+        annotation_M,
+    annotation_colors =
+        annotation_colors,
+    labels_row =
+        labels_M,
+    show_rownames = TRUE,
+    show_colnames = FALSE,
+    border_color = NA,
+    treeheight_row = 40,
+    treeheight_col = 45,
+    fontsize = 10,
+    fontsize_row = 10,
+    annotation_names_row = FALSE,
+    main = paste0(
+        "Male gene expression (",
+        ncol(mat_M_plot),
+        " LRT-tested genes)"
+    ),
+    silent = TRUE
+)
+
+
+# ============================================================
+# 11. Save Female separately
+# ============================================================
+
+pdf(
+    file.path(
+        heatmap_out_dir,
+        "RNA_F_ALL_LRT_tested_genes_heatmap.pdf"
+    ),
+    width = 10,
+    height = 6.5,
+    useDingbats = FALSE
+)
+
+grid.newpage()
+grid.draw(
+    p_F$gtable
+)
+
+dev.off()
+
+
+# ============================================================
+# 12. Save Male separately
+# ============================================================
+
+pdf(
+    file.path(
+        heatmap_out_dir,
+        "RNA_M_ALL_LRT_tested_genes_heatmap.pdf"
+    ),
+    width = 10,
+    height = 6.5,
+    useDingbats = FALSE
+)
+
+grid.newpage()
+grid.draw(
+    p_M$gtable
+)
+
+dev.off()
+
+
+# ============================================================
+# 13. Female + Male combined PDF
+# ============================================================
+
+combined_pdf <- file.path(
+    heatmap_out_dir,
+    "RNA_FM_ALL_LRT_tested_genes_heatmap.pdf"
+)
+
+
+pdf(
+    combined_pdf,
+    width = 10,
+    height = 12,
+    useDingbats = FALSE
+)
+
+
+gridExtra::grid.arrange(
+    gridExtra::arrangeGrob(
+        grid::textGrob(
+            "A",
+            x = 0.01,
+            hjust = 0,
+            gp = grid::gpar(
+                fontface = "bold",
+                fontsize = 14
+            )
+        ),
+        p_F$gtable,
+        ncol = 1,
+        heights = c(
+            0.04,
+            0.96
+        )
+    ),
+    gridExtra::arrangeGrob(
+        grid::textGrob(
+            "B",
+            x = 0.01,
+            hjust = 0,
+            gp = grid::gpar(
+                fontface = "bold",
+                fontsize = 14
+            )
+        ),
+        p_M$gtable,
+        ncol = 1,
+        heights = c(
+            0.04,
+            0.96
+        )
+    ),
+    ncol = 1
+)
+
+
+dev.off()
+
+
+# ============================================================
+# 14. Save RAW VST matrices used for the heatmap
+#
+# These contain ALL genes entered into the LRT.
+# ============================================================
+
+write.table(
+    mat_F,
+    file = file.path(
+        heatmap_out_dir,
+        "RNA_F_ALL_LRT_tested_genes_VST_matrix.tsv"
+    ),
+    sep = "\t",
+    quote = FALSE,
+    col.names = NA
+)
+
+
+write.table(
+    mat_M,
+    file = file.path(
+        heatmap_out_dir,
+        "RNA_M_ALL_LRT_tested_genes_VST_matrix.tsv"
+    ),
+    sep = "\t",
+    quote = FALSE,
+    col.names = NA
+)
+
+
+cat("\n")
+cat("============================================================\n")
+cat("ALL-LRT-gene expression heatmap finished\n")
+cat("============================================================\n")
+
+cat(
+    "Female LRT-tested genes:",
+    length(lrt_genes_F),
+    "\n"
+)
+
+cat(
+    "Male LRT-tested genes:",
+    length(lrt_genes_M),
+    "\n"
+)
+
+cat(
+    "Combined PDF:",
+    combined_pdf,
+    "\n"
+)
+```
+

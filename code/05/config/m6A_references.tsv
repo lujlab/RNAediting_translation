@@ -1,0 +1,5 @@
+species	m6a_file
+Dmel	/path/to/Proj1_editing/codex/02_stalling/3flank/peak_find/m6A_list.handle
+Dsim	/path/to/Proj1_editing/codex/02_stalling/3flank/peak_find/m6A_list.droSim1.handle
+Dsec	/path/to/Proj1_editing/codex/02_stalling/3flank/peak_find/m6A_list.droSec1ToDm6.handle
+Dere	/path/to/Proj1_editing/codex/02_stalling/3flank/peak_find/m6A_list.droEre2ToDm6.handle

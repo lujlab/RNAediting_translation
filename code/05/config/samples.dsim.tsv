@@ -1,0 +1,9 @@
+sample_id	rna_count	rpf_count
+Dsim_w501_F1	/path/to/RNA_editing_DATAprocessing_new/RNA_processing_JWZ/06_codon_count/w501-F1-totalRNA-LJD7636-RL1_longestCDS.old4.tsv.num	/path/to/RNA_editing_DATAprocessing_new/05.psite/psite_2times/Dsim_F1.codon_Asite.num
+Dsim_w501_F2	/path/to/RNA_editing_DATAprocessing_new/RNA_processing_JWZ/06_codon_count/w501-F2-totalRNA-LJD7637-RL1_longestCDS.old4.tsv.num	/path/to/RNA_editing_DATAprocessing_new/05.psite/psite_2times/Dsim_F2.codon_Asite.num
+Dsim_w501_F3	/path/to/RNA_editing_DATAprocessing_new/RNA_processing_JWZ/06_codon_count/w501-F3-totalRNA-LJD7638-RL1_longestCDS.old4.tsv.num	/path/to/RNA_editing_DATAprocessing_new/05.psite/psite_2times/Dsim_F3.codon_Asite.num
+Dsim_w501_M1	/path/to/RNA_editing_DATAprocessing_new/RNA_processing_JWZ/06_codon_count/w501-M1-totalRNA-LJD7633-RL1_longestCDS.old4.tsv.num	/path/to/RNA_editing_DATAprocessing_new/05.psite/psite_2times/Dsim_M1.codon_Asite.num
+Dsim_w501_M2	/path/to/RNA_editing_DATAprocessing_new/RNA_processing_JWZ/06_codon_count/w501-M2-totalRNA-LJD7634-RL1_longestCDS.old4.tsv.num	/path/to/RNA_editing_DATAprocessing_new/05.psite/psite_2times/Dsim_M2.codon_Asite.num
+Dsim_w501_M3	/path/to/RNA_editing_DATAprocessing_new/RNA_processing_JWZ/06_codon_count/w501-M3-totalRNA-LJD7635-RL1_longestCDS.old4.tsv.num	/path/to/RNA_editing_DATAprocessing_new/05.psite/psite_2times/Dsim_M3.codon_Asite.num
+Dsim_female_head	/path/to/RNA_editing_DATAprocessing_new/RNA_processing_JWZ/06_codon_count/Dsim_female_head_mRNA_longestCDS.old4.tsv.num	/path/to/RNA_editing_DATAprocessing_new/05.psite/psite_2times/Dsim_female_head_ribo.codon_Asite.num
+Dsim_male_head	/path/to/RNA_editing_DATAprocessing_new/RNA_processing_JWZ/06_codon_count/Dsim_male_head_mRNA_longestCDS.old4.tsv.num	/path/to/RNA_editing_DATAprocessing_new/05.psite/psite_2times/Dsim_male_head_ribo.codon_Asite.num

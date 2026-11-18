@@ -1,0 +1,8 @@
+sample_id	rna_count	rpf_count
+Dere_F1	/path/to/RNA_editing_DATAprocessing_new/RNA_processing_JWZ/06_codon_count/ere-F1-1-LJD7624_longestCDS.old4.tsv.num	/path/to/RNA_editing_DATAprocessing_new/05.psite/psite_2times/Dere_F1.codon_Asite.num
+Dere_F2	/path/to/RNA_editing_DATAprocessing_new/RNA_processing_JWZ/06_codon_count/ere-F2-1-LJD7625_longestCDS.old4.tsv.num	/path/to/RNA_editing_DATAprocessing_new/05.psite/psite_2times/Dere_F2.codon_Asite.num
+Dere_F3	/path/to/RNA_editing_DATAprocessing_new/RNA_processing_JWZ/06_codon_count/ere-F3-1-LJD7626_longestCDS.old4.tsv.num	/path/to/RNA_editing_DATAprocessing_new/05.psite/psite_2times/Dere_F3.codon_Asite.num
+Dere_M1	/path/to/RNA_editing_DATAprocessing_new/RNA_processing_JWZ/06_codon_count/ere-M1-1-LJD7621_longestCDS.old4.tsv.num	/path/to/RNA_editing_DATAprocessing_new/05.psite/psite_2times/Dere_M1.codon_Asite.num
+Dere_M2	/path/to/RNA_editing_DATAprocessing_new/RNA_processing_JWZ/06_codon_count/ere-M2-1-LJD7622_longestCDS.old4.tsv.num	/path/to/RNA_editing_DATAprocessing_new/05.psite/psite_2times/Dere_M2.codon_Asite.num
+Dere_M3	/path/to/RNA_editing_DATAprocessing_new/RNA_processing_JWZ/06_codon_count/ere-M3-1-LJD7623_longestCDS.old4.tsv.num	/path/to/RNA_editing_DATAprocessing_new/05.psite/psite_2times/Dere_M3.codon_Asite.num
+Dere_male_head	/path/to/RNA_editing_DATAprocessing_new/RNA_processing_JWZ/06_codon_count/Dere_male_head_mRNA_longestCDS.old4.tsv.num	/path/to/RNA_editing_DATAprocessing_new/05.psite/psite_2times/Dere_male_head_ribo.codon_Asite.num

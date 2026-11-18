@@ -1,0 +1,1240 @@
+panel	assay	source_row	sample_id	sex	Genotype	batch	raw_value	value
+A	Crossed Lines	1	W,Bg♀-1	Female	WT	1	28	28
+A	Crossed Lines	2	W,Bg♀-2	Female	WT	1	34.6666667	34.6666667
+A	Crossed Lines	3	W,Bg♀-3	Female	WT	1	6	6
+A	Crossed Lines	4	W,Bg♀-4	Female	WT	1	14.6666667	14.6666667
+A	Crossed Lines	5	W,Bg♀-5	Female	WT	1	39.6666667	39.6666667
+A	Crossed Lines	6	W,Bg♀-6	Female	WT	1	3.66666667	3.66666667
+A	Crossed Lines	7	W,Bg♀-7	Female	WT	1	32.6666667	32.6666667
+A	Crossed Lines	8	W,Bg♀-8	Female	WT	1	17.3333333	17.3333333
+A	Crossed Lines	9	W,Bg♀-9	Female	WT	1	56	56
+A	Crossed Lines	10	W,Bg♀-10	Female	WT	1	48	48
+A	Crossed Lines	11	W,Bg♀-11	Female	WT	1	32.3333333	32.3333333
+A	Crossed Lines	12	W,Bg♀-12	Female	WT	1	25.3333333	25.3333333
+A	Crossed Lines	13	W,Bg♀-13	Female	WT	1	47.6666667	47.6666667
+A	Crossed Lines	14	W,Bg♀-14	Female	WT	1	47.6666667	47.6666667
+A	Crossed Lines	15	W,Bg♀-15	Female	WT	1	51	51
+A	Crossed Lines	16	AG♀-1	Female	AdarG	1	33	33
+A	Crossed Lines	17	AG♀-2	Female	AdarG	1	6.33333333	6.33333333
+A	Crossed Lines	18	AG♀-3	Female	AdarG	1	8.66666667	8.66666667
+A	Crossed Lines	19	AG♀-4	Female	AdarG	1	21.3333333	21.3333333
+A	Crossed Lines	20	AG♀-5	Female	AdarG	1	6.33333333	6.33333333
+A	Crossed Lines	21	AG♀-6	Female	AdarG	1	18.3333333	18.3333333
+A	Crossed Lines	22	AG♀-7	Female	AdarG	1	41.3333333	41.3333333
+A	Crossed Lines	23	AG♀-8	Female	AdarG	1	26.3333333	26.3333333
+A	Crossed Lines	24	AG♀-9	Female	AdarG	1	21.3333333	21.3333333
+A	Crossed Lines	25	AG♀-10	Female	AdarG	1	17	17
+A	Crossed Lines	26	AG♀-11	Female	AdarG	1	20.3333333	20.3333333
+A	Crossed Lines	27	AG♀-12	Female	AdarG	1	32.3333333	32.3333333
+A	Crossed Lines	28	AG♀-13	Female	AdarG	1	36.3333333	36.3333333
+A	Crossed Lines	29	AG♀-14	Female	AdarG	1	18	18
+A	Crossed Lines	30	AG♀-15	Female	AdarG	1	35	35
+A	Crossed Lines	31	ATC♀-1	Female	AdarS	1	11.3333333	11.3333333
+A	Crossed Lines	32	ATC♀-2	Female	AdarS	1	10.6666667	10.6666667
+A	Crossed Lines	33	ATC♀-3	Female	AdarS	1	11.3333333	11.3333333
+A	Crossed Lines	34	ATC♀-4	Female	AdarS	1	28	28
+A	Crossed Lines	35	ATC♀-5	Female	AdarS	1	75.3333333	75.3333333
+A	Crossed Lines	36	ATC♀-6	Female	AdarS	1	56	56
+A	Crossed Lines	37	ATC♀-7	Female	AdarS	1	56.3333333	56.3333333
+A	Crossed Lines	38	ATC♀-8	Female	AdarS	1	56.6666667	56.6666667
+A	Crossed Lines	39	ATC♀-9	Female	AdarS	1	59.6666667	59.6666667
+A	Crossed Lines	40	ATC♀-10	Female	AdarS	1	40	40
+A	Crossed Lines	41	ATC♀-11	Female	AdarS	1	46.6666667	46.6666667
+A	Crossed Lines	42	ATC♀-12	Female	AdarS	1	65.6666667	65.6666667
+A	Crossed Lines	43	ATC♀-13	Female	AdarS	1	27.3333333	27.3333333
+A	Crossed Lines	44	ATC♀-14	Female	AdarS	1	57	57
+A	Crossed Lines	45	ATC♀-15	Female	AdarS	1	21	21
+A	Crossed Lines	46	W,Bg♂-1	Male	WT	1	7.66666667	7.66666667
+A	Crossed Lines	47	W,Bg♂-2	Male	WT	1	4.66666667	4.66666667
+A	Crossed Lines	48	W,Bg♂-3	Male	WT	1	13.3333333	13.3333333
+A	Crossed Lines	49	W,Bg♂-4	Male	WT	1	11	11
+A	Crossed Lines	50	W,Bg♂-5	Male	WT	1	45.3333333	45.3333333
+A	Crossed Lines	51	W,Bg♂-6	Male	WT	1	39.6666667	39.6666667
+A	Crossed Lines	52	W,Bg♂-7	Male	WT	1	40	40
+A	Crossed Lines	53	W,Bg♂-8	Male	WT	1	41	41
+A	Crossed Lines	54	W,Bg♂-9	Male	WT	1	16.3333333	16.3333333
+A	Crossed Lines	55	W,Bg♂-10	Male	WT	1	4	4
+A	Crossed Lines	56	W,Bg♂-11	Male	WT	1	46.3333333	46.3333333
+A	Crossed Lines	57	W,Bg♂-12	Male	WT	1	37.6666667	37.6666667
+A	Crossed Lines	58	W,Bg♂-13	Male	WT	1	24.6666667	24.6666667
+A	Crossed Lines	59	W,Bg♂-14	Male	WT	1	19.3333333	19.3333333
+A	Crossed Lines	60	W,Bg♂-15	Male	WT	1	49.6666667	49.6666667
+A	Crossed Lines	61	AG♂-1	Male	AdarG	1	14.6666667	14.6666667
+A	Crossed Lines	62	AG♂-2	Male	AdarG	1	10.6666667	10.6666667
+A	Crossed Lines	63	AG♂-3	Male	AdarG	1	2	2
+A	Crossed Lines	64	AG♂-4	Male	AdarG	1	2.33333333	2.33333333
+A	Crossed Lines	65	AG♂-5	Male	AdarG	1	20	20
+A	Crossed Lines	66	AG♂-6	Male	AdarG	1	39	39
+A	Crossed Lines	67	AG♂-7	Male	AdarG	1	6.33333333	6.33333333
+A	Crossed Lines	68	AG♂-8	Male	AdarG	1	9.66666667	9.66666667
+A	Crossed Lines	69	AG♂-9	Male	AdarG	1	22.6666667	22.6666667
+A	Crossed Lines	70	AG♂-10	Male	AdarG	1	1.33333333	1.33333333
+A	Crossed Lines	71	AG♂-11	Male	AdarG	1	62.3333333	62.3333333
+A	Crossed Lines	72	AG♂-12	Male	AdarG	1	40	40
+A	Crossed Lines	73	AG♂-13	Male	AdarG	1	50.3333333	50.3333333
+A	Crossed Lines	74	AG♂-14	Male	AdarG	1	28.3333333	28.3333333
+A	Crossed Lines	75	ATC♂-1	Male	AdarS	1	46.6666667	46.6666667
+A	Crossed Lines	76	ATC♂-2	Male	AdarS	1	27.6666667	27.6666667
+A	Crossed Lines	77	ATC♂-3	Male	AdarS	1	3.33333333	3.33333333
+A	Crossed Lines	78	ATC♂-4	Male	AdarS	1	53.3333333	53.3333333
+A	Crossed Lines	79	ATC♂-5	Male	AdarS	1	39	39
+A	Crossed Lines	80	ATC♂-6	Male	AdarS	1	34.6666667	34.6666667
+A	Crossed Lines	81	ATC♂-7	Male	AdarS	1	39	39
+A	Crossed Lines	82	ATC♂-8	Male	AdarS	1	55.3333333	55.3333333
+A	Crossed Lines	83	ATC♂-9	Male	AdarS	1	48	48
+A	Crossed Lines	84	ATC♂-10	Male	AdarS	1	45	45
+A	Crossed Lines	85	ATC♂-11	Male	AdarS	1	41.3333333	41.3333333
+A	Crossed Lines	86	ATC♂-12	Male	AdarS	1	59.6666667	59.6666667
+A	Crossed Lines	87	W,Bg♀-1	Female	WT	2	11.33333333	11.33333333
+A	Crossed Lines	88	W,Bg♀-2	Female	WT	2	31.66666667	31.66666667
+A	Crossed Lines	89	W,Bg♀-3	Female	WT	2	30.66666667	30.66666667
+A	Crossed Lines	90	W,Bg♀-4	Female	WT	2	31.66666667	31.66666667
+A	Crossed Lines	91	W,Bg♀-5	Female	WT	2	26.33333333	26.33333333
+A	Crossed Lines	92	W,Bg♀-6	Female	WT	2	23.33333333	23.33333333
+A	Crossed Lines	93	W,Bg♀-7	Female	WT	2	35.66666667	35.66666667
+A	Crossed Lines	94	W,Bg♀-8	Female	WT	2	41.33333333	41.33333333
+A	Crossed Lines	95	W,Bg♀-9	Female	WT	2	37	37
+A	Crossed Lines	96	W,Bg♀-10	Female	WT	2	29.33333333	29.33333333
+A	Crossed Lines	97	W,Bg♀-11	Female	WT	2	40.66666667	40.66666667
+A	Crossed Lines	98	W,Bg♀-12	Female	WT	2	26.66666667	26.66666667
+A	Crossed Lines	99	W,Bg♀-13	Female	WT	2	36	36
+A	Crossed Lines	100	W,Bg♀-14	Female	WT	2	39.33333333	39.33333333
+A	Crossed Lines	101	W,Bg♀-15	Female	WT	2	44	44
+A	Crossed Lines	102	W,Bg♀-16	Female	WT	2	35.33333333	35.33333333
+A	Crossed Lines	103	AG♀-1	Female	AdarG	2	17.66666667	17.66666667
+A	Crossed Lines	104	AG♀-2	Female	AdarG	2	29.66666667	29.66666667
+A	Crossed Lines	105	AG♀-3	Female	AdarG	2	10.33333333	10.33333333
+A	Crossed Lines	106	AG♀-4	Female	AdarG	2	33.66666667	33.66666667
+A	Crossed Lines	107	AG♀-5	Female	AdarG	2	44	44
+A	Crossed Lines	108	AG♀-6	Female	AdarG	2	44	44
+A	Crossed Lines	109	AG♀-7	Female	AdarG	2	45.33333333	45.33333333
+A	Crossed Lines	110	AG♀-8	Female	AdarG	2	44	44
+A	Crossed Lines	111	AG♀-9	Female	AdarG	2	10.66666667	10.66666667
+A	Crossed Lines	112	AG♀-10	Female	AdarG	2	15.33333333	15.33333333
+A	Crossed Lines	113	AG♀-11	Female	AdarG	2	16.33333333	16.33333333
+A	Crossed Lines	114	AG♀-12	Female	AdarG	2	28.33333333	28.33333333
+A	Crossed Lines	115	AG♀-13	Female	AdarG	2	13.33333333	13.33333333
+A	Crossed Lines	116	AG♀-14	Female	AdarG	2	11.33333333	11.33333333
+A	Crossed Lines	117	AG♀-15	Female	AdarG	2	31	31
+A	Crossed Lines	118	AG♀-16	Female	AdarG	2	17	17
+A	Crossed Lines	119	AG♀-17	Female	AdarG	2	12.66666667	12.66666667
+A	Crossed Lines	120	ATC♀-1	Female	AdarS	2	17.66666667	17.66666667
+A	Crossed Lines	121	ATC♀-2	Female	AdarS	2	40.66666667	40.66666667
+A	Crossed Lines	122	ATC♀-3	Female	AdarS	2	38.66666667	38.66666667
+A	Crossed Lines	123	ATC♀-4	Female	AdarS	2	22.33333333	22.33333333
+A	Crossed Lines	124	ATC♀-5	Female	AdarS	2	32	32
+A	Crossed Lines	125	ATC♀-6	Female	AdarS	2	20.66666667	20.66666667
+A	Crossed Lines	126	ATC♀-7	Female	AdarS	2	12	12
+A	Crossed Lines	127	ATC♀-8	Female	AdarS	2	15.33333333	15.33333333
+A	Crossed Lines	128	ATC♀-9	Female	AdarS	2	33.66666667	33.66666667
+A	Crossed Lines	129	ATC♀-10	Female	AdarS	2	24.33333333	24.33333333
+A	Crossed Lines	130	ATC♀-11	Female	AdarS	2	42.33333333	42.33333333
+A	Crossed Lines	131	ATC♀-12	Female	AdarS	2	37.33333333	37.33333333
+A	Crossed Lines	132	ATC♀-13	Female	AdarS	2	30.66666667	30.66666667
+A	Crossed Lines	133	ATC♀-14	Female	AdarS	2	29.66666667	29.66666667
+A	Crossed Lines	134	W,Bg♂-1	Male	WT	2	19	19
+A	Crossed Lines	135	W,Bg♂-2	Male	WT	2	49	49
+A	Crossed Lines	136	W,Bg♂-3	Male	WT	2	30	30
+A	Crossed Lines	137	W,Bg♂-4	Male	WT	2	25.33333333	25.33333333
+A	Crossed Lines	138	W,Bg♂-5	Male	WT	2	18.33333333	18.33333333
+A	Crossed Lines	139	W,Bg♂-6	Male	WT	2	31.33333333	31.33333333
+A	Crossed Lines	140	W,Bg♂-7	Male	WT	2	49	49
+A	Crossed Lines	141	W,Bg♂-8	Male	WT	2	23.66666667	23.66666667
+A	Crossed Lines	142	W,Bg♂-9	Male	WT	2	40	40
+A	Crossed Lines	143	W,Bg♂-10	Male	WT	2	27.66666667	27.66666667
+A	Crossed Lines	144	W,Bg♂-11	Male	WT	2	19	19
+A	Crossed Lines	145	W,Bg♂-12	Male	WT	2	30.33333333	30.33333333
+A	Crossed Lines	146	W,Bg♂-13	Male	WT	2	17.33333333	17.33333333
+A	Crossed Lines	147	W,Bg♂-14	Male	WT	2	22	22
+A	Crossed Lines	148	W,Bg♂-15	Male	WT	2	23	23
+A	Crossed Lines	149	W,Bg♂-16	Male	WT	2	32.33333333	32.33333333
+A	Crossed Lines	150	W,Bg♂-17	Male	WT	2	40	40
+A	Crossed Lines	151	AG♂-1	Male	AdarG	2	19.66666667	19.66666667
+A	Crossed Lines	152	AG♂-2	Male	AdarG	2	25.33333333	25.33333333
+A	Crossed Lines	153	AG♂-3	Male	AdarG	2	5.333333333	5.333333333
+A	Crossed Lines	154	AG♂-4	Male	AdarG	2	5.666666667	5.666666667
+A	Crossed Lines	155	AG♂-5	Male	AdarG	2	8.666666667	8.666666667
+A	Crossed Lines	156	AG♂-6	Male	AdarG	2	21.33333333	21.33333333
+A	Crossed Lines	157	AG♂-7	Male	AdarG	2	16	16
+A	Crossed Lines	158	AG♂-8	Male	AdarG	2	19.33333333	19.33333333
+A	Crossed Lines	159	AG♂-9	Male	AdarG	2	48	48
+A	Crossed Lines	160	AG♂-10	Male	AdarG	2	33.33333333	33.33333333
+A	Crossed Lines	161	AG♂-11	Male	AdarG	2	45.33333333	45.33333333
+A	Crossed Lines	162	AG♂-12	Male	AdarG	2	22.66666667	22.66666667
+A	Crossed Lines	163	AG♂-13	Male	AdarG	2	22.66666667	22.66666667
+A	Crossed Lines	164	AG♂-14	Male	AdarG	2	42	42
+A	Crossed Lines	165	ATC♂-1	Male	AdarS	2	29	29
+A	Crossed Lines	166	ATC♂-2	Male	AdarS	2	23.33333333	23.33333333
+A	Crossed Lines	167	ATC♂-3	Male	AdarS	2	17	17
+A	Crossed Lines	168	ATC♂-4	Male	AdarS	2	59.33333333	59.33333333
+A	Crossed Lines	169	ATC♂-5	Male	AdarS	2	15	15
+A	Crossed Lines	170	ATC♂-6	Male	AdarS	2	23.66666667	23.66666667
+A	Crossed Lines	171	ATC♂-7	Male	AdarS	2	20.33333333	20.33333333
+A	Crossed Lines	172	ATC♂-8	Male	AdarS	2	15.33333333	15.33333333
+A	Crossed Lines	173	ATC♂-9	Male	AdarS	2	29.66666667	29.66666667
+A	Crossed Lines	174	ATC♂-10	Male	AdarS	2	6.333333333	6.333333333
+A	Crossed Lines	175	ATC♂-11	Male	AdarS	2	25.66666667	25.66666667
+A	Crossed Lines	176	ATC♂-12	Male	AdarS	2	46.33333333	46.33333333
+A	Crossed Lines	177	ATC♂-13	Male	AdarS	2	63.33333333	63.33333333
+A	Crossed Lines	178	ATC♂-14	Male	AdarS	2	52.33333333	52.33333333
+A	Crossed Lines	179	ATC♂-15	Male	AdarS	2	44.66666667	44.66666667
+A	Crossed Lines	180	ATC♂-16	Male	AdarS	2	42.33333333	42.33333333
+A	Crossed Lines	181	ATC♂-17	Male	AdarS	2	36	36
+A	Crossed Lines	182	ATC♂-18	Male	AdarS	2	46	46
+B	Climing Success Rate	1	WBg♀-1	Female	WT	1	0.075	7.5
+B	Climing Success Rate	2	WBg♀-2	Female	WT	1	0.06	6
+B	Climing Success Rate	3	WBg♀-3	Female	WT	1	0.075	7.5
+B	Climing Success Rate	4	WBg♀-5	Female	WT	1	0.02	2
+B	Climing Success Rate	5	WBg♀-6	Female	WT	1	0.06	6
+B	Climing Success Rate	6	WBg♀-7	Female	WT	2	0.1	10
+B	Climing Success Rate	7	WBg♀-8	Female	WT	2	0.3	30
+B	Climing Success Rate	8	WBg♀-9	Female	WT	2	0.12	12
+B	Climing Success Rate	9	WBg♀-10	Female	WT	2	0.2	20
+B	Climing Success Rate	10	WBg♀-11	Female	WT	2	0.175	17.5
+B	Climing Success Rate	11	WBg♀-12	Female	WT	2	0.133333333	13.3333333
+B	Climing Success Rate	12	WBg♀-13	Female	WT	3	0.116666667	11.6666667
+B	Climing Success Rate	13	WBg♀-14	Female	WT	3	0.083333333	8.3333333
+B	Climing Success Rate	14	WBg♀-15	Female	WT	3	0.283333333	28.3333333
+B	Climing Success Rate	15	WBg♀-16	Female	WT	3	0.092307692	9.2307692
+B	Climing Success Rate	16	WBg♀-17	Female	WT	3	0.142857143	14.2857143
+B	Climing Success Rate	17	WBg♀-18	Female	WT	3	0.127272727	12.7272727
+B	Climing Success Rate	18	AG♀-1	Female	AdarG	1	0.52	52
+B	Climing Success Rate	19	AG♀-2	Female	AdarG	1	0.48	48
+B	Climing Success Rate	20	AG♀-3	Female	AdarG	1	0.542857143	54.2857143
+B	Climing Success Rate	21	AG♀-4	Female	AdarG	1	0.52	52
+B	Climing Success Rate	22	AG♀-5	Female	AdarG	1	0.56	56
+B	Climing Success Rate	23	AG♀-6	Female	AdarG	1	0.46	46
+B	Climing Success Rate	24	AG♀-7	Female	AdarG	2	0.446153846	44.6153846
+B	Climing Success Rate	25	AG♀-8	Female	AdarG	2	0.46	46
+B	Climing Success Rate	26	AG♀-9	Female	AdarG	2	0.563636364	56.3636364
+B	Climing Success Rate	27	AG♀-10	Female	AdarG	2	0.533333333	53.3333333
+B	Climing Success Rate	28	AG♀-11	Female	AdarG	2	0.583333333	58.3333333
+B	Climing Success Rate	29	AG♀-12	Female	AdarG	2	0.545454545	54.5454545
+B	Climing Success Rate	30	AG♀-13	Female	AdarG	3	0.616666667	61.6666667
+B	Climing Success Rate	31	AG♀-14	Female	AdarG	3	0.44	44
+B	Climing Success Rate	32	AG♀-15	Female	AdarG	3	0.216666667	21.6666667
+B	Climing Success Rate	33	AG♀-16	Female	AdarG	3	0.583333333	58.3333333
+B	Climing Success Rate	34	AG♀-17	Female	AdarG	3	0.475	47.5
+B	Climing Success Rate	35	AG♀-18	Female	AdarG	3	0.6	60
+B	Climing Success Rate	36	ATC♀-1	Female	AdarS	1	0.26	26
+B	Climing Success Rate	37	ATC♀-2	Female	AdarS	1	0.3	30
+B	Climing Success Rate	38	ATC♀-3	Female	AdarS	1	0.311111111	31.1111111
+B	Climing Success Rate	39	ATC♀-4	Female	AdarS	1	0.12	12
+B	Climing Success Rate	40	ATC♀-5	Female	AdarS	1	0.311111111	31.1111111
+B	Climing Success Rate	41	ATC♀-6	Female	AdarS	1	0.54	54
+B	Climing Success Rate	42	ATC♀-7	Female	AdarS	2	0.46	46
+B	Climing Success Rate	43	ATC♀-8	Female	AdarS	2	0.215384615	21.5384615
+B	Climing Success Rate	44	ATC♀-9	Female	AdarS	2	0.34	34
+B	Climing Success Rate	45	ATC♀-10	Female	AdarS	2	0.36	36
+B	Climing Success Rate	46	ATC♀-11	Female	AdarS	3	0.233333333	23.3333333
+B	Climing Success Rate	47	ATC♀-12	Female	AdarS	3	0.15	15
+B	Climing Success Rate	48	ATC♀-13	Female	AdarS	3	0.25	25
+B	Climing Success Rate	49	ATC♀-14	Female	AdarS	3	0.333333333	33.3333333
+B	Climing Success Rate	50	ATC♀-15	Female	AdarS	3	0.52	52
+B	Climing Success Rate	51	ATC♀-16	Female	AdarS	3	0.316666667	31.6666667
+B	Climing Success Rate	52	WBg♂-1	Male	WT	1	0.111111111	11.1111111
+B	Climing Success Rate	53	WBg♂-2	Male	WT	1	0.14	14
+B	Climing Success Rate	54	WBg♂-3	Male	WT	1	0.422222222	42.2222222
+B	Climing Success Rate	55	WBg♂-4	Male	WT	1	0.24	24
+B	Climing Success Rate	56	WBg♂-5	Male	WT	1	0.1	10
+B	Climing Success Rate	57	WBg♂-6	Male	WT	1	0.24	24
+B	Climing Success Rate	58	WBg♂-7	Male	WT	2	0.26	26
+B	Climing Success Rate	59	WBg♂-8	Male	WT	2	0.3	30
+B	Climing Success Rate	60	WBg♂-9	Male	WT	2	0.42	42
+B	Climing Success Rate	61	WBg♂-10	Male	WT	2	0.3	30
+B	Climing Success Rate	62	WBg♂-11	Male	WT	2	0.230769231	23.0769231
+B	Climing Success Rate	63	WBg♂-12	Male	WT	2	0.215384615	21.5384615
+B	Climing Success Rate	64	WBg♂-13	Male	WT	3	0.283333333	28.3333333
+B	Climing Success Rate	65	WBg♂-14	Male	WT	3	0.283333333	28.3333333
+B	Climing Success Rate	66	WBg♂-15	Male	WT	3	0.4	40
+B	Climing Success Rate	67	WBg♂-16	Male	WT	3	0.181818182	18.1818182
+B	Climing Success Rate	68	WBg♂-17	Male	WT	3	0.316666667	31.6666667
+B	Climing Success Rate	69	WBg♂-18	Male	WT	3	0.233333333	23.3333333
+B	Climing Success Rate	70	AG♂-1	Male	AdarG	1	0.525	52.5
+B	Climing Success Rate	71	AG♂-2	Male	AdarG	1	0.7	70
+B	Climing Success Rate	72	AG♂-3	Male	AdarG	1	0.6	60
+B	Climing Success Rate	73	AG♂-4	Male	AdarG	1	0.76	76
+B	Climing Success Rate	74	AG♂-5	Male	AdarG	1	0.58	58
+B	Climing Success Rate	75	AG♂-6	Male	AdarG	1	0.6	60
+B	Climing Success Rate	76	AG♂-7	Male	AdarG	2	0.6	60
+B	Climing Success Rate	77	AG♂-8	Male	AdarG	2	0.818181818	81.8181818
+B	Climing Success Rate	78	AG♂-9	Male	AdarG	2	0.75	75
+B	Climing Success Rate	79	AG♂-10	Male	AdarG	2	0.666666667	66.6666667
+B	Climing Success Rate	80	AG♂-11	Male	AdarG	2	0.533333333	53.3333333
+B	Climing Success Rate	81	AG♂-12	Male	AdarG	2	0.523076923	52.3076923
+B	Climing Success Rate	82	AG♂-13	Male	AdarG	3	0.618181818	61.8181818
+B	Climing Success Rate	83	AG♂-14	Male	AdarG	3	0.618181818	61.8181818
+B	Climing Success Rate	84	AG♂-15	Male	AdarG	3	0.566666667	56.6666667
+B	Climing Success Rate	85	AG♂-16	Male	AdarG	3	0.54	54
+B	Climing Success Rate	86	AG♂-17	Male	AdarG	3	0.563636364	56.3636364
+B	Climing Success Rate	87	AG♂-18	Male	AdarG	3	0.709090909	70.9090909
+B	Climing Success Rate	88	ATC♂-1	Male	AdarS	1	0.377777778	37.7777778
+B	Climing Success Rate	89	ATC♂-2	Male	AdarS	1	0.25	25
+B	Climing Success Rate	90	ATC♂-3	Male	AdarS	1	0.266666667	26.6666667
+B	Climing Success Rate	91	ATC♂-4	Male	AdarS	1	0.3	30
+B	Climing Success Rate	92	ATC♂-5	Male	AdarS	1	0.36	36
+B	Climing Success Rate	93	ATC♂-6	Male	AdarS	1	0.26	26
+B	Climing Success Rate	94	ATC♂-7	Male	AdarS	2	0.307692308	30.7692308
+B	Climing Success Rate	95	ATC♂-8	Male	AdarS	2	0.533333333	53.3333333
+B	Climing Success Rate	96	ATC♂-9	Male	AdarS	2	0.492307692	49.2307692
+B	Climing Success Rate	97	ATC♂-10	Male	AdarS	2	0.569230769	56.9230769
+B	Climing Success Rate	98	ATC♂-11	Male	AdarS	2	0.492307692	49.2307692
+B	Climing Success Rate	99	ATC♂-12	Male	AdarS	2	0.4	40
+B	Climing Success Rate	100	ATC♂-13	Male	AdarS	3	0.516666667	51.6666667
+B	Climing Success Rate	101	ATC♂-14	Male	AdarS	3	0.527272727	52.7272727
+B	Climing Success Rate	102	ATC♂-15	Male	AdarS	3	0.45	45
+B	Climing Success Rate	103	ATC♂-16	Male	AdarS	3	0.6	60
+B	Climing Success Rate	104	ATC♂-17	Male	AdarS	3	0.5	50
+B	Climing Success Rate	105	ATC♂-18	Male	AdarS	3	0.466666667	46.6666667
+C	Cold Survival	1	w1118♀-1	Female	WT	1	0.7	70
+C	Cold Survival	2	w1118♀-2	Female	WT	1	0.3	30
+C	Cold Survival	3	w1118♀-3	Female	WT	1	0.6	60
+C	Cold Survival	4	w1118♀-4	Female	WT	1	0.5	50
+C	Cold Survival	5	w1118♀-5	Female	WT	1	0.6	60
+C	Cold Survival	6	w1118♀-6	Female	WT	1	0.5	50
+C	Cold Survival	7	w1118♀-7	Female	WT	1	0.3	30
+C	Cold Survival	8	w1118♀-8	Female	WT	1	0.6	60
+C	Cold Survival	9	w1118♀-9	Female	WT	1	0.8	80
+C	Cold Survival	10	w1118♀-10	Female	WT	1	0.7	70
+C	Cold Survival	11	w1118♀-11	Female	WT	2	0.5	50
+C	Cold Survival	12	w1118♀-12	Female	WT	2	0.8	80
+C	Cold Survival	13	w1118♀-13	Female	WT	2	0.5	50
+C	Cold Survival	14	w1118♀-14	Female	WT	2	0.7	70
+C	Cold Survival	15	w1118♀-15	Female	WT	2	0.3	30
+C	Cold Survival	16	w1118♀-16	Female	WT	2	0.3	30
+C	Cold Survival	17	w1118♀-17	Female	WT	2	0.4	40
+C	Cold Survival	18	w1118♀-18	Female	WT	2	0.4	40
+C	Cold Survival	19	w1118♀-19	Female	WT	2	0.2	20
+C	Cold Survival	20	w1118♀-20	Female	WT	2	0.3	30
+C	Cold Survival	21	w1118♂-1	Male	WT	1	1	100
+C	Cold Survival	22	w1118♂-2	Male	WT	1	0.9	90
+C	Cold Survival	23	w1118♂-3	Male	WT	1	1	100
+C	Cold Survival	24	w1118♂-4	Male	WT	1	0.8	80
+C	Cold Survival	25	w1118♂-5	Male	WT	1	0.7	70
+C	Cold Survival	26	w1118♂-6	Male	WT	1	0.9	90
+C	Cold Survival	27	w1118♂-7	Male	WT	1	0.9	90
+C	Cold Survival	28	w1118♂-8	Male	WT	1	0.9	90
+C	Cold Survival	29	w1118♂-9	Male	WT	1	0.9	90
+C	Cold Survival	30	w1118♂-10	Male	WT	1	1	100
+C	Cold Survival	31	w1118♂-11	Male	WT	2	0.3	30
+C	Cold Survival	32	w1118♂-12	Male	WT	2	0.6	60
+C	Cold Survival	33	w1118♂-13	Male	WT	2	0.6	60
+C	Cold Survival	34	w1118♂-14	Male	WT	2	1	100
+C	Cold Survival	35	w1118♂-15	Male	WT	2	0.4	40
+C	Cold Survival	36	w1118♂-16	Male	WT	2	0.8	80
+C	Cold Survival	37	w1118♂-17	Male	WT	2	0.3	30
+C	Cold Survival	38	w1118♂-18	Male	WT	2	0.7	70
+C	Cold Survival	39	w1118♂-19	Male	WT	2	0.5	50
+C	Cold Survival	40	AdarG♀-1	Female	AdarG	1	0.6	60
+C	Cold Survival	41	AdarG♀-2	Female	AdarG	1	0.8	80
+C	Cold Survival	42	AdarG♀-3	Female	AdarG	1	0.9	90
+C	Cold Survival	43	AdarG♀-4	Female	AdarG	1	0.8	80
+C	Cold Survival	44	AdarG♀-5	Female	AdarG	1	0.7	70
+C	Cold Survival	45	AdarG♀-6	Female	AdarG	1	0.7	70
+C	Cold Survival	46	AdarG♀-7	Female	AdarG	1	0.3	30
+C	Cold Survival	47	AdarG♀-8	Female	AdarG	1	0.5	50
+C	Cold Survival	48	AdarG♀-9	Female	AdarG	1	0.8	80
+C	Cold Survival	49	AdarG♀-10	Female	AdarG	1	0.7	70
+C	Cold Survival	50	AdarG♀-11	Female	AdarG	2	0.6	60
+C	Cold Survival	51	AdarG♀-12	Female	AdarG	2	0.5	50
+C	Cold Survival	52	AdarG♀-13	Female	AdarG	2	0.6	60
+C	Cold Survival	53	AdarG♀-14	Female	AdarG	2	0.7	70
+C	Cold Survival	54	AdarG♀-15	Female	AdarG	2	0.9	90
+C	Cold Survival	55	AdarG♀-16	Female	AdarG	2	0.6	60
+C	Cold Survival	56	AdarG♀-17	Female	AdarG	2	0.5	50
+C	Cold Survival	57	AdarG♀-18	Female	AdarG	2	0.5	50
+C	Cold Survival	58	AdarG♀-19	Female	AdarG	2	0.7	70
+C	Cold Survival	59	AdarG♀-20	Female	AdarG	2	0.4	40
+C	Cold Survival	60	AdarG♂-1	Male	AdarG	1	1	100
+C	Cold Survival	61	AdarG♂-2	Male	AdarG	1	1	100
+C	Cold Survival	62	AdarG♂-3	Male	AdarG	1	1	100
+C	Cold Survival	63	AdarG♂-4	Male	AdarG	1	0.9	90
+C	Cold Survival	64	AdarG♂-5	Male	AdarG	1	0.7	70
+C	Cold Survival	65	AdarG♂-6	Male	AdarG	1	0.9	90
+C	Cold Survival	66	AdarG♂-7	Male	AdarG	1	1	100
+C	Cold Survival	67	AdarG♂-8	Male	AdarG	1	1	100
+C	Cold Survival	68	AdarG♂-9	Male	AdarG	1	1	100
+C	Cold Survival	69	AdarG♂-10	Male	AdarG	1	1	100
+C	Cold Survival	70	AdarG♂-11	Male	AdarG	2	0.8	80
+C	Cold Survival	71	AdarG♂-12	Male	AdarG	2	1	100
+C	Cold Survival	72	AdarG♂-13	Male	AdarG	2	0.8	80
+C	Cold Survival	73	AdarG♂-14	Male	AdarG	2	0.8	80
+C	Cold Survival	74	AdarG♂-15	Male	AdarG	2	0.9	90
+C	Cold Survival	75	AdarG♂-16	Male	AdarG	2	0.8	80
+C	Cold Survival	76	AdarG♂-17	Male	AdarG	2	0.8	80
+C	Cold Survival	77	AdarG♂-18	Male	AdarG	2	0.6	60
+C	Cold Survival	78	AdarG♂-19	Male	AdarG	2	0.9	90
+C	Cold Survival	79	AdarG♂-20	Male	AdarG	2	0.9	90
+C	Cold Survival	80	AdarS♀-1	Female	AdarS	1	0.7	70
+C	Cold Survival	81	AdarS♀-2	Female	AdarS	1	0.5	50
+C	Cold Survival	82	AdarS♀-3	Female	AdarS	1	0.5	50
+C	Cold Survival	83	AdarS♀-4	Female	AdarS	1	0.5	50
+C	Cold Survival	84	AdarS♀-5	Female	AdarS	1	0.6	60
+C	Cold Survival	85	AdarS♀-6	Female	AdarS	1	0.4	40
+C	Cold Survival	86	AdarS♀-7	Female	AdarS	1	0.7	70
+C	Cold Survival	87	AdarS♀-8	Female	AdarS	1	0.7	70
+C	Cold Survival	88	AdarS♀-9	Female	AdarS	1	0.9	90
+C	Cold Survival	89	AdarS♀-10	Female	AdarS	1	0.2	20
+C	Cold Survival	90	AdarS♀-11	Female	AdarS	2	0.2	20
+C	Cold Survival	91	AdarS♀-12	Female	AdarS	2	0.6	60
+C	Cold Survival	92	AdarS♀-13	Female	AdarS	2	0.4	40
+C	Cold Survival	93	AdarS♀-14	Female	AdarS	2	0.5	50
+C	Cold Survival	94	AdarS♀-15	Female	AdarS	2	0.7	70
+C	Cold Survival	95	AdarS♀-16	Female	AdarS	2	0.8	80
+C	Cold Survival	96	AdarS♀-17	Female	AdarS	2	0.6	60
+C	Cold Survival	97	AdarS♀-18	Female	AdarS	2	0.4	40
+C	Cold Survival	98	AdarS♀-19	Female	AdarS	2	0.1	10
+C	Cold Survival	99	AdarS♀-20	Female	AdarS	2	0.6	60
+C	Cold Survival	100	AdarS♂-1	Male	AdarS	1	0.9	90
+C	Cold Survival	101	AdarS♂-2	Male	AdarS	1	0.9	90
+C	Cold Survival	102	AdarS♂-3	Male	AdarS	1	0.9	90
+C	Cold Survival	103	AdarS♂-4	Male	AdarS	1	0.8	80
+C	Cold Survival	104	AdarS♂-5	Male	AdarS	1	1	100
+C	Cold Survival	105	AdarS♂-6	Male	AdarS	1	0.9	90
+C	Cold Survival	106	AdarS♂-7	Male	AdarS	1	0.8	80
+C	Cold Survival	107	AdarS♂-8	Male	AdarS	1	0.9	90
+C	Cold Survival	108	AdarS♂-9	Male	AdarS	1	0.8	80
+C	Cold Survival	109	AdarS♂-10	Male	AdarS	1	0.9	90
+C	Cold Survival	110	AdarS♂-11	Male	AdarS	2	0.7	70
+C	Cold Survival	111	AdarS♂-12	Male	AdarS	2	0.6	60
+C	Cold Survival	112	AdarS♂-13	Male	AdarS	2	0.9	90
+C	Cold Survival	113	AdarS♂-14	Male	AdarS	2	0.7	70
+C	Cold Survival	114	AdarS♂-15	Male	AdarS	2	0.7	70
+C	Cold Survival	115	AdarS♂-16	Male	AdarS	2	0.6	60
+C	Cold Survival	116	AdarS♂-17	Male	AdarS	2	0.6	60
+C	Cold Survival	117	AdarS♂-18	Male	AdarS	2	0.7	70
+C	Cold Survival	118	AdarS♂-19	Male	AdarS	2	0.8	80
+C	Cold Survival	119	AdarS♂-20	Male	AdarS	2	0.8	80
+D	Hypoxia Survival	1	W,Bg♂-1	Male	WT	1	913	15.2166666666667
+D	Hypoxia Survival	2	W,Bg♂-2	Male	WT	1	928	15.4666666666667
+D	Hypoxia Survival	3	W,Bg♂-3	Male	WT	1	976	16.2666666666667
+D	Hypoxia Survival	4	W,Bg♂-4	Male	WT	1	702	11.7
+D	Hypoxia Survival	5	W,Bg♂-5	Male	WT	1	1428	23.8
+D	Hypoxia Survival	6	W,Bg♂-6	Male	WT	1	780	13
+D	Hypoxia Survival	7	W,Bg♂-7	Male	WT	1	913	15.2166666666667
+D	Hypoxia Survival	8	W,Bg♂-8	Male	WT	1	807	13.45
+D	Hypoxia Survival	9	W,Bg♂-9	Male	WT	1	721	12.0166666666667
+D	Hypoxia Survival	10	W,Bg♂-10	Male	WT	1	908	15.1333333333333
+D	Hypoxia Survival	11	W,Bg♂-11	Male	WT	1	1426	23.7666666666667
+D	Hypoxia Survival	12	W,Bg♂-12	Male	WT	1	990	16.5
+D	Hypoxia Survival	13	W,Bg♂-13	Male	WT	1	596	9.93333333333333
+D	Hypoxia Survival	14	W,Bg♂-14	Male	WT	1	1091	18.1833333333333
+D	Hypoxia Survival	15	W,Bg♂-15	Male	WT	1	1077	17.95
+D	Hypoxia Survival	16	W,Bg♂-16	Male	WT	2	1300	21.6666666666667
+D	Hypoxia Survival	17	W,Bg♂-17	Male	WT	2	755	12.5833333333333
+D	Hypoxia Survival	18	W,Bg♂-18	Male	WT	2	1137	18.95
+D	Hypoxia Survival	19	W,Bg♂-19	Male	WT	2	493	8.21666666666667
+D	Hypoxia Survival	20	W,Bg♂-20	Male	WT	2	527	8.78333333333333
+D	Hypoxia Survival	21	W,Bg♂-21	Male	WT	2	805	13.4166666666667
+D	Hypoxia Survival	22	W,Bg♂-22	Male	WT	2	550	9.16666666666667
+D	Hypoxia Survival	23	W,Bg♂-23	Male	WT	2	565	9.41666666666667
+D	Hypoxia Survival	24	W,Bg♂-24	Male	WT	3	746	12.4333333333333
+D	Hypoxia Survival	25	W,Bg♂-25	Male	WT	3	714	11.9
+D	Hypoxia Survival	26	W,Bg♂-26	Male	WT	3	908	15.1333333333333
+D	Hypoxia Survival	27	W,Bg♂-27	Male	WT	3	566	9.43333333333333
+D	Hypoxia Survival	28	W,Bg♂-28	Male	WT	3	823	13.7166666666667
+D	Hypoxia Survival	29	W,Bg♂-29	Male	WT	3	693	11.55
+D	Hypoxia Survival	30	W,Bg♂-30	Male	WT	3	1046	17.4333333333333
+D	Hypoxia Survival	31	W,Bg♂-31	Male	WT	3	648	10.8
+D	Hypoxia Survival	32	W,Bg♂-32	Male	WT	3	543	9.05
+D	Hypoxia Survival	33	W,Bg♂-33	Male	WT	3	546	9.1
+D	Hypoxia Survival	34	W,Bg♂-34	Male	WT	3	477	7.95
+D	Hypoxia Survival	35	W,Bg♂-35	Male	WT	3	838	13.9666666666667
+D	Hypoxia Survival	36	W,Bg♂-36	Male	WT	3	424	7.06666666666667
+D	Hypoxia Survival	37	W,Bg♂-37	Male	WT	3	518	8.63333333333333
+D	Hypoxia Survival	38	W,Bg♂-38	Male	WT	3	569	9.48333333333333
+D	Hypoxia Survival	39	W,Bg♂-39	Male	WT	3	631	10.5166666666667
+D	Hypoxia Survival	40	W,Bg♂-40	Male	WT	3	972	16.2
+D	Hypoxia Survival	41	W,Bg♂-41	Male	WT	3	1217	20.2833333333333
+D	Hypoxia Survival	42	W,Bg♂-42	Male	WT	3	730	12.1666666666667
+D	Hypoxia Survival	43	W,Bg♂-43	Male	WT	3	624	10.4
+D	Hypoxia Survival	44	W,Bg♂-44	Male	WT	3	694	11.5666666666667
+D	Hypoxia Survival	45	W,Bg♂-45	Male	WT	3	1343	22.3833333333333
+D	Hypoxia Survival	46	W,Bg♂-46	Male	WT	3	1337	22.2833333333333
+D	Hypoxia Survival	47	W,Bg♂-47	Male	WT	3	893	14.8833333333333
+D	Hypoxia Survival	48	W,Bg♂-48	Male	WT	4	512	8.53333333333333
+D	Hypoxia Survival	49	W,Bg♂-49	Male	WT	4	632	10.5333333333333
+D	Hypoxia Survival	50	W,Bg♂-50	Male	WT	4	827	13.7833333333333
+D	Hypoxia Survival	51	W,Bg♂-51	Male	WT	4	812	13.5333333333333
+D	Hypoxia Survival	52	W,Bg♂-52	Male	WT	4	352	5.86666666666667
+D	Hypoxia Survival	53	W,Bg♂-53	Male	WT	4	618	10.3
+D	Hypoxia Survival	54	W,Bg♂-54	Male	WT	4	860	14.3333333333333
+D	Hypoxia Survival	55	W,Bg♂-55	Male	WT	4	345	5.75
+D	Hypoxia Survival	56	W,Bg♂-56	Male	WT	4	1123	18.7166666666667
+D	Hypoxia Survival	57	W,Bg♂-57	Male	WT	4	449	7.48333333333333
+D	Hypoxia Survival	58	W,Bg♂-58	Male	WT	4	424	7.06666666666667
+D	Hypoxia Survival	59	W,Bg♂-59	Male	WT	4	856	14.2666666666667
+D	Hypoxia Survival	60	W,Bg♂-60	Male	WT	4	638	10.6333333333333
+D	Hypoxia Survival	61	W,Bg♂-61	Male	WT	4	788	13.1333333333333
+D	Hypoxia Survival	62	W,Bg♂-62	Male	WT	4	493	8.21666666666667
+D	Hypoxia Survival	63	W,Bg♂-63	Male	WT	4	1008	16.8
+D	Hypoxia Survival	64	W,Bg♂-64	Male	WT	4	739	12.3166666666667
+D	Hypoxia Survival	65	W,Bg♂-65	Male	WT	4	517	8.61666666666667
+D	Hypoxia Survival	66	W,Bg♂-66	Male	WT	4	729	12.15
+D	Hypoxia Survival	67	W,Bg♂-67	Male	WT	4	588	9.8
+D	Hypoxia Survival	68	AG♂-1	Male	AdarG	1	728	12.1333333333333
+D	Hypoxia Survival	69	AG♂-2	Male	AdarG	1	923	15.3833333333333
+D	Hypoxia Survival	70	AG♂-3	Male	AdarG	1	624	10.4
+D	Hypoxia Survival	71	AG♂-4	Male	AdarG	1	624	10.4
+D	Hypoxia Survival	72	AG♂-5	Male	AdarG	1	860	14.3333333333333
+D	Hypoxia Survival	73	AG♂-6	Male	AdarG	1	1172	19.5333333333333
+D	Hypoxia Survival	74	AG♂-7	Male	AdarG	1	1168	19.4666666666667
+D	Hypoxia Survival	75	AG♂-8	Male	AdarG	1	974	16.2333333333333
+D	Hypoxia Survival	76	AG♂-9	Male	AdarG	1	692	11.5333333333333
+D	Hypoxia Survival	77	AG♂-10	Male	AdarG	1	800	13.3333333333333
+D	Hypoxia Survival	78	AG♂-11	Male	AdarG	1	622	10.3666666666667
+D	Hypoxia Survival	79	AG♂-12	Male	AdarG	1	727	12.1166666666667
+D	Hypoxia Survival	80	AG♂-13	Male	AdarG	1	654	10.9
+D	Hypoxia Survival	81	AG♂-14	Male	AdarG	1	572	9.53333333333333
+D	Hypoxia Survival	82	AG♂-15	Male	AdarG	1	723	12.05
+D	Hypoxia Survival	83	AG♂-16	Male	AdarG	1	809	13.4833333333333
+D	Hypoxia Survival	84	AG♂-17	Male	AdarG	2	940	15.6666666666667
+D	Hypoxia Survival	85	AG♂-18	Male	AdarG	2	812	13.5333333333333
+D	Hypoxia Survival	86	AG♂-19	Male	AdarG	2	983	16.3833333333333
+D	Hypoxia Survival	87	AG♂-20	Male	AdarG	2	719	11.9833333333333
+D	Hypoxia Survival	88	AG♂-21	Male	AdarG	2	765	12.75
+D	Hypoxia Survival	89	AG♂-22	Male	AdarG	2	441	7.35
+D	Hypoxia Survival	90	AG♂-23	Male	AdarG	2	427	7.11666666666667
+D	Hypoxia Survival	91	AG♂-24	Male	AdarG	2	295	4.91666666666667
+D	Hypoxia Survival	92	AG♂-25	Male	AdarG	3	558	9.3
+D	Hypoxia Survival	93	AG♂-26	Male	AdarG	3	696	11.6
+D	Hypoxia Survival	94	AG♂-27	Male	AdarG	3	801	13.35
+D	Hypoxia Survival	95	AG♂-28	Male	AdarG	3	629	10.4833333333333
+D	Hypoxia Survival	96	AG♂-29	Male	AdarG	3	671	11.1833333333333
+D	Hypoxia Survival	97	AG♂-30	Male	AdarG	3	1155	19.25
+D	Hypoxia Survival	98	AG♂-31	Male	AdarG	3	548	9.13333333333333
+D	Hypoxia Survival	99	AG♂-32	Male	AdarG	3	700	11.6666666666667
+D	Hypoxia Survival	100	AG♂-33	Male	AdarG	3	585	9.75
+D	Hypoxia Survival	101	AG♂-34	Male	AdarG	3	391	6.51666666666667
+D	Hypoxia Survival	102	AG♂-35	Male	AdarG	3	420	7
+D	Hypoxia Survival	103	AG♂-36	Male	AdarG	3	664	11.0666666666667
+D	Hypoxia Survival	104	AG♂-37	Male	AdarG	3	471	7.85
+D	Hypoxia Survival	105	AG♂-38	Male	AdarG	3	538	8.96666666666667
+D	Hypoxia Survival	106	AG♂-39	Male	AdarG	3	472	7.86666666666667
+D	Hypoxia Survival	107	AG♂-40	Male	AdarG	3	444	7.4
+D	Hypoxia Survival	108	AG♂-41	Male	AdarG	3	1113	18.55
+D	Hypoxia Survival	109	AG♂-42	Male	AdarG	3	832	13.8666666666667
+D	Hypoxia Survival	110	AG♂-43	Male	AdarG	3	608	10.1333333333333
+D	Hypoxia Survival	111	AG♂-44	Male	AdarG	3	589	9.81666666666667
+D	Hypoxia Survival	112	AG♂-45	Male	AdarG	3	1201	20.0166666666667
+D	Hypoxia Survival	113	AG♂-46	Male	AdarG	3	668	11.1333333333333
+D	Hypoxia Survival	114	AG♂-47	Male	AdarG	3	549	9.15
+D	Hypoxia Survival	115	AG♂-48	Male	AdarG	3	421	7.01666666666667
+D	Hypoxia Survival	116	AG♂-49	Male	AdarG	4	569	9.48333333333333
+D	Hypoxia Survival	117	AG♂-50	Male	AdarG	4	571	9.51666666666667
+D	Hypoxia Survival	118	AG♂-51	Male	AdarG	4	514	8.56666666666667
+D	Hypoxia Survival	119	AG♂-52	Male	AdarG	4	705	11.75
+D	Hypoxia Survival	120	AG♂-53	Male	AdarG	4	581	9.68333333333333
+D	Hypoxia Survival	121	AG♂-54	Male	AdarG	4	732	12.2
+D	Hypoxia Survival	122	AG♂-55	Male	AdarG	4	733	12.2166666666667
+D	Hypoxia Survival	123	AG♂-56	Male	AdarG	4	978	16.3
+D	Hypoxia Survival	124	AG♂-57	Male	AdarG	4	857	14.2833333333333
+D	Hypoxia Survival	125	AG♂-58	Male	AdarG	4	697	11.6166666666667
+D	Hypoxia Survival	126	AG♂-59	Male	AdarG	4	717	11.95
+D	Hypoxia Survival	127	AG♂-60	Male	AdarG	4	614	10.2333333333333
+D	Hypoxia Survival	128	AG♂-61	Male	AdarG	4	573	9.55
+D	Hypoxia Survival	129	AG♂-62	Male	AdarG	4	789	13.15
+D	Hypoxia Survival	130	AG♂-63	Male	AdarG	4	560	9.33333333333333
+D	Hypoxia Survival	131	AG♂-64	Male	AdarG	4	661	11.0166666666667
+D	Hypoxia Survival	132	AG♂-65	Male	AdarG	4	840	14
+D	Hypoxia Survival	133	AG♂-66	Male	AdarG	4	786	13.1
+D	Hypoxia Survival	134	AG♂-67	Male	AdarG	4	811	13.5166666666667
+D	Hypoxia Survival	135	AG♂-68	Male	AdarG	4	603	10.05
+D	Hypoxia Survival	136	AG♂-69	Male	AdarG	4	533	8.88333333333333
+D	Hypoxia Survival	137	AG♂-70	Male	AdarG	4	510	8.5
+D	Hypoxia Survival	138	AG♂-71	Male	AdarG	4	451	7.51666666666667
+D	Hypoxia Survival	139	ATC♂-1	Male	AdarS	1	710	11.8333333333333
+D	Hypoxia Survival	140	ATC♂-2	Male	AdarS	1	759	12.65
+D	Hypoxia Survival	141	ATC♂-3	Male	AdarS	1	652	10.8666666666667
+D	Hypoxia Survival	142	ATC♂-4	Male	AdarS	1	1348	22.4666666666667
+D	Hypoxia Survival	143	ATC♂-5	Male	AdarS	1	654	10.9
+D	Hypoxia Survival	144	ATC♂-6	Male	AdarS	1	767	12.7833333333333
+D	Hypoxia Survival	145	ATC♂-7	Male	AdarS	1	633	10.55
+D	Hypoxia Survival	146	ATC♂-8	Male	AdarS	1	602	10.0333333333333
+D	Hypoxia Survival	147	ATC♂-9	Male	AdarS	1	725	12.0833333333333
+D	Hypoxia Survival	148	ATC♂-10	Male	AdarS	1	726	12.1
+D	Hypoxia Survival	149	ATC♂-11	Male	AdarS	1	674	11.2333333333333
+D	Hypoxia Survival	150	ATC♂-12	Male	AdarS	1	750	12.5
+D	Hypoxia Survival	151	ATC♂-13	Male	AdarS	1	539	8.98333333333333
+D	Hypoxia Survival	152	ATC♂-14	Male	AdarS	1	892	14.8666666666667
+D	Hypoxia Survival	153	ATC♂-15	Male	AdarS	1	854	14.2333333333333
+D	Hypoxia Survival	154	ATC♂-16	Male	AdarS	1	795	13.25
+D	Hypoxia Survival	155	ATC♂-17	Male	AdarS	2	1356	22.6
+D	Hypoxia Survival	156	ATC♂-18	Male	AdarS	2	712	11.8666666666667
+D	Hypoxia Survival	157	ATC♂-19	Male	AdarS	2	799	13.3166666666667
+D	Hypoxia Survival	158	ATC♂-20	Male	AdarS	2	717	11.95
+D	Hypoxia Survival	159	ATC♂-21	Male	AdarS	2	765	12.75
+D	Hypoxia Survival	160	ATC♂-22	Male	AdarS	2	441	7.35
+D	Hypoxia Survival	161	ATC♂-23	Male	AdarS	2	130	2.16666666666667
+D	Hypoxia Survival	162	ATC♂-24	Male	AdarS	2	140	2.33333333333333
+D	Hypoxia Survival	163	ATC♂-25	Male	AdarS	3	665	11.0833333333333
+D	Hypoxia Survival	164	ATC♂-26	Male	AdarS	3	520	8.66666666666667
+D	Hypoxia Survival	165	ATC♂-27	Male	AdarS	3	665	11.0833333333333
+D	Hypoxia Survival	166	ATC♂-28	Male	AdarS	3	709	11.8166666666667
+D	Hypoxia Survival	167	ATC♂-29	Male	AdarS	3	525	8.75
+D	Hypoxia Survival	168	ATC♂-30	Male	AdarS	3	991	16.5166666666667
+D	Hypoxia Survival	169	ATC♂-31	Male	AdarS	3	585	9.75
+D	Hypoxia Survival	170	ATC♂-32	Male	AdarS	3	387	6.45
+D	Hypoxia Survival	171	ATC♂-33	Male	AdarS	3	543	9.05
+D	Hypoxia Survival	172	ATC♂-34	Male	AdarS	3	464	7.73333333333333
+D	Hypoxia Survival	173	ATC♂-35	Male	AdarS	3	407	6.78333333333333
+D	Hypoxia Survival	174	ATC♂-36	Male	AdarS	3	397	6.61666666666667
+D	Hypoxia Survival	175	ATC♂-37	Male	AdarS	3	763	12.7166666666667
+D	Hypoxia Survival	176	ATC♂-38	Male	AdarS	3	620	10.3333333333333
+D	Hypoxia Survival	177	ATC♂-39	Male	AdarS	3	504	8.4
+D	Hypoxia Survival	178	ATC♂-40	Male	AdarS	3	600	10
+D	Hypoxia Survival	179	ATC♂-41	Male	AdarS	3	410	6.83333333333333
+D	Hypoxia Survival	180	ATC♂-42	Male	AdarS	3	601	10.0166666666667
+D	Hypoxia Survival	181	ATC♂-43	Male	AdarS	3	602	10.0333333333333
+D	Hypoxia Survival	182	ATC♂-44	Male	AdarS	3	578	9.63333333333333
+D	Hypoxia Survival	183	ATC♂-45	Male	AdarS	3	662	11.0333333333333
+D	Hypoxia Survival	184	ATC♂-46	Male	AdarS	3	760	12.6666666666667
+D	Hypoxia Survival	185	ATC♂-47	Male	AdarS	3	1231	20.5166666666667
+D	Hypoxia Survival	186	ATC♂-48	Male	AdarS	3	481	8.01666666666667
+D	Hypoxia Survival	187	ATC♂-49	Male	AdarS	4	595	9.91666666666667
+D	Hypoxia Survival	188	ATC♂-50	Male	AdarS	4	614	10.2333333333333
+D	Hypoxia Survival	189	ATC♂-51	Male	AdarS	4	716	11.9333333333333
+D	Hypoxia Survival	190	ATC♂-52	Male	AdarS	4	638	10.6333333333333
+D	Hypoxia Survival	191	ATC♂-53	Male	AdarS	4	638	10.6333333333333
+D	Hypoxia Survival	192	ATC♂-54	Male	AdarS	4	516	8.6
+D	Hypoxia Survival	193	ATC♂-55	Male	AdarS	4	518	8.63333333333333
+D	Hypoxia Survival	194	ATC♂-56	Male	AdarS	4	504	8.4
+D	Hypoxia Survival	195	ATC♂-57	Male	AdarS	4	595	9.91666666666667
+D	Hypoxia Survival	196	ATC♂-58	Male	AdarS	4	614	10.2333333333333
+D	Hypoxia Survival	197	ATC♂-59	Male	AdarS	4	716	11.9333333333333
+D	Hypoxia Survival	198	ATC♂-60	Male	AdarS	4	638	10.6333333333333
+D	Hypoxia Survival	199	ATC♂-61	Male	AdarS	4	638	10.6333333333333
+D	Hypoxia Survival	200	ATC♂-62	Male	AdarS	4	516	8.6
+D	Hypoxia Survival	201	ATC♂-63	Male	AdarS	4	518	8.63333333333333
+D	Hypoxia Survival	202	ATC♂-64	Male	AdarS	4	504	8.4
+D	Hypoxia Survival	203	ATC♂-65	Male	AdarS	4	660	11
+D	Hypoxia Survival	204	ATC♂-66	Male	AdarS	4	655	10.9166666666667
+D	Hypoxia Survival	205	ATC♂-67	Male	AdarS	4	697	11.6166666666667
+D	Hypoxia Survival	206	ATC♂-68	Male	AdarS	4	520	8.66666666666667
+D	Hypoxia Survival	207	ATC♂-69	Male	AdarS	4	385	6.41666666666667
+D	Hypoxia Survival	208	ATC♂-70	Male	AdarS	4	727	12.1166666666667
+D	Hypoxia Survival	209	ATC♂-71	Male	AdarS	4	523	8.71666666666667
+D	Hypoxia Survival	210	ATC♂-72	Male	AdarS	4	337	5.61666666666667
+D	Hypoxia Survival	211	W,Bg♀-1	Female	WT	1	419	6.98333333333333
+D	Hypoxia Survival	212	W,Bg♀-2	Female	WT	1	384	6.4
+D	Hypoxia Survival	213	W,Bg♀-3	Female	WT	1	409	6.81666666666667
+D	Hypoxia Survival	214	W,Bg♀-4	Female	WT	1	417	6.95
+D	Hypoxia Survival	215	W,Bg♀-5	Female	WT	1	604	10.0666666666667
+D	Hypoxia Survival	216	W,Bg♀-6	Female	WT	1	866	14.4333333333333
+D	Hypoxia Survival	217	W,Bg♀-7	Female	WT	1	433	7.21666666666667
+D	Hypoxia Survival	218	W,Bg♀-8	Female	WT	1	850	14.1666666666667
+D	Hypoxia Survival	219	W,Bg♀-9	Female	WT	1	621	10.35
+D	Hypoxia Survival	220	W,Bg♀-10	Female	WT	1	518	8.63333333333333
+D	Hypoxia Survival	221	W,Bg♀-11	Female	WT	1	523	8.71666666666667
+D	Hypoxia Survival	222	W,Bg♀-12	Female	WT	1	488	8.13333333333333
+D	Hypoxia Survival	223	W,Bg♀-13	Female	WT	1	597	9.95
+D	Hypoxia Survival	224	W,Bg♀-14	Female	WT	1	653	10.8833333333333
+D	Hypoxia Survival	225	W,Bg♀-15	Female	WT	1	677	11.2833333333333
+D	Hypoxia Survival	226	W,Bg♀-16	Female	WT	1	506	8.43333333333333
+D	Hypoxia Survival	227	W,Bg♀-17	Female	WT	2	841	14.0166666666667
+D	Hypoxia Survival	228	W,Bg♀-18	Female	WT	2	830	13.8333333333333
+D	Hypoxia Survival	229	W,Bg♀-19	Female	WT	2	431	7.18333333333333
+D	Hypoxia Survival	230	W,Bg♀-20	Female	WT	2	780	13
+D	Hypoxia Survival	231	W,Bg♀-21	Female	WT	2	481	8.01666666666667
+D	Hypoxia Survival	232	W,Bg♀-22	Female	WT	2	668	11.1333333333333
+D	Hypoxia Survival	233	W,Bg♀-23	Female	WT	2	575	9.58333333333333
+D	Hypoxia Survival	234	W,Bg♀-24	Female	WT	2	568	9.46666666666667
+D	Hypoxia Survival	235	W,Bg♀-25	Female	WT	3	504	8.4
+D	Hypoxia Survival	236	W,Bg♀-26	Female	WT	3	592	9.86666666666667
+D	Hypoxia Survival	237	W,Bg♀-27	Female	WT	3	594	9.9
+D	Hypoxia Survival	238	W,Bg♀-28	Female	WT	3	455	7.58333333333333
+D	Hypoxia Survival	239	W,Bg♀-29	Female	WT	3	766	12.7666666666667
+D	Hypoxia Survival	240	W,Bg♀-30	Female	WT	3	518	8.63333333333333
+D	Hypoxia Survival	241	W,Bg♀-31	Female	WT	3	630	10.5
+D	Hypoxia Survival	242	W,Bg♀-32	Female	WT	3	640	10.6666666666667
+D	Hypoxia Survival	243	W,Bg♀-33	Female	WT	3	568	9.46666666666667
+D	Hypoxia Survival	244	W,Bg♀-34	Female	WT	3	617	10.2833333333333
+D	Hypoxia Survival	245	W,Bg♀-35	Female	WT	3	438	7.3
+D	Hypoxia Survival	246	W,Bg♀-36	Female	WT	3	509	8.48333333333333
+D	Hypoxia Survival	247	W,Bg♀-37	Female	WT	3	481	8.01666666666667
+D	Hypoxia Survival	248	W,Bg♀-38	Female	WT	3	482	8.03333333333333
+D	Hypoxia Survival	249	W,Bg♀-39	Female	WT	3	367	6.11666666666667
+D	Hypoxia Survival	250	W,Bg♀-40	Female	WT	3	709	11.8166666666667
+D	Hypoxia Survival	251	W,Bg♀-41	Female	WT	3	526	8.76666666666667
+D	Hypoxia Survival	252	W,Bg♀-42	Female	WT	3	526	8.76666666666667
+D	Hypoxia Survival	253	W,Bg♀-43	Female	WT	3	356	5.93333333333333
+D	Hypoxia Survival	254	W,Bg♀-44	Female	WT	3	358	5.96666666666667
+D	Hypoxia Survival	255	W,Bg♀-45	Female	WT	3	370	6.16666666666667
+D	Hypoxia Survival	256	W,Bg♀-46	Female	WT	3	378	6.3
+D	Hypoxia Survival	257	W,Bg♀-47	Female	WT	3	564	9.4
+D	Hypoxia Survival	258	W,Bg♀-48	Female	WT	3	457	7.61666666666667
+D	Hypoxia Survival	259	W,Bg♀-49	Female	WT	4	285	4.75
+D	Hypoxia Survival	260	W,Bg♀-50	Female	WT	4	420	7
+D	Hypoxia Survival	261	W,Bg♀-51	Female	WT	4	453	7.55
+D	Hypoxia Survival	262	W,Bg♀-52	Female	WT	4	382	6.36666666666667
+D	Hypoxia Survival	263	W,Bg♀-53	Female	WT	4	379	6.31666666666667
+D	Hypoxia Survival	264	W,Bg♀-54	Female	WT	4	356	5.93333333333333
+D	Hypoxia Survival	265	W,Bg♀-55	Female	WT	4	338	5.63333333333333
+D	Hypoxia Survival	266	W,Bg♀-56	Female	WT	4	429	7.15
+D	Hypoxia Survival	267	W,Bg♀-57	Female	WT	4	458	7.63333333333333
+D	Hypoxia Survival	268	W,Bg♀-58	Female	WT	4	710	11.8333333333333
+D	Hypoxia Survival	269	W,Bg♀-59	Female	WT	4	535	8.91666666666667
+D	Hypoxia Survival	270	W,Bg♀-60	Female	WT	4	712	11.8666666666667
+D	Hypoxia Survival	271	W,Bg♀-61	Female	WT	4	961	16.0166666666667
+D	Hypoxia Survival	272	W,Bg♀-62	Female	WT	4	793	13.2166666666667
+D	Hypoxia Survival	273	W,Bg♀-63	Female	WT	4	551	9.18333333333333
+D	Hypoxia Survival	274	W,Bg♀-64	Female	WT	4	476	7.93333333333333
+D	Hypoxia Survival	275	W,Bg♀-65	Female	WT	4	513	8.55
+D	Hypoxia Survival	276	W,Bg♀-66	Female	WT	4	425	7.08333333333333
+D	Hypoxia Survival	277	W,Bg♀-67	Female	WT	4	449	7.48333333333333
+D	Hypoxia Survival	278	W,Bg♀-68	Female	WT	4	529	8.81666666666667
+D	Hypoxia Survival	279	W,Bg♀-69	Female	WT	4	347	5.78333333333333
+D	Hypoxia Survival	280	AG♀-1	Female	AdarG	1	405	6.75
+D	Hypoxia Survival	281	AG♀-2	Female	AdarG	1	389	6.48333333333333
+D	Hypoxia Survival	282	AG♀-3	Female	AdarG	1	508	8.46666666666667
+D	Hypoxia Survival	283	AG♀-4	Female	AdarG	1	493	8.21666666666667
+D	Hypoxia Survival	284	AG♀-5	Female	AdarG	1	839	13.9833333333333
+D	Hypoxia Survival	285	AG♀-6	Female	AdarG	1	738	12.3
+D	Hypoxia Survival	286	AG♀-7	Female	AdarG	1	571	9.51666666666667
+D	Hypoxia Survival	287	AG♀-8	Female	AdarG	1	777	12.95
+D	Hypoxia Survival	288	AG♀-9	Female	AdarG	1	551	9.18333333333333
+D	Hypoxia Survival	289	AG♀-10	Female	AdarG	1	651	10.85
+D	Hypoxia Survival	290	AG♀-11	Female	AdarG	1	692	11.5333333333333
+D	Hypoxia Survival	291	AG♀-12	Female	AdarG	1	575	9.58333333333333
+D	Hypoxia Survival	292	AG♀-13	Female	AdarG	1	638	10.6333333333333
+D	Hypoxia Survival	293	AG♀-14	Female	AdarG	1	685	11.4166666666667
+D	Hypoxia Survival	294	AG♀-15	Female	AdarG	1	879	14.65
+D	Hypoxia Survival	295	AG♀-16	Female	AdarG	1	688	11.4666666666667
+D	Hypoxia Survival	296	AG♀-17	Female	AdarG	2	867	14.45
+D	Hypoxia Survival	297	AG♀-18	Female	AdarG	2	535	8.91666666666667
+D	Hypoxia Survival	298	AG♀-19	Female	AdarG	2	745	12.4166666666667
+D	Hypoxia Survival	299	AG♀-20	Female	AdarG	2	783	13.05
+D	Hypoxia Survival	300	AG♀-21	Female	AdarG	2	649	10.8166666666667
+D	Hypoxia Survival	301	AG♀-22	Female	AdarG	2	555	9.25
+D	Hypoxia Survival	302	AG♀-23	Female	AdarG	2	393	6.55
+D	Hypoxia Survival	303	AG♀-24	Female	AdarG	2	372	6.2
+D	Hypoxia Survival	304	AG♀-25	Female	AdarG	3	775	12.9166666666667
+D	Hypoxia Survival	305	AG♀-26	Female	AdarG	3	393	6.55
+D	Hypoxia Survival	306	AG♀-27	Female	AdarG	3	1052	17.5333333333333
+D	Hypoxia Survival	307	AG♀-28	Female	AdarG	3	525	8.75
+D	Hypoxia Survival	308	AG♀-29	Female	AdarG	3	412	6.86666666666667
+D	Hypoxia Survival	309	AG♀-30	Female	AdarG	3	692	11.5333333333333
+D	Hypoxia Survival	310	AG♀-31	Female	AdarG	3	564	9.4
+D	Hypoxia Survival	311	AG♀-32	Female	AdarG	3	896	14.9333333333333
+D	Hypoxia Survival	312	AG♀-33	Female	AdarG	3	518	8.63333333333333
+D	Hypoxia Survival	313	AG♀-34	Female	AdarG	3	476	7.93333333333333
+D	Hypoxia Survival	314	AG♀-35	Female	AdarG	3	418	6.96666666666667
+D	Hypoxia Survival	315	AG♀-36	Female	AdarG	3	653	10.8833333333333
+D	Hypoxia Survival	316	AG♀-37	Female	AdarG	3	371	6.18333333333333
+D	Hypoxia Survival	317	AG♀-38	Female	AdarG	3	495	8.25
+D	Hypoxia Survival	318	AG♀-39	Female	AdarG	3	547	9.11666666666667
+D	Hypoxia Survival	319	AG♀-40	Female	AdarG	3	455	7.58333333333333
+D	Hypoxia Survival	320	AG♀-41	Female	AdarG	3	701	11.6833333333333
+D	Hypoxia Survival	321	AG♀-42	Female	AdarG	3	491	8.18333333333333
+D	Hypoxia Survival	322	AG♀-43	Female	AdarG	3	605	10.0833333333333
+D	Hypoxia Survival	323	AG♀-44	Female	AdarG	3	515	8.58333333333333
+D	Hypoxia Survival	324	AG♀-45	Female	AdarG	3	884	14.7333333333333
+D	Hypoxia Survival	325	AG♀-46	Female	AdarG	3	1217	20.2833333333333
+D	Hypoxia Survival	326	AG♀-47	Female	AdarG	3	879	14.65
+D	Hypoxia Survival	327	AG♀-48	Female	AdarG	3	566	9.43333333333333
+D	Hypoxia Survival	328	AG♀-49	Female	AdarG	4	595	9.91666666666667
+D	Hypoxia Survival	329	AG♀-50	Female	AdarG	4	565	9.41666666666667
+D	Hypoxia Survival	330	AG♀-51	Female	AdarG	4	678	11.3
+D	Hypoxia Survival	331	AG♀-52	Female	AdarG	4	689	11.4833333333333
+D	Hypoxia Survival	332	AG♀-53	Female	AdarG	4	528	8.8
+D	Hypoxia Survival	333	AG♀-54	Female	AdarG	4	571	9.51666666666667
+D	Hypoxia Survival	334	AG♀-55	Female	AdarG	4	569	9.48333333333333
+D	Hypoxia Survival	335	AG♀-56	Female	AdarG	4	426	7.1
+D	Hypoxia Survival	336	AG♀-57	Female	AdarG	4	579	9.65
+D	Hypoxia Survival	337	AG♀-58	Female	AdarG	4	788	13.1333333333333
+D	Hypoxia Survival	338	AG♀-59	Female	AdarG	4	551	9.18333333333333
+D	Hypoxia Survival	339	AG♀-60	Female	AdarG	4	712	11.8666666666667
+D	Hypoxia Survival	340	AG♀-61	Female	AdarG	4	550	9.16666666666667
+D	Hypoxia Survival	341	AG♀-62	Female	AdarG	4	473	7.88333333333333
+D	Hypoxia Survival	342	AG♀-63	Female	AdarG	4	1027	17.1166666666667
+D	Hypoxia Survival	343	AG♀-64	Female	AdarG	4	661	11.0166666666667
+D	Hypoxia Survival	344	AG♀-65	Female	AdarG	4	630	10.5
+D	Hypoxia Survival	345	AG♀-66	Female	AdarG	4	634	10.5666666666667
+D	Hypoxia Survival	346	AG♀-67	Female	AdarG	4	585	9.75
+D	Hypoxia Survival	347	AG♀-68	Female	AdarG	4	435	7.25
+D	Hypoxia Survival	348	AG♀-69	Female	AdarG	4	533	8.88333333333333
+D	Hypoxia Survival	349	AG♀-70	Female	AdarG	4	842	14.0333333333333
+D	Hypoxia Survival	350	AG♀-71	Female	AdarG	4	431	7.18333333333333
+D	Hypoxia Survival	351	AG♀-72	Female	AdarG	4	431	7.18333333333333
+D	Hypoxia Survival	352	ATC♀-1	Female	AdarS	1	651	10.85
+D	Hypoxia Survival	353	ATC♀-2	Female	AdarS	1	674	11.2333333333333
+D	Hypoxia Survival	354	ATC♀-3	Female	AdarS	1	676	11.2666666666667
+D	Hypoxia Survival	355	ATC♀-4	Female	AdarS	1	807	13.45
+D	Hypoxia Survival	356	ATC♀-5	Female	AdarS	1	755	12.5833333333333
+D	Hypoxia Survival	357	ATC♀-6	Female	AdarS	1	623	10.3833333333333
+D	Hypoxia Survival	358	ATC♀-7	Female	AdarS	1	688	11.4666666666667
+D	Hypoxia Survival	359	ATC♀-8	Female	AdarS	1	663	11.05
+D	Hypoxia Survival	360	ATC♀-9	Female	AdarS	1	727	12.1166666666667
+D	Hypoxia Survival	361	ATC♀-10	Female	AdarS	1	724	12.0666666666667
+D	Hypoxia Survival	362	ATC♀-11	Female	AdarS	1	808	13.4666666666667
+D	Hypoxia Survival	363	ATC♀-12	Female	AdarS	1	702	11.7
+D	Hypoxia Survival	364	ATC♀-13	Female	AdarS	1	811	13.5166666666667
+D	Hypoxia Survival	365	ATC♀-14	Female	AdarS	1	782	13.0333333333333
+D	Hypoxia Survival	366	ATC♀-15	Female	AdarS	1	730	12.1666666666667
+D	Hypoxia Survival	367	ATC♀-16	Female	AdarS	1	730	12.1666666666667
+D	Hypoxia Survival	368	ATC♀-17	Female	AdarS	2	864	14.4
+D	Hypoxia Survival	369	ATC♀-18	Female	AdarS	2	458	7.63333333333333
+D	Hypoxia Survival	370	ATC♀-19	Female	AdarS	2	527	8.78333333333333
+D	Hypoxia Survival	371	ATC♀-20	Female	AdarS	2	660	11
+D	Hypoxia Survival	372	ATC♀-21	Female	AdarS	2	668	11.1333333333333
+D	Hypoxia Survival	373	ATC♀-22	Female	AdarS	2	512	8.53333333333333
+D	Hypoxia Survival	374	ATC♀-23	Female	AdarS	2	356	5.93333333333333
+D	Hypoxia Survival	375	ATC♀-24	Female	AdarS	2	399	6.65
+D	Hypoxia Survival	376	ATC♀-25	Female	AdarS	3	686	11.4333333333333
+D	Hypoxia Survival	377	ATC♀-26	Female	AdarS	3	651	10.85
+D	Hypoxia Survival	378	ATC♀-27	Female	AdarS	3	805	13.4166666666667
+D	Hypoxia Survival	379	ATC♀-28	Female	AdarS	3	516	8.6
+D	Hypoxia Survival	380	ATC♀-29	Female	AdarS	3	410	6.83333333333333
+D	Hypoxia Survival	381	ATC♀-30	Female	AdarS	3	652	10.8666666666667
+D	Hypoxia Survival	382	ATC♀-31	Female	AdarS	3	396	6.6
+D	Hypoxia Survival	383	ATC♀-32	Female	AdarS	3	632	10.5333333333333
+D	Hypoxia Survival	384	ATC♀-33	Female	AdarS	3	477	7.95
+D	Hypoxia Survival	385	ATC♀-34	Female	AdarS	3	420	7
+D	Hypoxia Survival	386	ATC♀-35	Female	AdarS	3	452	7.53333333333333
+D	Hypoxia Survival	387	ATC♀-36	Female	AdarS	3	578	9.63333333333333
+D	Hypoxia Survival	388	ATC♀-37	Female	AdarS	3	547	9.11666666666667
+D	Hypoxia Survival	389	ATC♀-38	Female	AdarS	3	417	6.95
+D	Hypoxia Survival	390	ATC♀-39	Female	AdarS	3	585	9.75
+D	Hypoxia Survival	391	ATC♀-40	Female	AdarS	3	739	12.3166666666667
+D	Hypoxia Survival	392	ATC♀-41	Female	AdarS	3	331	5.51666666666667
+D	Hypoxia Survival	393	ATC♀-42	Female	AdarS	3	479	7.98333333333333
+D	Hypoxia Survival	394	ATC♀-43	Female	AdarS	3	669	11.15
+D	Hypoxia Survival	395	ATC♀-44	Female	AdarS	3	468	7.8
+D	Hypoxia Survival	396	ATC♀-45	Female	AdarS	3	544	9.06666666666667
+D	Hypoxia Survival	397	ATC♀-46	Female	AdarS	3	679	11.3166666666667
+D	Hypoxia Survival	398	ATC♀-47	Female	AdarS	3	352	5.86666666666667
+D	Hypoxia Survival	399	ATC♀-48	Female	AdarS	3	442	7.36666666666667
+D	Hypoxia Survival	400	ATC♀-49	Female	AdarS	4	579	9.65
+D	Hypoxia Survival	401	ATC♀-50	Female	AdarS	4	429	7.15
+D	Hypoxia Survival	402	ATC♀-51	Female	AdarS	4	449	7.48333333333333
+D	Hypoxia Survival	403	ATC♀-52	Female	AdarS	4	579	9.65
+D	Hypoxia Survival	404	ATC♀-53	Female	AdarS	4	681	11.35
+D	Hypoxia Survival	405	ATC♀-54	Female	AdarS	4	462	7.7
+D	Hypoxia Survival	406	ATC♀-55	Female	AdarS	4	428	7.13333333333333
+D	Hypoxia Survival	407	ATC♀-56	Female	AdarS	4	516	8.6
+D	Hypoxia Survival	408	ATC♀-57	Female	AdarS	4	579	9.65
+D	Hypoxia Survival	409	ATC♀-58	Female	AdarS	4	429	7.15
+D	Hypoxia Survival	410	ATC♀-59	Female	AdarS	4	449	7.48333333333333
+D	Hypoxia Survival	411	ATC♀-60	Female	AdarS	4	579	9.65
+D	Hypoxia Survival	412	ATC♀-61	Female	AdarS	4	681	11.35
+D	Hypoxia Survival	413	ATC♀-62	Female	AdarS	4	462	7.7
+D	Hypoxia Survival	414	ATC♀-63	Female	AdarS	4	428	7.13333333333333
+D	Hypoxia Survival	415	ATC♀-64	Female	AdarS	4	516	8.6
+D	Hypoxia Survival	416	ATC♀-65	Female	AdarS	4	385	6.41666666666667
+D	Hypoxia Survival	417	ATC♀-66	Female	AdarS	4	429	7.15
+D	Hypoxia Survival	418	ATC♀-67	Female	AdarS	4	431	7.18333333333333
+D	Hypoxia Survival	419	ATC♀-68	Female	AdarS	4	473	7.88333333333333
+D	Hypoxia Survival	420	ATC♀-69	Female	AdarS	4	645	10.75
+D	Hypoxia Survival	421	ATC♀-70	Female	AdarS	4	409	6.81666666666667
+D	Hypoxia Survival	422	ATC♀-71	Female	AdarS	4	409	6.81666666666667
+D	Hypoxia Survival	423	ATC♀-72	Female	AdarS	4	515	8.58333333333333
+E	Offspring Number	1	w1118♀-1	Female	WT	1	29	29
+E	Offspring Number	2	w1118♀-2	Female	WT	1	103	103
+E	Offspring Number	3	w1118♀-3	Female	WT	1	33	33
+E	Offspring Number	4	w1118♀-4	Female	WT	1	44	44
+E	Offspring Number	5	w1118♀-5	Female	WT	1	4	4
+E	Offspring Number	6	w1118♀-6	Female	WT	1	30	30
+E	Offspring Number	7	w1118♀-7	Female	WT	1	44	44
+E	Offspring Number	8	w1118♀-8	Female	WT	1	8	8
+E	Offspring Number	9	w1118♀-9	Female	WT	1	21	21
+E	Offspring Number	10	w1118♀-10	Female	WT	1	49	49
+E	Offspring Number	11	w1118♀-11	Female	WT	1	28	28
+E	Offspring Number	12	w1118♀-12	Female	WT	1	28	28
+E	Offspring Number	13	w1118♀-13	Female	WT	1	55	55
+E	Offspring Number	14	w1118♀-14	Female	WT	2	50	50
+E	Offspring Number	15	w1118♀-15	Female	WT	2	71	71
+E	Offspring Number	16	w1118♀-16	Female	WT	2	83	83
+E	Offspring Number	17	w1118♀-17	Female	WT	2	72	72
+E	Offspring Number	18	w1118♀-18	Female	WT	2	28	28
+E	Offspring Number	19	w1118♀-19	Female	WT	2	55	55
+E	Offspring Number	20	w1118♀-20	Female	WT	2	102	102
+E	Offspring Number	21	w1118♀-21	Female	WT	2	67	67
+E	Offspring Number	22	w1118♀-22	Female	WT	2	71	71
+E	Offspring Number	23	w1118♀-23	Female	WT	2	102	102
+E	Offspring Number	24	w1118♀-24	Female	WT	2	77	77
+E	Offspring Number	25	w1118♀-25	Female	WT	2	35	35
+E	Offspring Number	26	w1118♀-26	Female	WT	2	35	35
+E	Offspring Number	27	AdarG♀-1	Female	AdarG	1	59	59
+E	Offspring Number	28	AdarG♀-2	Female	AdarG	1	197	197
+E	Offspring Number	29	AdarG♀-3	Female	AdarG	1	86	86
+E	Offspring Number	30	AdarG♀-4	Female	AdarG	1	43	43
+E	Offspring Number	31	AdarG♀-5	Female	AdarG	1	68	68
+E	Offspring Number	32	AdarG♀-6	Female	AdarG	1	104	104
+E	Offspring Number	33	AdarG♀-7	Female	AdarG	1	55	55
+E	Offspring Number	34	AdarG♀-8	Female	AdarG	1	188	188
+E	Offspring Number	35	AdarG♀-9	Female	AdarG	1	4	4
+E	Offspring Number	36	AdarG♀-10	Female	AdarG	1	62	62
+E	Offspring Number	37	AdarG♀-11	Female	AdarG	1	71	71
+E	Offspring Number	38	AdarG♀-12	Female	AdarG	1	138	138
+E	Offspring Number	39	AdarG♀-13	Female	AdarG	1	29	29
+E	Offspring Number	40	AdarG♀-14	Female	AdarG	1	100	100
+E	Offspring Number	41	AdarG♀-15	Female	AdarG	1	158	158
+E	Offspring Number	42	AdarG♀-16	Female	AdarG	1	60	60
+E	Offspring Number	43	AdarG♀-17	Female	AdarG	2	187	187
+E	Offspring Number	44	AdarG♀-18	Female	AdarG	2	101	101
+E	Offspring Number	45	AdarG♀-19	Female	AdarG	2	146	146
+E	Offspring Number	46	AdarG♀-20	Female	AdarG	2	219	219
+E	Offspring Number	47	AdarG♀-21	Female	AdarG	2	132	132
+E	Offspring Number	48	AdarG♀-22	Female	AdarG	2	235	235
+E	Offspring Number	49	AdarG♀-23	Female	AdarG	2	150	150
+E	Offspring Number	50	AdarG♀-24	Female	AdarG	2	161	161
+E	Offspring Number	51	AdarG♀-25	Female	AdarG	2	152	152
+E	Offspring Number	52	AdarG♀-26	Female	AdarG	2	75	75
+E	Offspring Number	53	AdarS♀-1	Female	AdarS	1	48	48
+E	Offspring Number	54	AdarS♀-2	Female	AdarS	1	56	56
+E	Offspring Number	55	AdarS♀-3	Female	AdarS	1	7	7
+E	Offspring Number	56	AdarS♀-4	Female	AdarS	1	20	20
+E	Offspring Number	57	AdarS♀-5	Female	AdarS	1	11	11
+E	Offspring Number	58	AdarS♀-6	Female	AdarS	1	20	20
+E	Offspring Number	59	AdarS♀-7	Female	AdarS	1	24	24
+E	Offspring Number	60	AdarS♀-8	Female	AdarS	1	21	21
+E	Offspring Number	61	AdarS♀-9	Female	AdarS	1	44	44
+E	Offspring Number	62	AdarS♀-10	Female	AdarS	1	78	78
+E	Offspring Number	63	AdarS♀-11	Female	AdarS	1	26	26
+E	Offspring Number	64	AdarS♀-12	Female	AdarS	1	29	29
+E	Offspring Number	65	AdarS♀-13	Female	AdarS	1	17	17
+E	Offspring Number	66	AdarS♀-14	Female	AdarS	1	48	48
+E	Offspring Number	67	AdarS♀-15	Female	AdarS	1	10	10
+E	Offspring Number	68	AdarS♀-16	Female	AdarS	2	35	35
+E	Offspring Number	69	AdarS♀-17	Female	AdarS	2	49	49
+E	Offspring Number	70	AdarS♀-18	Female	AdarS	2	74	74
+E	Offspring Number	71	AdarS♀-19	Female	AdarS	2	69	69
+E	Offspring Number	72	AdarS♀-20	Female	AdarS	2	86	86
+E	Offspring Number	73	AdarS♀-21	Female	AdarS	2	50	50
+E	Offspring Number	74	AdarS♀-22	Female	AdarS	2	44	44
+E	Offspring Number	75	AdarS♀-23	Female	AdarS	2	51	51
+E	Offspring Number	76	AdarS♀-24	Female	AdarS	2	34	34
+E	Offspring Number	77	AdarS♀-25	Female	AdarS	2	54	54
+E	Offspring Number	78	AdarS♀-26	Female	AdarS	2	19	19
+E	Offspring Number	79	AdarS♀-27	Female	AdarS	2	44	44
+E	Offspring Number	80	AdarS♀-28	Female	AdarS	2	91	91
+F	Hatching	1	w1118-1	Pooled	WT	1	0.433333333	43.3333333
+F	Hatching	2	w1118-2	Pooled	WT	1	0.566666667	56.6666667
+F	Hatching	3	w1118-3	Pooled	WT	1	0.533333333	53.3333333
+F	Hatching	4	w1118-4	Pooled	WT	1	0.333333333	33.3333333
+F	Hatching	5	w1118-5	Pooled	WT	1	0.3	30
+F	Hatching	6	w1118-6	Pooled	WT	1	0.4	40
+F	Hatching	7	w1118-7	Pooled	WT	1	0.6	60
+F	Hatching	8	w1118-8	Pooled	WT	2	0.533333333	53.3333333
+F	Hatching	9	w1118-9	Pooled	WT	2	0.533333333	53.3333333
+F	Hatching	10	w1118-10	Pooled	WT	2	0.566666667	56.6666667
+F	Hatching	11	w1118-11	Pooled	WT	2	0.5	50
+F	Hatching	12	w1118-12	Pooled	WT	2	0.566666667	56.6666667
+F	Hatching	13	w1118-13	Pooled	WT	2	0.466666667	46.6666667
+F	Hatching	14	w1118-14	Pooled	WT	2	0.566666667	56.6666667
+F	Hatching	15	w1118-15	Pooled	WT	3	0.733333333	73.3333333
+F	Hatching	16	w1118-16	Pooled	WT	3	0.4	40
+F	Hatching	17	w1118-17	Pooled	WT	3	0.466666667	46.6666667
+F	Hatching	18	w1118-18	Pooled	WT	3	0.5	50
+F	Hatching	19	w1118-19	Pooled	WT	3	0.666666667	66.6666667
+F	Hatching	20	w1118-20	Pooled	WT	3	0.5	50
+F	Hatching	21	w1118-21	Pooled	WT	3	0.633333333	63.3333333
+F	Hatching	22	w1118-22	Pooled	WT	3	0.7	70
+F	Hatching	23	w1118-23	Pooled	WT	3	0.766666667	76.6666667
+F	Hatching	24	w1118-24	Pooled	WT	3	0.566666667	56.6666667
+F	Hatching	25	w1118-25	Pooled	WT	4	0.6	60
+F	Hatching	26	w1118-26	Pooled	WT	4	0.666666667	66.6666667
+F	Hatching	27	w1118-27	Pooled	WT	4	0.766666667	76.6666667
+F	Hatching	28	w1118-28	Pooled	WT	4	0.633333333	63.3333333
+F	Hatching	29	w1118-29	Pooled	WT	4	0.5	50
+F	Hatching	30	w1118-30	Pooled	WT	4	0.566666667	56.6666667
+F	Hatching	31	w1118-31	Pooled	WT	4	0.6	60
+F	Hatching	32	w1118-32	Pooled	WT	4	0.5	50
+F	Hatching	33	w1118-33	Pooled	WT	4	0.566666667	56.6666667
+F	Hatching	34	w1118-34	Pooled	WT	4	0.666666667	66.6666667
+F	Hatching	35	AdarG-1	Pooled	AdarG	1	0.9	90
+F	Hatching	36	AdarG-2	Pooled	AdarG	1	0.966666667	96.6666667
+F	Hatching	37	AdarG-3	Pooled	AdarG	1	1	100
+F	Hatching	38	AdarG-4	Pooled	AdarG	1	1	100
+F	Hatching	39	AdarG-5	Pooled	AdarG	1	0.966666667	96.6666667
+F	Hatching	40	AdarG-6	Pooled	AdarG	1	0.833333333	83.3333333
+F	Hatching	41	AdarG-7	Pooled	AdarG	1	0.9	90
+F	Hatching	42	AdarG-8	Pooled	AdarG	1	0.9	90
+F	Hatching	43	AdarG-9	Pooled	AdarG	1	0.866666667	86.6666667
+F	Hatching	44	AdarG-10	Pooled	AdarG	1	0.866666667	86.6666667
+F	Hatching	45	AdarG-11	Pooled	AdarG	2	0.933333333	93.3333333
+F	Hatching	46	AdarG-12	Pooled	AdarG	2	0.966666667	96.6666667
+F	Hatching	47	AdarG-13	Pooled	AdarG	2	0.966666667	96.6666667
+F	Hatching	48	AdarG-14	Pooled	AdarG	2	0.833333333	83.3333333
+F	Hatching	49	AdarG-15	Pooled	AdarG	2	0.933333333	93.3333333
+F	Hatching	50	AdarG-16	Pooled	AdarG	2	0.866666667	86.6666667
+F	Hatching	51	AdarG-17	Pooled	AdarG	2	0.9	90
+F	Hatching	52	AdarG-18	Pooled	AdarG	2	0.766666667	76.6666667
+F	Hatching	53	AdarG-19	Pooled	AdarG	2	0.866666667	86.6666667
+F	Hatching	54	AdarG-20	Pooled	AdarG	2	0.866666667	86.6666667
+F	Hatching	55	AdarG-21	Pooled	AdarG	3	0.8	80
+F	Hatching	56	AdarG-22	Pooled	AdarG	3	0.966666667	96.6666667
+F	Hatching	57	AdarG-23	Pooled	AdarG	3	0.933333333	93.3333333
+F	Hatching	58	AdarG-24	Pooled	AdarG	3	0.866666667	86.6666667
+F	Hatching	59	AdarG-25	Pooled	AdarG	3	0.966666667	96.6666667
+F	Hatching	60	AdarG-26	Pooled	AdarG	3	0.933333333	93.3333333
+F	Hatching	61	AdarG-27	Pooled	AdarG	3	0.966666667	96.6666667
+F	Hatching	62	AdarG-28	Pooled	AdarG	3	0.7	70
+F	Hatching	63	AdarG-29	Pooled	AdarG	3	0.8	80
+F	Hatching	64	AdarG-30	Pooled	AdarG	3	0.733333333	73.3333333
+F	Hatching	65	AdarG-31	Pooled	AdarG	4	0.633333333	63.3333333
+F	Hatching	66	AdarG-32	Pooled	AdarG	4	0.733333333	73.3333333
+F	Hatching	67	AdarG-33	Pooled	AdarG	4	0.566666667	56.6666667
+F	Hatching	68	AdarG-34	Pooled	AdarG	4	0.633333333	63.3333333
+F	Hatching	69	AdarG-35	Pooled	AdarG	4	0.766666667	76.6666667
+F	Hatching	70	AdarG-36	Pooled	AdarG	4	0.5	50
+F	Hatching	71	AdarG-37	Pooled	AdarG	4	0.733333333	73.3333333
+F	Hatching	72	AdarG-38	Pooled	AdarG	4	0.733333333	73.3333333
+F	Hatching	73	AdarS-1	Pooled	AdarS	1	0.766666667	76.6666667
+F	Hatching	74	AdarS-2	Pooled	AdarS	1	0.966666667	96.6666667
+F	Hatching	75	AdarS-3	Pooled	AdarS	1	0.633333333	63.3333333
+F	Hatching	76	AdarS-4	Pooled	AdarS	1	0.7	70
+F	Hatching	77	AdarS-5	Pooled	AdarS	1	0.766666667	76.6666667
+F	Hatching	78	AdarS-6	Pooled	AdarS	1	0.8	80
+F	Hatching	79	AdarS-7	Pooled	AdarS	1	0.666666667	66.6666667
+F	Hatching	80	AdarS-8	Pooled	AdarS	1	0.7	70
+F	Hatching	81	AdarS-9	Pooled	AdarS	1	0.766666667	76.6666667
+F	Hatching	82	AdarS-10	Pooled	AdarS	2	0.6	60
+F	Hatching	83	AdarS-11	Pooled	AdarS	2	0.566666667	56.6666667
+F	Hatching	84	AdarS-12	Pooled	AdarS	2	0.566666667	56.6666667
+F	Hatching	85	AdarS-13	Pooled	AdarS	2	0.666666667	66.6666667
+F	Hatching	86	AdarS-14	Pooled	AdarS	2	0.566666667	56.6666667
+F	Hatching	87	AdarS-15	Pooled	AdarS	2	0.5	50
+F	Hatching	88	AdarS-16	Pooled	AdarS	3	0.533333333	53.3333333
+F	Hatching	89	AdarS-17	Pooled	AdarS	3	0.6	60
+F	Hatching	90	AdarS-18	Pooled	AdarS	3	0.566666667	56.6666667
+F	Hatching	91	AdarS-19	Pooled	AdarS	3	0.266666667	26.6666667
+F	Hatching	92	AdarS-20	Pooled	AdarS	3	0.466666667	46.6666667
+F	Hatching	93	AdarS-21	Pooled	AdarS	3	0.733333333	73.3333333
+F	Hatching	94	AdarS-22	Pooled	AdarS	3	0.5	50
+F	Hatching	95	AdarS-23	Pooled	AdarS	3	0.666666667	66.6666667
+F	Hatching	96	AdarS-24	Pooled	AdarS	3	0.666666667	66.6666667
+F	Hatching	97	AdarS-25	Pooled	AdarS	4	0.466666667	46.6666667
+F	Hatching	98	AdarS-26	Pooled	AdarS	4	0.666666667	66.6666667
+F	Hatching	99	AdarS-27	Pooled	AdarS	4	0.666666667	66.6666667
+F	Hatching	100	AdarS-28	Pooled	AdarS	4	0.833333333	83.3333333
+F	Hatching	101	AdarS-29	Pooled	AdarS	4	0.666666667	66.6666667
+F	Hatching	102	AdarS-30	Pooled	AdarS	4	0.733333333	73.3333333
+F	Hatching	103	AdarS-31	Pooled	AdarS	4	0.6	60
+F	Hatching	104	AdarS-32	Pooled	AdarS	4	0.666666667	66.6666667
+F	Hatching	105	AdarS-33	Pooled	AdarS	4	0.6	60
+F	Hatching	106	AdarS-34	Pooled	AdarS	4	0.6	60
+G	Pupation	1	w1118-1	Pooled	WT	1	0.846153846	84.6153846
+G	Pupation	2	w1118-2	Pooled	WT	1	0.764705882	76.4705882
+G	Pupation	3	w1118-3	Pooled	WT	1	0.625	62.5
+G	Pupation	4	w1118-4	Pooled	WT	1	0.4	40
+G	Pupation	5	w1118-5	Pooled	WT	1	0.444444444	44.4444444
+G	Pupation	6	w1118-6	Pooled	WT	1	0.833333333	83.3333333
+G	Pupation	7	w1118-7	Pooled	WT	1	0.722222222	72.2222222
+G	Pupation	8	w1118-8	Pooled	WT	2	0.5	50
+G	Pupation	9	w1118-9	Pooled	WT	2	0.1875	18.75
+G	Pupation	10	w1118-10	Pooled	WT	2	0.411764706	41.1764706
+G	Pupation	11	w1118-11	Pooled	WT	2	0.533333333	53.3333333
+G	Pupation	12	w1118-12	Pooled	WT	2	0.352941176	35.2941176
+G	Pupation	13	w1118-13	Pooled	WT	2	0.214285714	21.4285714
+G	Pupation	14	w1118-14	Pooled	WT	2	0.176470588	17.6470588
+G	Pupation	15	w1118-15	Pooled	WT	3	0.409090909	40.9090909
+G	Pupation	16	w1118-16	Pooled	WT	3	0.916666667	91.6666667
+G	Pupation	17	w1118-17	Pooled	WT	3	0.357142857	35.7142857
+G	Pupation	18	w1118-18	Pooled	WT	3	0.666666667	66.6666667
+G	Pupation	19	w1118-19	Pooled	WT	3	0.6	60
+G	Pupation	20	w1118-20	Pooled	WT	3	0.733333333	73.3333333
+G	Pupation	21	w1118-21	Pooled	WT	3	0.736842105	73.6842105
+G	Pupation	22	w1118-22	Pooled	WT	3	0.285714286	28.5714286
+G	Pupation	23	w1118-23	Pooled	WT	3	0.608695652	60.8695652
+G	Pupation	24	w1118-24	Pooled	WT	3	0.294117647	29.4117647
+G	Pupation	25	w1118-1	Pooled	WT	4	0.944444444	94.4444444
+G	Pupation	26	w1118-2	Pooled	WT	4	0.9	90
+G	Pupation	27	w1118-3	Pooled	WT	4	0.695652174	69.5652174
+G	Pupation	28	w1118-4	Pooled	WT	4	0.736842105	73.6842105
+G	Pupation	29	w1118-5	Pooled	WT	4	0.666666667	66.6666667
+G	Pupation	30	w1118-6	Pooled	WT	4	0.529411765	52.9411765
+G	Pupation	31	w1118-7	Pooled	WT	4	0.777777778	77.7777778
+G	Pupation	32	w1118-8	Pooled	WT	4	0.733333333	73.3333333
+G	Pupation	33	w1118-9	Pooled	WT	4	0.882352941	88.2352941
+G	Pupation	34	w1118-10	Pooled	WT	4	0.85	85
+G	Pupation	35	AdarG-1	Pooled	AdarG	1	0.925925926	92.5925926
+G	Pupation	36	AdarG-2	Pooled	AdarG	1	0.827586207	82.7586207
+G	Pupation	37	AdarG-3	Pooled	AdarG	1	0.733333333	73.3333333
+G	Pupation	38	AdarG-4	Pooled	AdarG	1	0.833333333	83.3333333
+G	Pupation	39	AdarG-5	Pooled	AdarG	1	0.965517241	96.5517241
+G	Pupation	40	AdarG-6	Pooled	AdarG	1	0.88	88
+G	Pupation	41	AdarG-7	Pooled	AdarG	1	0.925925926	92.5925926
+G	Pupation	42	AdarG-8	Pooled	AdarG	1	0.703703704	70.3703704
+G	Pupation	43	AdarG-9	Pooled	AdarG	1	0.846153846	84.6153846
+G	Pupation	44	AdarG-10	Pooled	AdarG	1	0.923076923	92.3076923
+G	Pupation	45	AdarG-11	Pooled	AdarG	2	0.857142857	85.7142857
+G	Pupation	46	AdarG-12	Pooled	AdarG	2	0.896551724	89.6551724
+G	Pupation	47	AdarG-13	Pooled	AdarG	2	0.827586207	82.7586207
+G	Pupation	48	AdarG-14	Pooled	AdarG	2	0.96	96
+G	Pupation	49	AdarG-15	Pooled	AdarG	2	0.75	75
+G	Pupation	50	AdarG-16	Pooled	AdarG	2	0.884615385	88.4615385
+G	Pupation	51	AdarG-17	Pooled	AdarG	2	1.037037037	103.7037037
+G	Pupation	52	AdarG-18	Pooled	AdarG	2	1	100
+G	Pupation	53	AdarG-19	Pooled	AdarG	2	0.923076923	92.3076923
+G	Pupation	54	AdarG-20	Pooled	AdarG	2	0.769230769	76.9230769
+G	Pupation	55	AdarG-21	Pooled	AdarG	3	0.916666667	91.6666667
+G	Pupation	56	AdarG-22	Pooled	AdarG	3	1	100
+G	Pupation	57	AdarG-23	Pooled	AdarG	3	0.857142857	85.7142857
+G	Pupation	58	AdarG-24	Pooled	AdarG	3	0.884615385	88.4615385
+G	Pupation	59	AdarG-25	Pooled	AdarG	3	0.862068966	86.2068966
+G	Pupation	60	AdarG-26	Pooled	AdarG	3	0.892857143	89.2857143
+G	Pupation	61	AdarG-27	Pooled	AdarG	3	0.896551724	89.6551724
+G	Pupation	62	AdarG-28	Pooled	AdarG	3	1.047619048	104.7619048
+G	Pupation	63	AdarG-29	Pooled	AdarG	3	1	100
+G	Pupation	64	AdarG-30	Pooled	AdarG	3	1.045454545	104.5454545
+G	Pupation	65	AdarG-1	Pooled	AdarG	4	0.684210526	68.4210526
+G	Pupation	66	AdarG-2	Pooled	AdarG	4	0.545454545	54.5454545
+G	Pupation	67	AdarG-3	Pooled	AdarG	4	0.352941176	35.2941176
+G	Pupation	68	AdarG-4	Pooled	AdarG	4	0.631578947	63.1578947
+G	Pupation	69	AdarG-5	Pooled	AdarG	4	0.565217391	56.5217391
+G	Pupation	70	AdarG-6	Pooled	AdarG	4	0.533333333	53.3333333
+G	Pupation	71	AdarG-7	Pooled	AdarG	4	0.5	50
+G	Pupation	72	AdarG-8	Pooled	AdarG	4	0.727272727	72.7272727
+G	Pupation	73	AdarS-1	Pooled	AdarS	1	0.434782609	43.4782609
+G	Pupation	74	AdarS-2	Pooled	AdarS	1	0.448275862	44.8275862
+G	Pupation	75	AdarS-3	Pooled	AdarS	1	0.473684211	47.3684211
+G	Pupation	76	AdarS-4	Pooled	AdarS	1	0.391304348	39.1304348
+G	Pupation	77	AdarS-5	Pooled	AdarS	1	0.416666667	41.6666667
+G	Pupation	78	AdarS-6	Pooled	AdarS	1	0.65	65
+G	Pupation	79	AdarS-7	Pooled	AdarS	1	0.523809524	52.3809524
+G	Pupation	80	AdarS-8	Pooled	AdarS	1	0.47826087	47.826087
+G	Pupation	81	AdarS-9	Pooled	AdarS	1	0.391304348	39.1304348
+G	Pupation	82	AdarS-10	Pooled	AdarS	2	0.611111111	61.1111111
+G	Pupation	83	AdarS-11	Pooled	AdarS	2	0.235294118	23.5294118
+G	Pupation	84	AdarS-12	Pooled	AdarS	2	0.294117647	29.4117647
+G	Pupation	85	AdarS-13	Pooled	AdarS	2	0.4	40
+G	Pupation	86	AdarS-14	Pooled	AdarS	2	0.411764706	41.1764706
+G	Pupation	87	AdarS-15	Pooled	AdarS	2	0.533333333	53.3333333
+G	Pupation	88	AdarS-16	Pooled	AdarS	3	0.25	25
+G	Pupation	89	AdarS-17	Pooled	AdarS	3	0.333333333	33.3333333
+G	Pupation	90	AdarS-18	Pooled	AdarS	3	0.647058824	64.7058824
+G	Pupation	91	AdarS-19	Pooled	AdarS	3	0.375	37.5
+G	Pupation	92	AdarS-20	Pooled	AdarS	3	0.5	50
+G	Pupation	93	AdarS-21	Pooled	AdarS	3	0.5	50
+G	Pupation	94	AdarS-22	Pooled	AdarS	3	0.4	40
+G	Pupation	95	AdarS-23	Pooled	AdarS	3	0.3	30
+G	Pupation	96	AdarS-24	Pooled	AdarS	3	0.45	45
+G	Pupation	97	AdarS-1	Pooled	AdarS	4	0.571428571	57.1428571
+G	Pupation	98	AdarS-2	Pooled	AdarS	4	0.5	50
+G	Pupation	99	AdarS-3	Pooled	AdarS	4	0.55	55
+G	Pupation	100	AdarS-4	Pooled	AdarS	4	0.48	48
+G	Pupation	101	AdarS-5	Pooled	AdarS	4	0.55	55
+G	Pupation	102	AdarS-6	Pooled	AdarS	4	0.590909091	59.0909091
+G	Pupation	103	AdarS-7	Pooled	AdarS	4	0.666666667	66.6666667
+G	Pupation	104	AdarS-8	Pooled	AdarS	4	0.35	35
+G	Pupation	105	AdarS-9	Pooled	AdarS	4	0.611111111	61.1111111
+G	Pupation	106	AdarS-10	Pooled	AdarS	4	0.722222222	72.2222222
+H	Eclosion	1	w1118-1	Pooled	WT	1	1	100
+H	Eclosion	2	w1118-2	Pooled	WT	1	0.923076923	92.3076923
+H	Eclosion	3	w1118-3	Pooled	WT	1	1	100
+H	Eclosion	4	w1118-4	Pooled	WT	1	1	100
+H	Eclosion	5	w1118-5	Pooled	WT	1	1	100
+H	Eclosion	6	w1118-6	Pooled	WT	1	1	100
+H	Eclosion	7	w1118-7	Pooled	WT	1	1	100
+H	Eclosion	8	w1118-8	Pooled	WT	1	0.923076923	92.3076923
+H	Eclosion	9	w1118-9	Pooled	WT	1	1	100
+H	Eclosion	10	w1118-10	Pooled	WT	1	1	100
+H	Eclosion	11	w1118-11	Pooled	WT	2	1	100
+H	Eclosion	12	w1118-12	Pooled	WT	2	1	100
+H	Eclosion	13	w1118-13	Pooled	WT	2	1	100
+H	Eclosion	14	w1118-14	Pooled	WT	2	1	100
+H	Eclosion	15	w1118-15	Pooled	WT	2	1	100
+H	Eclosion	16	w1118-16	Pooled	WT	2	1	100
+H	Eclosion	17	w1118-17	Pooled	WT	2	1	100
+H	Eclosion	18	w1118-18	Pooled	WT	2	1	100
+H	Eclosion	19	w1118-19	Pooled	WT	2	1	100
+H	Eclosion	20	w1118-20	Pooled	WT	2	1	100
+H	Eclosion	21	w1118-21	Pooled	WT	3	1	100
+H	Eclosion	22	w1118-22	Pooled	WT	3	1	100
+H	Eclosion	23	w1118-23	Pooled	WT	3	0.8	80
+H	Eclosion	24	w1118-24	Pooled	WT	3	1	100
+H	Eclosion	25	w1118-25	Pooled	WT	3	1	100
+H	Eclosion	26	w1118-26	Pooled	WT	3	1	100
+H	Eclosion	27	w1118-27	Pooled	WT	3	1	100
+H	Eclosion	28	w1118-28	Pooled	WT	3	1	100
+H	Eclosion	29	w1118-29	Pooled	WT	3	1	100
+H	Eclosion	30	w1118-30	Pooled	WT	3	1	100
+H	Eclosion	31	w1118-31	Pooled	WT	4	0.941176471	94.1176471
+H	Eclosion	32	w1118-32	Pooled	WT	4	0.944444444	94.4444444
+H	Eclosion	33	w1118-33	Pooled	WT	4	1	100
+H	Eclosion	34	w1118-34	Pooled	WT	4	0.928571429	92.8571429
+H	Eclosion	35	w1118-35	Pooled	WT	4	1	100
+H	Eclosion	36	w1118-36	Pooled	WT	4	1	100
+H	Eclosion	37	w1118-37	Pooled	WT	4	0.857142857	85.7142857
+H	Eclosion	38	w1118-38	Pooled	WT	4	1	100
+H	Eclosion	39	w1118-39	Pooled	WT	4	1	100
+H	Eclosion	40	w1118-40	Pooled	WT	4	1	100
+H	Eclosion	41	AdarG-1	Pooled	AdarG	1	1	100
+H	Eclosion	42	AdarG-2	Pooled	AdarG	1	0.958333333	95.8333333
+H	Eclosion	43	AdarG-3	Pooled	AdarG	1	1	100
+H	Eclosion	44	AdarG-4	Pooled	AdarG	1	0.92	92
+H	Eclosion	45	AdarG-5	Pooled	AdarG	1	1	100
+H	Eclosion	46	AdarG-6	Pooled	AdarG	1	1	100
+H	Eclosion	47	AdarG-7	Pooled	AdarG	1	1	100
+H	Eclosion	48	AdarG-8	Pooled	AdarG	1	1	100
+H	Eclosion	49	AdarG-9	Pooled	AdarG	1	1	100
+H	Eclosion	50	AdarG-10	Pooled	AdarG	1	1	100
+H	Eclosion	51	AdarG-11	Pooled	AdarG	2	0.875	87.5
+H	Eclosion	52	AdarG-12	Pooled	AdarG	2	0.961538462	96.1538462
+H	Eclosion	53	AdarG-13	Pooled	AdarG	2	1	100
+H	Eclosion	54	AdarG-14	Pooled	AdarG	2	1	100
+H	Eclosion	55	AdarG-15	Pooled	AdarG	2	0.952380952	95.2380952
+H	Eclosion	56	AdarG-16	Pooled	AdarG	2	0.913043478	91.3043478
+H	Eclosion	57	AdarG-17	Pooled	AdarG	2	0.964285714	96.4285714
+H	Eclosion	58	AdarG-18	Pooled	AdarG	2	1	100
+H	Eclosion	59	AdarG-19	Pooled	AdarG	2	0.875	87.5
+H	Eclosion	60	AdarG-20	Pooled	AdarG	2	1	100
+H	Eclosion	61	AdarG-21	Pooled	AdarG	3	1	100
+H	Eclosion	62	AdarG-22	Pooled	AdarG	3	0.827586207	82.7586207
+H	Eclosion	63	AdarG-23	Pooled	AdarG	3	0.916666667	91.6666667
+H	Eclosion	64	AdarG-24	Pooled	AdarG	3	1	100
+H	Eclosion	65	AdarG-25	Pooled	AdarG	3	1	100
+H	Eclosion	66	AdarG-26	Pooled	AdarG	3	0.96	96
+H	Eclosion	67	AdarG-27	Pooled	AdarG	3	1.038461538	103.8461538
+H	Eclosion	68	AdarG-28	Pooled	AdarG	3	0.954545455	95.4545455
+H	Eclosion	69	AdarG-29	Pooled	AdarG	3	1	100
+H	Eclosion	70	AdarG-30	Pooled	AdarG	3	1	100
+H	Eclosion	71	AdarG-31	Pooled	AdarG	4	0.923076923	92.3076923
+H	Eclosion	72	AdarG-32	Pooled	AdarG	4	1	100
+H	Eclosion	73	AdarG-33	Pooled	AdarG	4	0.833333333	83.3333333
+H	Eclosion	74	AdarG-34	Pooled	AdarG	4	1	100
+H	Eclosion	75	AdarG-35	Pooled	AdarG	4	1.076923077	107.6923077
+H	Eclosion	76	AdarG-36	Pooled	AdarG	4	0.875	87.5
+H	Eclosion	77	AdarG-37	Pooled	AdarG	4	1	100
+H	Eclosion	78	AdarG-38	Pooled	AdarG	4	1	100
+H	Eclosion	79	AdarS-1	Pooled	AdarS	1	1	100
+H	Eclosion	80	AdarS-2	Pooled	AdarS	1	1	100
+H	Eclosion	81	AdarS-3	Pooled	AdarS	1	1	100
+H	Eclosion	82	AdarS-4	Pooled	AdarS	1	0.777777778	77.7777778
+H	Eclosion	83	AdarS-5	Pooled	AdarS	1	0.9	90
+H	Eclosion	84	AdarS-6	Pooled	AdarS	1	0.692307692	69.2307692
+H	Eclosion	85	AdarS-7	Pooled	AdarS	1	1	100
+H	Eclosion	86	AdarS-8	Pooled	AdarS	1	0.909090909	90.9090909
+H	Eclosion	87	AdarS-9	Pooled	AdarS	1	1	100
+H	Eclosion	88	AdarS-10	Pooled	AdarS	1	0.888888889	88.8888889
+H	Eclosion	89	AdarS-11	Pooled	AdarS	2	1	100
+H	Eclosion	90	AdarS-12	Pooled	AdarS	2	1	100
+H	Eclosion	91	AdarS-13	Pooled	AdarS	2	1	100
+H	Eclosion	92	AdarS-14	Pooled	AdarS	2	1	100
+H	Eclosion	93	AdarS-15	Pooled	AdarS	2	1	100
+H	Eclosion	94	AdarS-16	Pooled	AdarS	2	1	100
+H	Eclosion	95	AdarS-17	Pooled	AdarS	2	1	100
+H	Eclosion	96	AdarS-18	Pooled	AdarS	2	1	100
+H	Eclosion	97	AdarS-19	Pooled	AdarS	2	1	100
+H	Eclosion	98	AdarS-20	Pooled	AdarS	2	0.6	60
+H	Eclosion	99	AdarS-21	Pooled	AdarS	3	1	100
+H	Eclosion	100	AdarS-22	Pooled	AdarS	3	1	100
+H	Eclosion	101	AdarS-23	Pooled	AdarS	3	1	100
+H	Eclosion	102	AdarS-24	Pooled	AdarS	3	1	100
+H	Eclosion	103	AdarS-25	Pooled	AdarS	3	1	100
+H	Eclosion	104	AdarS-26	Pooled	AdarS	3	1	100
+H	Eclosion	105	AdarS-27	Pooled	AdarS	3	1	100
+H	Eclosion	106	AdarS-28	Pooled	AdarS	3	1	100
+H	Eclosion	107	AdarS-29	Pooled	AdarS	3	1	100
+H	Eclosion	108	AdarS-30	Pooled	AdarS	3	1	100
+H	Eclosion	109	AdarS-31	Pooled	AdarS	4	0.875	87.5
+H	Eclosion	110	AdarS-32	Pooled	AdarS	4	1	100
+H	Eclosion	111	AdarS-33	Pooled	AdarS	4	1	100
+H	Eclosion	112	AdarS-34	Pooled	AdarS	4	0.916666667	91.6666667
+H	Eclosion	113	AdarS-35	Pooled	AdarS	4	0.909090909	90.9090909
+H	Eclosion	114	AdarS-36	Pooled	AdarS	4	0.923076923	92.3076923
+H	Eclosion	115	AdarS-37	Pooled	AdarS	4	0.75	75
+H	Eclosion	116	AdarS-38	Pooled	AdarS	4	0.857142857	85.7142857
+H	Eclosion	117	AdarS-39	Pooled	AdarS	4	1	100
+H	Eclosion	118	AdarS-40	Pooled	AdarS	4	0.923076923	92.3076923

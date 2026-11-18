@@ -1,0 +1,353 @@
+{
+  "samples": [
+    {
+      "group": "Adar5G1",
+      "library": "Adar5G1_R1",
+      "species": "dmel",
+      "ann_vcf": "/path/to/Proj1_RNAediting/02_Bcftools_SnpEff/head_ribo_mRNA_vcf/snpeff/Dmel_Adar5G1_rep1_mRNA.uniq1.vcf.Filter.ann"
+    },
+    {
+      "group": "Adar5G1",
+      "library": "Adar5G1_R2",
+      "species": "dmel",
+      "ann_vcf": "/path/to/Proj1_RNAediting/02_Bcftools_SnpEff/head_ribo_mRNA_vcf/snpeff/Dmel_Adar5G1_rep2_mRNA.uniq1.vcf.Filter.ann"
+    },
+    {
+      "group": "WBG",
+      "library": "WBG_F1",
+      "species": "dmel",
+      "ann_vcf": "/path/to/RNA_editing_DATAprocessing_new/RNA_processing_JWZ/05_snpeff/WBG-F1-LJD7606.uniq1.vcf.Filter.ann"
+    },
+    {
+      "group": "WBG",
+      "library": "WBG_F2",
+      "species": "dmel",
+      "ann_vcf": "/path/to/RNA_editing_DATAprocessing_new/RNA_processing_JWZ/05_snpeff/WBG-F2-LJD7607.uniq1.vcf.Filter.ann"
+    },
+    {
+      "group": "WBG",
+      "library": "WBG_F3",
+      "species": "dmel",
+      "ann_vcf": "/path/to/RNA_editing_DATAprocessing_new/RNA_processing_JWZ/05_snpeff/WBG-F3-LJD7608.uniq1.vcf.Filter.ann"
+    },
+    {
+      "group": "WBG",
+      "library": "WBG_M1",
+      "species": "dmel",
+      "ann_vcf": "/path/to/RNA_editing_DATAprocessing_new/RNA_processing_JWZ/05_snpeff/WBG-M1-LJD7603.uniq1.vcf.Filter.ann"
+    },
+    {
+      "group": "WBG",
+      "library": "WBG_M2",
+      "species": "dmel",
+      "ann_vcf": "/path/to/RNA_editing_DATAprocessing_new/RNA_processing_JWZ/05_snpeff/WBG-M2-LJD7604.uniq1.vcf.Filter.ann"
+    },
+    {
+      "group": "WBG",
+      "library": "WBG_M3",
+      "species": "dmel",
+      "ann_vcf": "/path/to/RNA_editing_DATAprocessing_new/RNA_processing_JWZ/05_snpeff/WBG-M3-LJD7605.uniq1.vcf.Filter.ann"
+    },
+    {
+      "group": "AG",
+      "library": "AG_F1",
+      "species": "dmel",
+      "ann_vcf": "/path/to/RNA_editing_DATAprocessing_new/RNA_processing_JWZ/05_snpeff/AG-F1-LJD7618.uniq1.vcf.Filter.ann"
+    },
+    {
+      "group": "AG",
+      "library": "AG_F2",
+      "species": "dmel",
+      "ann_vcf": "/path/to/RNA_editing_DATAprocessing_new/RNA_processing_JWZ/05_snpeff/AG-F2-LJD7619.uniq1.vcf.Filter.ann"
+    },
+    {
+      "group": "AG",
+      "library": "AG_F3",
+      "species": "dmel",
+      "ann_vcf": "/path/to/RNA_editing_DATAprocessing_new/RNA_processing_JWZ/05_snpeff/AG-F3-LJD7620.uniq1.vcf.Filter.ann"
+    },
+    {
+      "group": "AG",
+      "library": "AG_M1",
+      "species": "dmel",
+      "ann_vcf": "/path/to/RNA_editing_DATAprocessing_new/RNA_processing_JWZ/05_snpeff/AG-M1-LJD7615.uniq1.vcf.Filter.ann"
+    },
+    {
+      "group": "AG",
+      "library": "AG_M2",
+      "species": "dmel",
+      "ann_vcf": "/path/to/RNA_editing_DATAprocessing_new/RNA_processing_JWZ/05_snpeff/AG-M2-LJD7616.uniq1.vcf.Filter.ann"
+    },
+    {
+      "group": "AG",
+      "library": "AG_M3",
+      "species": "dmel",
+      "ann_vcf": "/path/to/RNA_editing_DATAprocessing_new/RNA_processing_JWZ/05_snpeff/AG-M3-LJD7617.uniq1.vcf.Filter.ann"
+    },
+    {
+      "group": "AS",
+      "library": "AS_F1",
+      "species": "dmel",
+      "ann_vcf": "/path/to/RNA_editing_DATAprocessing_new/RNA_processing_JWZ/05_snpeff/AS-F1-LJD7612.uniq1.vcf.Filter.ann"
+    },
+    {
+      "group": "AS",
+      "library": "AS_F2",
+      "species": "dmel",
+      "ann_vcf": "/path/to/RNA_editing_DATAprocessing_new/RNA_processing_JWZ/05_snpeff/AS-F2-LJD7613.uniq1.vcf.Filter.ann"
+    },
+    {
+      "group": "AS",
+      "library": "AS_F3",
+      "species": "dmel",
+      "ann_vcf": "/path/to/RNA_editing_DATAprocessing_new/RNA_processing_JWZ/05_snpeff/AS-F3-LJD7614.uniq1.vcf.Filter.ann"
+    },
+    {
+      "group": "AS",
+      "library": "AS_M1",
+      "species": "dmel",
+      "ann_vcf": "/path/to/RNA_editing_DATAprocessing_new/RNA_processing_JWZ/05_snpeff/AS-M1-LJD7609.uniq1.vcf.Filter.ann"
+    },
+    {
+      "group": "AS",
+      "library": "AS_M2",
+      "species": "dmel",
+      "ann_vcf": "/path/to/RNA_editing_DATAprocessing_new/RNA_processing_JWZ/05_snpeff/AS-M2-LJD7610.uniq1.vcf.Filter.ann"
+    },
+    {
+      "group": "AS",
+      "library": "AS_M3",
+      "species": "dmel",
+      "ann_vcf": "/path/to/RNA_editing_DATAprocessing_new/RNA_processing_JWZ/05_snpeff/AS-M3-LJD7611.uniq1.vcf.Filter.ann"
+    },
+    {
+      "group": "ISO1_brain",
+      "library": "F_control_1",
+      "species": "dmel",
+      "ann_vcf": "/path/to/Proj1_RNAediting/02_Bcftools_SnpEff/brain_mRNA_vcf/Dmel_female_control_first.uniq1.vcf.Filter.ann"
+    },
+    {
+      "group": "ISO1_brain",
+      "library": "F_control_2",
+      "species": "dmel",
+      "ann_vcf": "/path/to/Proj1_RNAediting/02_Bcftools_SnpEff/brain_mRNA_vcf/Dmel_female_control_second.uniq1.vcf.Filter.ann"
+    },
+    {
+      "group": "ISO1_brain",
+      "library": "F_14h_1",
+      "species": "dmel",
+      "ann_vcf": "/path/to/Proj1_RNAediting/02_Bcftools_SnpEff/brain_mRNA_vcf/Dmel_female_temperature_14h_first.uniq1.vcf.Filter.ann"
+    },
+    {
+      "group": "ISO1_brain",
+      "library": "F_14h_2",
+      "species": "dmel",
+      "ann_vcf": "/path/to/Proj1_RNAediting/02_Bcftools_SnpEff/brain_mRNA_vcf/Dmel_female_temperature_14h_second.uniq1.vcf.Filter.ann"
+    },
+    {
+      "group": "ISO1_brain",
+      "library": "F_48h_2",
+      "species": "dmel",
+      "ann_vcf": "/path/to/Proj1_RNAediting/02_Bcftools_SnpEff/brain_mRNA_vcf/Dmel_female_temperature_48h_second.uniq1.vcf.Filter.ann"
+    },
+    {
+      "group": "ISO1_brain",
+      "library": "M_control_1",
+      "species": "dmel",
+      "ann_vcf": "/path/to/Proj1_RNAediting/02_Bcftools_SnpEff/brain_mRNA_vcf/Dmel_male_control_first.uniq1.vcf.Filter.ann"
+    },
+    {
+      "group": "ISO1_brain",
+      "library": "M_control_2",
+      "species": "dmel",
+      "ann_vcf": "/path/to/Proj1_RNAediting/02_Bcftools_SnpEff/brain_mRNA_vcf/Dmel_male_control_second.uniq1.vcf.Filter.ann"
+    },
+    {
+      "group": "ISO1_brain",
+      "library": "M_control_3",
+      "species": "dmel",
+      "ann_vcf": "/path/to/Proj1_RNAediting/02_Bcftools_SnpEff/brain_mRNA_vcf/Dmel_male_control_third.uniq1.vcf.Filter.ann"
+    },
+    {
+      "group": "ISO1_brain",
+      "library": "M_14h_1",
+      "species": "dmel",
+      "ann_vcf": "/path/to/Proj1_RNAediting/02_Bcftools_SnpEff/brain_mRNA_vcf/Dmel_male_temperature_14h_first.uniq1.vcf.Filter.ann"
+    },
+    {
+      "group": "ISO1_brain",
+      "library": "M_14h_2",
+      "species": "dmel",
+      "ann_vcf": "/path/to/Proj1_RNAediting/02_Bcftools_SnpEff/brain_mRNA_vcf/Dmel_male_temperature_14h_second.uniq1.vcf.Filter.ann"
+    },
+    {
+      "group": "ISO1_brain",
+      "library": "M_14h_3",
+      "species": "dmel",
+      "ann_vcf": "/path/to/Proj1_RNAediting/02_Bcftools_SnpEff/brain_mRNA_vcf/Dmel_male_temperature_14h_third.uniq1.vcf.Filter.ann"
+    },
+    {
+      "group": "ISO1_brain",
+      "library": "M_48h_2",
+      "species": "dmel",
+      "ann_vcf": "/path/to/Proj1_RNAediting/02_Bcftools_SnpEff/brain_mRNA_vcf/Dmel_male_temperature_48h_second.uniq1.vcf.Filter.ann"
+    },
+    {
+      "group": "ISO1_head",
+      "library": "ISO1_head_F",
+      "species": "dmel",
+      "ann_vcf": "/path/to/Proj1_RNAediting/02_Bcftools_SnpEff/head_ribo_mRNA_vcf/snpeff/Dmel_ISO1_head_female_mRNA.uniq1.vcf.Filter.ann"
+    },
+    {
+      "group": "ISO1_head",
+      "library": "ISO1_head_M",
+      "species": "dmel",
+      "ann_vcf": "/path/to/Proj1_RNAediting/02_Bcftools_SnpEff/head_ribo_mRNA_vcf/snpeff/Dmel_ISO1_head_male_mRNA.uniq1.vcf.Filter.ann"
+    },
+    {
+      "group": "sim",
+      "library": "sim_F1",
+      "species": "sim",
+      "ann_vcf": "/path/to/RNA_editing_DATAprocessing_new/RNA_processing_JWZ/05_snpeff/w501-F1-totalRNA-LJD7636-RL1.uniq1.vcf.Filter.ann"
+    },
+    {
+      "group": "sim",
+      "library": "sim_F2",
+      "species": "sim",
+      "ann_vcf": "/path/to/RNA_editing_DATAprocessing_new/RNA_processing_JWZ/05_snpeff/w501-F2-totalRNA-LJD7637-RL1.uniq1.vcf.Filter.ann"
+    },
+    {
+      "group": "sim",
+      "library": "sim_F3",
+      "species": "sim",
+      "ann_vcf": "/path/to/RNA_editing_DATAprocessing_new/RNA_processing_JWZ/05_snpeff/w501-F3-totalRNA-LJD7638-RL1.uniq1.vcf.Filter.ann"
+    },
+    {
+      "group": "sim",
+      "library": "sim_F4",
+      "species": "sim",
+      "ann_vcf": "/path/to/Proj1_RNAediting/02_Bcftools_SnpEff/head_ribo_mRNA_vcf/snpeff/Dsim_female_head_mRNA.uniq1.vcf.Filter.ann"
+    },
+    {
+      "group": "sim",
+      "library": "sim_M1",
+      "species": "sim",
+      "ann_vcf": "/path/to/RNA_editing_DATAprocessing_new/RNA_processing_JWZ/05_snpeff/w501-M1-totalRNA-LJD7633-RL1.uniq1.vcf.Filter.ann"
+    },
+    {
+      "group": "sim",
+      "library": "sim_M2",
+      "species": "sim",
+      "ann_vcf": "/path/to/RNA_editing_DATAprocessing_new/RNA_processing_JWZ/05_snpeff/w501-M2-totalRNA-LJD7634-RL1.uniq1.vcf.Filter.ann"
+    },
+    {
+      "group": "sim",
+      "library": "sim_M3",
+      "species": "sim",
+      "ann_vcf": "/path/to/RNA_editing_DATAprocessing_new/RNA_processing_JWZ/05_snpeff/w501-M3-totalRNA-LJD7635-RL1.uniq1.vcf.Filter.ann"
+    },
+    {
+      "group": "sim",
+      "library": "sim_M4",
+      "species": "sim",
+      "ann_vcf": "/path/to/Proj1_RNAediting/02_Bcftools_SnpEff/head_ribo_mRNA_vcf/snpeff/Dsim_male_head_mRNA.uniq1.vcf.Filter.ann"
+    },
+    {
+      "group": "sec",
+      "library": "sec_F1",
+      "species": "sec",
+      "ann_vcf": "/path/to/RNA_editing_DATAprocessing_new/RNA_processing_JWZ/05_snpeff/sec-F1-1-LJD7630.uniq1.vcf.Filter.ann"
+    },
+    {
+      "group": "sec",
+      "library": "sec_F2",
+      "species": "sec",
+      "ann_vcf": "/path/to/RNA_editing_DATAprocessing_new/RNA_processing_JWZ/05_snpeff/sec-F2-1-LJD7631.uniq1.vcf.Filter.ann"
+    },
+    {
+      "group": "sec",
+      "library": "sec_F3",
+      "species": "sec",
+      "ann_vcf": "/path/to/RNA_editing_DATAprocessing_new/RNA_processing_JWZ/05_snpeff/sec-F3-1-LJD7632.uniq1.vcf.Filter.ann"
+    },
+    {
+      "group": "sec",
+      "library": "sec_M1",
+      "species": "sec",
+      "ann_vcf": "/path/to/RNA_editing_DATAprocessing_new/RNA_processing_JWZ/05_snpeff/sec-M1-1-LJD7627.uniq1.vcf.Filter.ann"
+    },
+    {
+      "group": "sec",
+      "library": "sec_M2",
+      "species": "sec",
+      "ann_vcf": "/path/to/RNA_editing_DATAprocessing_new/RNA_processing_JWZ/05_snpeff/sec-M2-1-LJD7628.uniq1.vcf.Filter.ann"
+    },
+    {
+      "group": "sec",
+      "library": "sec_M3",
+      "species": "sec",
+      "ann_vcf": "/path/to/RNA_editing_DATAprocessing_new/RNA_processing_JWZ/05_snpeff/sec-M3-1-LJD7629.uniq1.vcf.Filter.ann"
+    },
+    {
+      "group": "sec",
+      "library": "sec_M4",
+      "species": "sec",
+      "ann_vcf": "/path/to/Proj1_RNAediting/02_Bcftools_SnpEff/head_ribo_mRNA_vcf/snpeff/Dsec_male_head_mRNA.uniq1.vcf.Filter.ann"
+    },
+    {
+      "group": "ere",
+      "library": "ere_F1",
+      "species": "ere",
+      "ann_vcf": "/path/to/RNA_editing_DATAprocessing_new/RNA_processing_JWZ/05_snpeff/ere-F1-1-LJD7624.uniq1.vcf.Filter.ann"
+    },
+    {
+      "group": "ere",
+      "library": "ere_F2",
+      "species": "ere",
+      "ann_vcf": "/path/to/RNA_editing_DATAprocessing_new/RNA_processing_JWZ/05_snpeff/ere-F2-1-LJD7625.uniq1.vcf.Filter.ann"
+    },
+    {
+      "group": "ere",
+      "library": "ere_F3",
+      "species": "ere",
+      "ann_vcf": "/path/to/RNA_editing_DATAprocessing_new/RNA_processing_JWZ/05_snpeff/ere-F3-1-LJD7626.uniq1.vcf.Filter.ann"
+    },
+    {
+      "group": "ere",
+      "library": "ere_M1",
+      "species": "ere",
+      "ann_vcf": "/path/to/RNA_editing_DATAprocessing_new/RNA_processing_JWZ/05_snpeff/ere-M1-1-LJD7621.uniq1.vcf.Filter.ann"
+    },
+    {
+      "group": "ere",
+      "library": "ere_M2",
+      "species": "ere",
+      "ann_vcf": "/path/to/RNA_editing_DATAprocessing_new/RNA_processing_JWZ/05_snpeff/ere-M2-1-LJD7622.uniq1.vcf.Filter.ann"
+    },
+    {
+      "group": "ere",
+      "library": "ere_M3",
+      "species": "ere",
+      "ann_vcf": "/path/to/RNA_editing_DATAprocessing_new/RNA_processing_JWZ/05_snpeff/ere-M3-1-LJD7623.uniq1.vcf.Filter.ann"
+    },
+    {
+      "group": "ere",
+      "library": "ere_M4",
+      "species": "ere",
+      "ann_vcf": "/path/to/Proj1_RNAediting/02_Bcftools_SnpEff/head_ribo_mRNA_vcf/snpeff/Dere_male_head_mRNA.uniq1.vcf.Filter.ann"
+    }
+  ],
+  "chains": {
+    "sim": "/path/to/Proj1_RNAediting/02_Bcftools_SnpEff/g_align/droSim2ToDm6.over.chain",
+    "sec": "/path/to/Proj1_RNAediting/02_Bcftools_SnpEff/g_align/droSec1ToDm6.over.chain",
+    "ere": "/path/to/Proj1_RNAediting/02_Bcftools_SnpEff/g_align/droEre2ToDm6.over.chain"
+  },
+  "published_files": [
+    "/path/to/RNA_editing_DATAprocessing_new/all_code/editing_sites_PUBlist/2011.Graveley.site",
+    "/path/to/RNA_editing_DATAprocessing_new/all_code/editing_sites_PUBlist/2012.Rodriguez.site",
+    "/path/to/RNA_editing_DATAprocessing_new/all_code/editing_sites_PUBlist/2013.Laurant.site",
+    "/path/to/RNA_editing_DATAprocessing_new/all_code/editing_sites_PUBlist/2016.LiXuan.site",
+    "/path/to/RNA_editing_DATAprocessing_new/all_code/editing_sites_PUBlist/2017.Billy.site"
+  ],
+  "duan2017_file": "/path/to/RNAi/240719drosophila_check/plot_Rscript/01_sum_mRNA_sites/2017edit_all5925.txt"
+}

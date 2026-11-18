@@ -1,0 +1,5 @@
+args <- commandArgs(trailingOnly = FALSE)
+file_arg <- grep("^--file=", args, value = TRUE)
+base_dir <- if (length(file_arg)) dirname(normalizePath(sub("^--file=", "", file_arg[[1L]]))) else normalizePath(getwd())
+source(file.path(base_dir, "scripts", "figure_s18", "run_s18.R"))
+s18_run(base_dir)

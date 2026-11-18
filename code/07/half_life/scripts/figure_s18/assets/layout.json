@@ -1,0 +1,826 @@
+{
+  "width": 467.0,
+  "height": 566.0,
+  "labels": [
+    {
+      "x": 26.229999542236328,
+      "y": 112.70999145507812,
+      "size": 6.0,
+      "vertical": false,
+      "runs": [
+        [
+          "300",
+          "regular"
+        ]
+      ]
+    },
+    {
+      "x": 21.231998443603516,
+      "y": 95.4119873046875,
+      "size": 6.0,
+      "vertical": false,
+      "runs": [
+        [
+          "1,000",
+          "regular"
+        ]
+      ]
+    },
+    {
+      "x": 21.231998443603516,
+      "y": 79.6199951171875,
+      "size": 6.0,
+      "vertical": false,
+      "runs": [
+        [
+          "3,000",
+          "regular"
+        ]
+      ]
+    },
+    {
+      "x": 17.889999389648438,
+      "y": 62.321990966796875,
+      "size": 6.0,
+      "vertical": false,
+      "runs": [
+        [
+          "10,000",
+          "regular"
+        ]
+      ]
+    },
+    {
+      "x": 17.889999389648438,
+      "y": 46.52996826171875,
+      "size": 6.0,
+      "vertical": false,
+      "runs": [
+        [
+          "30,000",
+          "regular"
+        ]
+      ]
+    },
+    {
+      "x": 62.930198669433594,
+      "y": 130.39990234375,
+      "size": 7.0,
+      "vertical": false,
+      "runs": [
+        [
+          "Edited",
+          "regular"
+        ]
+      ]
+    },
+    {
+      "x": 110.69120025634766,
+      "y": 130.39990234375,
+      "size": 7.0,
+      "vertical": false,
+      "runs": [
+        [
+          "Unedited",
+          "regular"
+        ]
+      ]
+    },
+    {
+      "x": 12.360400199890137,
+      "y": 133.37060546875,
+      "size": 8.0,
+      "vertical": true,
+      "runs": [
+        [
+          "Transcript length (nt, log",
+          "regular"
+        ],
+        [
+          "10",
+          "math"
+        ],
+        [
+          " scale)",
+          "regular"
+        ]
+      ]
+    },
+    {
+      "x": 182.14500427246094,
+      "y": 103.48001098632812,
+      "size": 6.5,
+      "vertical": false,
+      "runs": [
+        [
+          "25",
+          "regular"
+        ]
+      ]
+    },
+    {
+      "x": 182.14500427246094,
+      "y": 83.5574951171875,
+      "size": 6.5,
+      "vertical": false,
+      "runs": [
+        [
+          "50",
+          "regular"
+        ]
+      ]
+    },
+    {
+      "x": 182.14500427246094,
+      "y": 63.62847900390625,
+      "size": 6.5,
+      "vertical": false,
+      "runs": [
+        [
+          "75",
+          "regular"
+        ]
+      ]
+    },
+    {
+      "x": 178.531005859375,
+      "y": 43.70599365234375,
+      "size": 6.5,
+      "vertical": false,
+      "runs": [
+        [
+          "100",
+          "regular"
+        ]
+      ]
+    },
+    {
+      "x": 211.25979614257812,
+      "y": 130.39990234375,
+      "size": 7.0,
+      "vertical": false,
+      "runs": [
+        [
+          "Edited",
+          "regular"
+        ]
+      ]
+    },
+    {
+      "x": 254.51278686523438,
+      "y": 130.39990234375,
+      "size": 7.0,
+      "vertical": false,
+      "runs": [
+        [
+          "Unedited",
+          "regular"
+        ]
+      ]
+    },
+    {
+      "x": 176.0,
+      "y": 91.23049926757812,
+      "size": 8.0,
+      "vertical": true,
+      "runs": [
+        [
+          "Fraction (%)",
+          "regular"
+        ]
+      ]
+    },
+    {
+      "x": 222.2899932861328,
+      "y": 20.2197265625,
+      "size": 7.0,
+      "vertical": false,
+      "runs": [
+        [
+          "Decay",
+          "regular"
+        ]
+      ]
+    },
+    {
+      "x": 256.0159912109375,
+      "y": 20.2197265625,
+      "size": 7.0,
+      "vertical": false,
+      "runs": [
+        [
+          "Stable",
+          "regular"
+        ]
+      ]
+    },
+    {
+      "x": 330.4902038574219,
+      "y": 111.81979370117188,
+      "size": 6.0,
+      "vertical": false,
+      "runs": [
+        [
+          "10",
+          "regular"
+        ]
+      ]
+    },
+    {
+      "x": 327.148193359375,
+      "y": 89.48779296875,
+      "size": 6.0,
+      "vertical": false,
+      "runs": [
+        [
+          "100",
+          "regular"
+        ]
+      ]
+    },
+    {
+      "x": 322.15020751953125,
+      "y": 67.15579223632812,
+      "size": 6.0,
+      "vertical": false,
+      "runs": [
+        [
+          "1,000",
+          "regular"
+        ]
+      ]
+    },
+    {
+      "x": 318.8081970214844,
+      "y": 44.8358154296875,
+      "size": 6.0,
+      "vertical": false,
+      "runs": [
+        [
+          "10,000",
+          "regular"
+        ]
+      ]
+    },
+    {
+      "x": 362.849609375,
+      "y": 130.39990234375,
+      "size": 7.0,
+      "vertical": false,
+      "runs": [
+        [
+          "Edited",
+          "regular"
+        ]
+      ]
+    },
+    {
+      "x": 413.6136169433594,
+      "y": 130.39990234375,
+      "size": 7.0,
+      "vertical": false,
+      "runs": [
+        [
+          "Unedited",
+          "regular"
+        ]
+      ]
+    },
+    {
+      "x": 306.0600891113281,
+      "y": 102.412109375,
+      "size": 8.0,
+      "vertical": true,
+      "runs": [
+        [
+          "mRNA half−life ",
+          "regular"
+        ]
+      ]
+    },
+    {
+      "x": 315.66009521484375,
+      "y": 104.412109375,
+      "size": 8.0,
+      "vertical": true,
+      "runs": [
+        [
+          "(min, log",
+          "regular"
+        ],
+        [
+          "10",
+          "math"
+        ],
+        [
+          " scale)",
+          "regular"
+        ]
+      ]
+    },
+    {
+      "x": 54.36869812011719,
+      "y": 273.39990234375,
+      "size": 7.0,
+      "vertical": false,
+      "runs": [
+        [
+          "Decay class III vs II",
+          "regular"
+        ]
+      ]
+    },
+    {
+      "x": 55.530696868896484,
+      "y": 263.9989013671875,
+      "size": 7.0,
+      "vertical": false,
+      "runs": [
+        [
+          "Decay class V vs II",
+          "regular"
+        ]
+      ]
+    },
+    {
+      "x": 6.019691467285156,
+      "y": 254.597900390625,
+      "size": 7.0,
+      "vertical": false,
+      "runs": [
+        [
+          "Initial mRNA expression (per 1 SD)",
+          "regular"
+        ]
+      ]
+    },
+    {
+      "x": 28.881690979003906,
+      "y": 245.1968994140625,
+      "size": 7.0,
+      "vertical": false,
+      "runs": [
+        [
+          "Transcript length (per 1 SD)",
+          "regular"
+        ]
+      ]
+    },
+    {
+      "x": 44.407691955566406,
+      "y": 235.7958984375,
+      "size": 7.0,
+      "vertical": false,
+      "runs": [
+        [
+          "CDS length (per 1 SD)",
+          "regular"
+        ]
+      ]
+    },
+    {
+      "x": 39.57769012451172,
+      "y": 226.3948974609375,
+      "size": 7.0,
+      "vertical": false,
+      "runs": [
+        [
+          "3'UTR length (per 1 SD)",
+          "regular"
+        ]
+      ]
+    },
+    {
+      "x": 39.57769012451172,
+      "y": 216.993896484375,
+      "size": 7.0,
+      "vertical": false,
+      "runs": [
+        [
+          "5'UTR length (per 1 SD)",
+          "regular"
+        ]
+      ]
+    },
+    {
+      "x": 44.80669021606445,
+      "y": 207.5928955078125,
+      "size": 7.0,
+      "vertical": false,
+      "runs": [
+        [
+          "GC content (per 1 SD)",
+          "regular"
+        ]
+      ]
+    },
+    {
+      "x": 50.637691497802734,
+      "y": 198.19189453125,
+      "size": 7.0,
+      "vertical": false,
+      "runs": [
+        [
+          "A content (per 1 SD)",
+          "regular"
+        ]
+      ]
+    },
+    {
+      "x": 72.42169189453125,
+      "y": 188.7908935546875,
+      "size": 7.0,
+      "vertical": false,
+      "runs": [
+        [
+          "Editing states",
+          "regular"
+        ]
+      ]
+    },
+    {
+      "x": 53.584693908691406,
+      "y": 179.389892578125,
+      "size": 7.0,
+      "vertical": false,
+      "runs": [
+        [
+          "Decay class IV vs II",
+          "regular"
+        ]
+      ]
+    },
+    {
+      "x": 124.89009857177734,
+      "y": 284.7304992675781,
+      "size": 6.5,
+      "vertical": false,
+      "runs": [
+        [
+          "−1.0",
+          "regular"
+        ]
+      ]
+    },
+    {
+      "x": 157.83209228515625,
+      "y": 284.7304992675781,
+      "size": 6.5,
+      "vertical": false,
+      "runs": [
+        [
+          "−0.5",
+          "regular"
+        ]
+      ]
+    },
+    {
+      "x": 192.81509399414062,
+      "y": 284.7304992675781,
+      "size": 6.5,
+      "vertical": false,
+      "runs": [
+        [
+          "0.0",
+          "regular"
+        ]
+      ]
+    },
+    {
+      "x": 225.75709533691406,
+      "y": 285.302490234375,
+      "size": 6.5,
+      "vertical": false,
+      "runs": [
+        [
+          "0.5",
+          "regular"
+        ]
+      ]
+    },
+    {
+      "x": 258.6990966796875,
+      "y": 285.302490234375,
+      "size": 6.5,
+      "vertical": false,
+      "runs": [
+        [
+          "1.0",
+          "regular"
+        ]
+      ]
+    },
+    {
+      "x": 122.9052963256836,
+      "y": 296.9804992675781,
+      "size": 8.0,
+      "vertical": false,
+      "runs": [
+        [
+          "Effect on log",
+          "regular"
+        ],
+        [
+          "2",
+          "math"
+        ],
+        [
+          "-transformed mRNA half-life (β)",
+          "regular"
+        ]
+      ]
+    },
+    {
+      "x": 348.3533020019531,
+      "y": 296.9804992675781,
+      "size": 8.0,
+      "vertical": false,
+      "runs": [
+        [
+          "Mean A-to-I editing level ",
+          "regular"
+        ]
+      ]
+    },
+    {
+      "x": 328.7933044433594,
+      "y": 306.58050537109375,
+      "size": 8.0,
+      "vertical": false,
+      "runs": [
+        [
+          "across CDS adenosines (log",
+          "regular"
+        ],
+        [
+          "2",
+          "math"
+        ],
+        [
+          " scale)",
+          "regular"
+        ]
+      ]
+    },
+    {
+      "x": 315.6601867675781,
+      "y": 281.6426086425781,
+      "size": 8.0,
+      "vertical": true,
+      "runs": [
+        [
+          "mRNA half−life (min, log",
+          "regular"
+        ],
+        [
+          "2",
+          "math"
+        ],
+        [
+          " scale)",
+          "regular"
+        ]
+      ]
+    },
+    {
+      "x": 5.100100040435791,
+      "y": 13.16021728515625,
+      "size": 10.0,
+      "vertical": false,
+      "runs": [
+        [
+          "A",
+          "bold"
+        ]
+      ]
+    },
+    {
+      "x": 167.12008666992188,
+      "y": 13.16021728515625,
+      "size": 10.0,
+      "vertical": false,
+      "runs": [
+        [
+          "B",
+          "bold"
+        ]
+      ]
+    },
+    {
+      "x": 299.89007568359375,
+      "y": 13.16021728515625,
+      "size": 10.0,
+      "vertical": false,
+      "runs": [
+        [
+          "C",
+          "bold"
+        ]
+      ]
+    },
+    {
+      "x": 5.100067138671875,
+      "y": 155.65020751953125,
+      "size": 10.0,
+      "vertical": false,
+      "runs": [
+        [
+          "D",
+          "bold"
+        ]
+      ]
+    },
+    {
+      "x": 299.89007568359375,
+      "y": 155.65020751953125,
+      "size": 10.0,
+      "vertical": false,
+      "runs": [
+        [
+          "E",
+          "bold"
+        ]
+      ]
+    },
+    {
+      "x": 214.4102020263672,
+      "y": 244.283203125,
+      "size": 6.0,
+      "vertical": false,
+      "runs": [
+        [
+          "Model",
+          "regular"
+        ]
+      ]
+    },
+    {
+      "x": 221.99510192871094,
+      "y": 253.0703125,
+      "size": 6.0,
+      "vertical": false,
+      "runs": [
+        [
+          "H3: total−length",
+          "regular"
+        ]
+      ]
+    },
+    {
+      "x": 221.99510192871094,
+      "y": 261.4609069824219,
+      "size": 6.0,
+      "vertical": false,
+      "runs": [
+        [
+          "H4: component−length",
+          "regular"
+        ]
+      ]
+    },
+    {
+      "x": 221.99510192871094,
+      "y": 269.8525085449219,
+      "size": 6.0,
+      "vertical": false,
+      "runs": [
+        [
+          "H5: sequence−extended",
+          "regular"
+        ]
+      ]
+    },
+    {
+      "x": 185.75979614257812,
+      "y": 123.50338745117188,
+      "size": 6.5,
+      "vertical": false,
+      "runs": [
+        [
+          "0",
+          "regular"
+        ]
+      ]
+    },
+    {
+      "x": 323.3583984375,
+      "y": 270.8442077636719,
+      "size": 6.5,
+      "vertical": false,
+      "runs": [
+        [
+          "4",
+          "regular"
+        ]
+      ]
+    },
+    {
+      "x": 323.3583984375,
+      "y": 257.6101989746094,
+      "size": 6.5,
+      "vertical": false,
+      "runs": [
+        [
+          "5",
+          "regular"
+        ]
+      ]
+    },
+    {
+      "x": 323.3583984375,
+      "y": 244.37619018554688,
+      "size": 6.5,
+      "vertical": false,
+      "runs": [
+        [
+          "6",
+          "regular"
+        ]
+      ]
+    },
+    {
+      "x": 323.3583984375,
+      "y": 231.14218139648438,
+      "size": 6.5,
+      "vertical": false,
+      "runs": [
+        [
+          "7",
+          "regular"
+        ]
+      ]
+    },
+    {
+      "x": 323.3583984375,
+      "y": 217.90817260742188,
+      "size": 6.5,
+      "vertical": false,
+      "runs": [
+        [
+          "8",
+          "regular"
+        ]
+      ]
+    },
+    {
+      "x": 323.3583984375,
+      "y": 204.67416381835938,
+      "size": 6.5,
+      "vertical": false,
+      "runs": [
+        [
+          "9",
+          "regular"
+        ]
+      ]
+    },
+    {
+      "x": 319.952392578125,
+      "y": 191.44015502929688,
+      "size": 6.5,
+      "vertical": false,
+      "runs": [
+        [
+          "10",
+          "regular"
+        ]
+      ]
+    },
+    {
+      "x": 319.952392578125,
+      "y": 178.20614624023438,
+      "size": 6.5,
+      "vertical": false,
+      "runs": [
+        [
+          "11",
+          "regular"
+        ]
+      ]
+    },
+    {
+      "x": 331.11871337890625,
+      "y": 285.3013000488281,
+      "size": 6.5,
+      "vertical": false,
+      "runs": [
+        [
+          "-18 -17 -16 -15 -14 -13 -12 -11 -10",
+          "regular"
+        ]
+      ]
+    },
+    {
+      "x": 450.54974365234375,
+      "y": 285.3013000488281,
+      "size": 6.5,
+      "vertical": false,
+      "runs": [
+        [
+          "-9",
+          "regular"
+        ]
+      ]
+    }
+  ]
+}

@@ -1,0 +1,20 @@
+# Generated outputs and local environments; publication inputs remain tracked.
+/results/
+**/__pycache__/
+*.py[cod]
+.Rhistory
+.RData
+.DS_Store
+/.runtime/
+/.venv/
+**/.cache/
+*.log
+**/reference_all_transcripts/
+
+# Generated figure files are excluded from the source release.
+*.pdf
+*.png
+*.svg
+*.eps
+*.tif
+*.tiff
